@@ -46,7 +46,7 @@ def evaluate_end_to_end(query, generated_answer, correct_answer):
 
         response_text = response.content[0].text
 
-        # Use regex to extract explanation and is_correct
+        # 使用正则表达式提取解释和is_correct
         explanation_match = re.search(r"<explanation>(.*?)</explanation>", response_text, re.DOTALL)
         is_correct_match = re.search(r"<is_correct>(.*?)</is_correct>", response_text, re.DOTALL)
 

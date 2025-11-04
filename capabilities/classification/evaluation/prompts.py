@@ -2,58 +2,58 @@ from vectordb import VectorDB
 import textwrap
 
 vectordb = VectorDB()
-# Load the vector database
+# 加载向量数据库
 vectordb.load_db()
 
-categories = """<category> 
+categories = """<category>
     <label>Billing Inquiries</label>
-    <content> Questions about invoices, charges, fees, and premiums Requests for clarification on billing statements Inquiries about payment methods and due dates 
-    </content> 
-</category> 
-<category> 
+    <content> Questions about invoices, charges, fees, and premiums Requests for clarification on billing statements Inquiries about payment methods and due dates
+    </content>
+</category>
+<category>
     <label>Policy Administration</label>
-    <content> Requests for policy changes, updates, or cancellations Questions about policy renewals and reinstatements Inquiries about adding or removing coverage options 
-    </content> 
-</category> 
-<category> 
-    <label>Claims Assistance</label> 
-    <content> Questions about the claims process and filing procedures Requests for help with submitting claim documentation Inquiries about claim status and payout timelines 
-    </content> 
-</category> 
-<category> 
-    <label>Coverage Explanations</label> 
-    <content> Questions about what is covered under specific policy types Requests for clarification on coverage limits and exclusions Inquiries about deductibles and out-of-pocket expenses 
-    </content> 
-</category> 
-<category> 
-    <label>Quotes and Proposals</label> 
-    <content> Requests for new policy quotes and price comparisons Questions about available discounts and bundling options Inquiries about switching from another insurer 
-    </content> 
-</category> 
-<category> 
-    <label>Account Management</label> 
-    <content> Requests for login credentials or password resets Questions about online account features and functionality Inquiries about updating contact or personal information 
-    </content> 
-</category> 
-<category> 
-    <label>Billing Disputes</label> 
-    <content> Complaints about unexpected or incorrect charges Requests for refunds or premium adjustments Inquiries about late fees or collection notices 
-    </content> 
-</category> 
-<category> 
-    <label>Claims Disputes</label> 
-    <content> Complaints about denied or underpaid claims Requests for reconsideration of claim decisions Inquiries about appealing a claim outcome 
-    </content> 
-</category> 
-<category> 
-    <label>Policy Comparisons</label> 
-    <content> Questions about the differences between policy options Requests for help deciding between coverage levels Inquiries about how policies compare to competitors' offerings 
-    </content> 
-</category> 
-<category> 
-    <label>General Inquiries</label> 
-    <content> Questions about company contact information or hours of operation Requests for general information about products or services Inquiries that don't fit neatly into other categories 
-    </content> 
+    <content> Requests for policy changes, updates, or cancellations Questions about policy renewals and reinstatements Inquiries about adding or removing coverage options
+    </content>
+</category>
+<category>
+    <label>Claims Assistance</label>
+    <content> Questions about the claims process and filing procedures Requests for help with submitting claim documentation Inquiries about claim status and payout timelines
+    </content>
+</category>
+<category>
+    <label>Coverage Explanations</label>
+    <content> Questions about what is covered under specific policy types Requests for clarification on coverage limits and exclusions Inquiries about deductibles and out-of-pocket expenses
+    </content>
+</category>
+<category>
+    <label>Quotes and Proposals</label>
+    <content> Requests for new policy quotes and price comparisons Questions about available discounts and bundling options Inquiries about switching from another insurer
+    </content>
+</category>
+<category>
+    <label>Account Management</label>
+    <content> Requests for login credentials or password resets Questions about online account features and functionality Inquiries about updating contact or personal information
+    </content>
+</category>
+<category>
+    <label>Billing Disputes</label>
+    <content> Complaints about unexpected or incorrect charges Requests for refunds or premium adjustments Inquiries about late fees or collection notices
+    </content>
+</category>
+<category>
+    <label>Claims Disputes</label>
+    <content> Complaints about denied or underpaid claims Requests for reconsideration of claim decisions Inquiries about appealing a claim outcome
+    </content>
+</category>
+<category>
+    <label>Policy Comparisons</label>
+    <content> Questions about the differences between policy options Requests for help deciding between coverage levels Inquiries about how policies compare to competitors' offerings
+    </content>
+</category>
+<category>
+    <label>General Inquiries</label>
+    <content> Questions about company contact information or hours of operation Requests for general information about products or services Inquiries that don't fit neatly into other categories
+    </content>
 </category>"""
 
 
@@ -61,17 +61,17 @@ def simple_classify(context: dict):
     X = context["vars"]["text"]
     prompt = (
         textwrap.dedent("""
-    You will classify a customer support ticket into one of the following categories:
+    您需要将客户支持工单分类到以下类别之一：
     <categories>
         {{categories}}
     </categories>
 
-    Here is the customer support ticket:
+    这是客户支持工单：
     <ticket>
         {{ticket}}
     </ticket>
 
-    Respond with just the label of the category between category tags.
+    仅使用类别标签之间的类别标签进行回复。
     """)
         .replace("{{categories}}", categories)
         .replace("{{ticket}}", X)
@@ -96,22 +96,22 @@ def rag_classify(context: dict):
         """)
     prompt = (
         textwrap.dedent("""
-    You will classify a customer support ticket into one of the following categories:
+    您需要将客户支持工单分类到以下类别之一：
     <categories>
         {{categories}}
     </categories>
 
-    Here is the customer support ticket:
+    这是客户支持工单：
     <ticket>
         {{ticket}}
     </ticket>
 
-    Use the following examples to help you classify the query:
+    使用以下示例帮助您分类查询：
     <examples>
         {{examples}}
     </examples>
 
-    Respond with just the label of the category between category tags.
+    仅使用类别标签之间的类别标签进行回复。
     """)
         .replace("{{categories}}", categories)
         .replace("{{ticket}}", X)
@@ -137,28 +137,28 @@ def rag_chain_of_thought_classify(context: dict):
         """)
     prompt = (
         textwrap.dedent("""
-    You will classify a customer support ticket into one of the following categories:
+    您需要将客户支持工单分类到以下类别之一：
     <categories>
         {{categories}}
     </categories>
 
-    Here is the customer support ticket:
+    这是客户支持工单：
     <ticket>
         {{ticket}}
     </ticket>
 
-    Use the following examples to help you classify the query:
+    使用以下示例帮助您分类查询：
     <examples>
         {{examples}}
     </examples>
 
-    First you will think step-by-step about the problem in scratchpad tags.
-    You should consider all the information provided and create a concrete argument for your classification.
-    
-    Respond using this format:
+    首先您将在草稿标签中逐步思考问题。
+    您应该考虑所有提供的信息并为您的分类创建具体论证。
+
+    使用此格式回复：
     <response>
-        <scratchpad>Your thoughts and analysis go here</scratchpad>
-        <category>The category label you chose goes here</category>
+        <scratchpad>您的想法和分析在这里</scratchpad>
+        <category>您选择的类别标签在这里</category>
     </response>
     """)
         .replace("{{categories}}", categories)

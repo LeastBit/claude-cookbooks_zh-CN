@@ -7,7 +7,7 @@ class InferenceAdapter:
     def __init__(self):
         self.bedrock_runtime = boto3.client(
             service_name="bedrock-runtime",
-            region_name="us-east-1",  # change region as needed
+            region_name="us-east-1",  # 根据需要更改区域
         )
         self.model_id = "anthropic.claude-haiku-4-5-20251001-v1:0"
 
@@ -21,7 +21,7 @@ class InferenceAdapter:
             }
         )
 
-        # Invoke the model
+        # 调用模型
         try:
             response = self.bedrock_runtime.invoke_model_with_response_stream(
                 modelId=self.model_id,
@@ -39,5 +39,5 @@ class InferenceAdapter:
                         break
 
         except ClientError as e:
-            print(f"An error occurred: {e}")
+            print(f"发生错误: {e}")
             yield None

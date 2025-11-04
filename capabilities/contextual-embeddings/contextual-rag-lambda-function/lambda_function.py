@@ -12,14 +12,14 @@ contextual_retrieval_prompt = """
     </document>
 
 
-    Here is the chunk we want to situate within the whole document
+    这是我们想要在整个文档中定位的块
     <chunk>
     {chunk_content}
     </chunk>
 
 
-    Please give a short succinct context to situate this chunk within the overall document for the purposes of improving search retrieval of the chunk.
-    Answer only with the succinct context and nothing else.
+    请提供一个简短简洁的上下文，以便在整体文档中定位此块，用于改进块的搜索检索。
+    仅回答简洁的上下文，不要其他内容。
     """
 
 
@@ -29,50 +29,50 @@ def lambda_handler(event, context):
     s3_adapter = S3Adapter()
     inference_adapter = InferenceAdapter()
 
-    # Extract relevant information from the input event
+    # 从输入事件中提取相关信息
     input_files = event.get("inputFiles")
     input_bucket = event.get("bucketName")
 
     if not all([input_files, input_bucket]):
-        raise ValueError("Missing required input parameters")
+        raise ValueError("缺少必需的输入参数")
 
     output_files = []
     for input_file in input_files:
         processed_batches = []
         for batch in input_file.get("contentBatches"):
-            # Get chunks from S3
+            # 从S3获取块
             input_key = batch.get("key")
 
             if not input_key:
-                raise ValueError("Missing uri in content batch")
+                raise ValueError("内容批次中缺少uri")
 
-            # Read file from S3
+            # 从S3读取文件
             file_content = s3_adapter.read_from_s3(bucket_name=input_bucket, file_name=input_key)
             print(file_content.get("fileContents"))
 
-            # Combine all chunks together to build content of original file
-            # Alternatively we can also read original file and extract text from it
+            # 合并所有块以构建原始文件的内容
+            # 另外我们也可以读取原始文件并从中提取文本
             original_document_content = "".join(
                 content.get("contentBody")
                 for content in file_content.get("fileContents")
                 if content
             )
 
-            # Process one chunk at a time
+            # 一次处理一个块
             chunked_content = {"fileContents": []}
             for content in file_content.get("fileContents"):
                 content_body = content.get("contentBody", "")
                 content_type = content.get("contentType", "")
                 content_metadata = content.get("contentMetadata", {})
 
-                # Update chunk with additional context
+                # 使用附加上下文更新块
                 prompt = contextual_retrieval_prompt.format(
                     doc_content=original_document_content, chunk_content=content_body
                 )
                 response_stream = inference_adapter.invoke_model_with_response_stream(prompt)
                 chunk_context = "".join(chunk for chunk in response_stream if chunk)
 
-                # append chunk to output file content
+                # 将块附加到输出文件内容
                 chunked_content["fileContents"].append(
                     {
                         "contentBody": chunk_context + "\n\n" + content_body,
@@ -83,10 +83,10 @@ def lambda_handler(event, context):
 
             output_key = f"Output/{input_key}"
 
-            # write updated chunk to output S3
+            # 将更新的块写入输出S3
             s3_adapter.write_output_to_s3(input_bucket, output_key, chunked_content)
 
-            # Append the processed chunks file to list of files
+            # 将处理过的块文件附加到文件列表
             processed_batches.append({"key": output_key})
         output_files.append(
             {

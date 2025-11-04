@@ -16,30 +16,30 @@ class VectorDB:
         self.db_path = "../data/vector_db.pkl"
 
     def load_data(self, data):
-        # Check if the vector database is already loaded
+        # 检查向量数据库是否已经加载
         if self.embeddings and self.metadata:
-            print("Vector database is already loaded. Skipping data loading.")
+            print("向量数据库已加载。跳过数据加载。")
             return
-        # Check if vector_db.pkl exists
+        # 检查 vector_db.pkl 是否存在
         if os.path.exists(self.db_path):
-            print("Loading vector database from disk.")
+            print("从磁盘加载向量数据库。")
             self.load_db()
             return
 
         texts = [item["text"] for item in data]
 
-        # Embed more than 128 documents with a for loop
+        # 使用 for 循环嵌入超过 128 个文档
         batch_size = 128
         result = [
             self.client.embed(texts[i : i + batch_size], model="voyage-2").embeddings
             for i in range(0, len(texts), batch_size)
         ]
 
-        # Flatten the embeddings
+        # 扁平化嵌入
         self.embeddings = [embedding for batch in result for embedding in batch]
         self.metadata = [item for item in data]
-        # Save the vector database to disk
-        print("Vector database loaded and saved.")
+        # 将向量数据库保存到磁盘
+        print("向量数据库已加载并保存。")
 
     def search(self, query, k=5, similarity_threshold=0.85):
         query_embedding = None
@@ -50,7 +50,7 @@ class VectorDB:
             self.query_cache[query] = query_embedding
 
         if not self.embeddings:
-            raise ValueError("No data loaded in the vector database.")
+            raise ValueError("向量数据库中未加载数据。")
 
         similarities = np.dot(self.embeddings, query_embedding)
         top_indices = np.argsort(similarities)[::-1]
@@ -72,7 +72,7 @@ class VectorDB:
     def load_db(self):
         if not os.path.exists(self.db_path):
             raise ValueError(
-                "Vector database file not found. Use load_data to create a new database."
+                "未找到向量数据库文件。使用 load_data 创建新数据库。"
             )
 
         with open(self.db_path, "rb") as file:

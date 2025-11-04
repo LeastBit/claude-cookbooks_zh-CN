@@ -1,11 +1,11 @@
-# Retrieval Augmented Generation with Claude
+# 使用Claude的检索增强生成
 
-Learn how to enhance Claude's capabilities with domain-specific knowledge using Retrieval Augmented Generation (RAG).
+了解如何使用检索增强生成（RAG）通过领域特定知识增强Claude的能力。
 
-## Contents
+## 目录
 
-- `guide.ipynb`: Main tutorial notebook
-- `data/`: Data files for examples and testing
-- `evaluation/`: Evaluation scripts using Promptfoo
+- `guide.ipynb`：主要教程笔记本
+- `data/`：示例和测试的数据文件
+- `evaluation/`：使用Promptfoo的评估脚本
 
-For evaluation instructions, see `evaluation/README.md`.
+有关评估说明，请参见`evaluation/README.md`。

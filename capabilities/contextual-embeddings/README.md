@@ -1,11 +1,11 @@
-# Retrieval Augmented Generation with Contextual Embeddings
+# 基于上下文嵌入的检索增强生成
 
-Learn how to improve RAG performance using contextual embeddings to add relevant context to each chunk before embedding.
+学习如何使用上下文嵌入来改进RAG性能，在嵌入之前为每个块添加相关上下文。
 
-## Contents
+## 内容
 
-- `guide.ipynb`: Main tutorial notebook
-- `data/`: Data files for examples and testing
-- `evaluation/`: Evaluation scripts using Promptfoo
+- `guide.ipynb`：主要教程笔记本
+- `data/`：示例和测试数据文件
+- `evaluation/`：使用Promptfoo的评估脚本
 
-For evaluation instructions, see `evaluation/README.md`.
+有关评估说明，请参见 `evaluation/README.md`。

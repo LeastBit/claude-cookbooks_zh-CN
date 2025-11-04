@@ -1,11 +1,11 @@
 def basic_summarize(text):
     prompt = f"""
-    You are a legal analyst known for highly accurate and detailed summaries of legal documents.
-    Summarize the following text in bullet points. Focus on the main ideas and key details:
-    
+    你是一名法律分析师，以对法律文档进行高度准确和详细摘要而闻名。
+    用要点形式总结以下文本。关注主要思想和关键细节：
+
     {text}
-    
-    Here is the summary of the legal document: <summary>
+
+    以下是法律文档摘要：<summary>
     """
 
     return prompt
@@ -13,23 +13,23 @@ def basic_summarize(text):
 
 def guided_legal_summary(text):
     prompt = f"""
-    You are a legal analyst known for highly accurate and detailed summaries of legal documents.
-    
-    Summarize the following legal document. Focus on these key aspects:
+    你是一名法律分析师，以对法律文档进行高度准确和详细摘要而闻名。
 
-    1. Parties involved
-    2. Main subject matter
-    3. Key terms and conditions
-    4. Important dates or deadlines
-    5. Any unusual or notable clauses
+    总结以下法律文档。关注这些关键方面：
 
-    Provide the summary in bullet points under each category.
+    1. 相关方
+    2. 主要事项
+    3. 关键条款和条件
+    4. 重要日期或截止期限
+    5. 任何不寻常或值得注意的条款
 
-    Document text:
+    在每个类别下用要点形式提供摘要。
+
+    文档文本：
     {text}
 
-    Here is the summary of the sublease agreement: <summary>
-    
+    以下是转租协议摘要：<summary>
+
     """
 
     return prompt
@@ -37,30 +37,30 @@ def guided_legal_summary(text):
 
 def summarize_long_document(text):
     prompt = f"""
-    You are a legal analyst specializing in real estate law, known for highly accurate and detailed summaries of sublease agreements.
+    你是一名专门从事房地产法的法律分析师，以对转租协议进行高度准确和详细摘要而闻名。
 
-    Summarize the following sublease agreement. Focus on these key aspects:
+    总结以下转租协议。关注这些关键方面：
 
-    1. Parties involved (sublessor, sublessee, original lessor)
-    2. Property details (address, description, permitted use)
-    3. Term and rent (start date, end date, monthly rent, security deposit)
-    4. Responsibilities (utilities, maintenance, repairs)
-    5. Consent and notices (landlord's consent, notice requirements)
-    6. Special provisions (furniture, parking, subletting restrictions)
+    1. 相关方（转租人、转租人、原出租人）
+    2. 物业详情（地址、描述、允许用途）
+    3. 租期和租金（开始日期、结束日期、月租金、押金）
+    4. 责任（水电费、维护、维修）
+    5. 同意和通知（房东同意、通知要求）
+    6. 特殊条款（家具、停车、转租限制）
 
-    Provide the summary in bullet points nested within the XML header for each section. For example:
+    在每个部分的XML标题内用嵌套要点形式提供摘要。例如：
 
-    <parties involved>
-    - Sublessor: [Name]
-    // Add more details as needed
-    </parties involved>
-    
-    If any information is not explicitly stated in the document, note it as "Not specified".
+    <相关方>
+    - 转租人：[姓名]
+    // 根据需要添加更多细节
+    </相关方>
 
-    Sublease agreement text:
+    如果文档中未明确说明任何信息，请标注为"未指定"。
+
+    转租协议文本：
     {text}
-    
-    Here is the summary of the sublease agreement: <summary>
+
+    以下是转租协议摘要：<summary>
     """
 
     return prompt

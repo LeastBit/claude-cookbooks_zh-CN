@@ -1,59 +1,59 @@
-# Evaluations with Promptfoo
+# 使用Promptfoo进行评估
 
-### Pre-requisities 
-To use Promptfoo you will need to have node.js & npm installed on your system. For more information follow [this guide](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)  
+### 前置条件
+使用Promptfoo，您需要在系统上安装node.js和npm。有关更多信息，请遵循[此指南](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 
-You can install promptfoo using npm or run it directly using npx. In this guide we will use npx.  
+您可以使用npm安装promptfoo或直接使用npx运行它。在本指南中，我们将使用npx。
 
-*Note: For this example you will not need to run `npx promptfoo@latest init` there is already an initialized `promptfooconfig.yaml` file in this directory*  
+*注意：对于此示例，您无需运行`npx promptfoo@latest init`，因为此目录中已有一个初始化的`promptfooconfig.yaml`文件*
 
-See the official docs [here](https://www.promptfoo.dev/docs/getting-started)  
-
-
-### Getting Started
-The evaluation is orchestrated by the `promptfooconfig...` `.yaml` files. In our application we divide the evaluation logic between `promptfooconfig_retrieval.yaml` for evaluating the retrieval system and `promptfooconfig_end_to_end.yaml` to evaluate the end to end performance. In each of these files we define the following sections
-
-### Retrieval Evaluations
-
-- Prompts
-    - Promptfoo enables you to import prompts in many different formats. You can read more about this [here](https://www.promptfoo.dev/docs/configuration/parameters).
-    - In our case, we skip providing a new prompt each time, and merely pass through the `{{query}}` to each retrieval 'provider' for evaluation
-- Providers
-    - Instead of using a standard LLM provider, we wrote custom providers for each retrieval method found in `guide.ipynb`
-- Tests
-    - We will use the same data that was used in `guide.ipynb`. We split it into `end_to_end_dataset.csv` and `retrieval_dataset.csv` and added an `__expected` column to each dataset which allows us to automatically run assertions for each row
-    - You can find our retrieval evaluation logic in `eval_end_to_end.py`
-
-### End to End Evaluations
-
-- Prompts
-    - Promptfoo enables you to import prompts in many different formats. You can read more about this [here](https://www.promptfoo.dev/docs/configuration/parameters).
-    - We have 3 prompts in our end to end evaluation config: each of which corresponds to a method use
-        - The functions are identical to those used in `guide.ipynb` except that instead of calling the Claude API they just return the prompt. Promptfoo then handles the orchestration of calling the API and storing the results.
-        - You can read more about prompt functions [here](https://www.promptfoo.dev/docs/configuration/parameters#prompt-functions). Using python allows us to reuse the VectorDB class which is necessary for RAG, this is defined in `vectordb.py`.
-- Providers
-    - With Promptfoo you can connect to many different LLMs from different platforms, see [here for more](https://www.promptfoo.dev/docs/providers). In `guide.ipynb` we used Haiku with default temperature 0.0. We will use Promptfoo to experiment with different models.
-- Tests
-    - We will use the same data that was used in `guide.ipynb`. We split it into `end_to_end_dataset.csv` and `retrieval_dataset.csv` and added an `__expected` column to each dataset which allows us to automatically run assertions for each row
-    - Promptfoo has a wide array of built in tests which can be found [here](https://www.promptfoo.dev/docs/configuration/expected-outputs/deterministic).
-    - You can find the test logic for the retrieval system in `eval_retrieval.py` and the test logic for the end to end system in `eval_end_to_end.py`
-- Output
-    - We define the path for the output file. Promptfoo can output results in many formats, [see here](https://www.promptfoo.dev/docs/configuration/parameters/#output-file). Alternatively you can use Promptfoo's web UI, [see here](https://www.promptfoo.dev/docs/usage/web-ui).
+查看官方文档[这里](https://www.promptfoo.dev/docs/getting-started)  
 
 
-### Run the eval
+### 入门
+评估由`promptfooconfig...``.yaml`文件编排。在我们的应用程序中，我们将评估逻辑分为用于评估检索系统的`promptfooconfig_retrieval.yaml`和用于评估端到端性能的`promptfooconfig_end_to_end.yaml`。在每个这些文件中，我们定义以下部分
 
-To get started with Promptfoo open your terminal and navigate to this directory (`./evaluation`).
+### 检索评估
 
-Before running your evaluation you must define the following enviroment variables:
+- 提示
+    - Promptfoo使您能够以许多不同格式导入提示。您可以在[这里](https://www.promptfoo.dev/docs/configuration/parameters)了解更多关于此的信息。
+    - 在我们的例子中，我们每次都跳过提供新提示，仅将`{{query}}`传递给每个检索"提供者"进行评估
+- 提供者
+    - 我们没有使用标准的LLM提供者，而是为`guide.ipynb`中找到的每种检索方法编写了自定义提供者
+- 测试
+    - 我们将使用与`guide.ipynb`中相同的数据。我们将其拆分为`end_to_end_dataset.csv`和`retrieval_dataset.csv`，并为每个数据集添加了`__expected`列，这使我们能够为每一行自动运行断言
+    - 您可以在`eval_end_to_end.py`中找到我们的检索评估逻辑
 
-`export ANTHROPIC_API_KEY=YOUR_API_KEY`  
+### 端到端评估
+
+- 提示
+    - Promptfoo使您能够以许多不同格式导入提示。您可以在[这里](https://www.promptfoo.dev/docs/configuration/parameters)了解更多关于此的信息。
+    - 我们的端到端评估配置中有3个提示：每个对应一种方法使用
+        - 这些函数与`guide.ipynb`中使用的函数相同，只是它们不调用Claude API，而是仅返回提示。然后Promptfoo处理调用API和存储结果的编排。
+        - 您可以在[这里](https://www.promptfoo.dev/docs/configuration/parameters#prompt-functions)了解更多关于提示函数的信息。使用python使我们能够重用RAG所需的VectorDB类，这定义在`vectordb.py`中。
+- 提供者
+    - 使用Promptfoo，您可以连接到来自不同平台的许多不同LLM，更多信息请参见[这里](https://www.promptfoo.dev/docs/providers)。在`guide.ipynb`中，我们使用Haiku，默认温度为0.0。我们将使用Promptfoo实验不同的模型。
+- 测试
+    - 我们将使用与`guide.ipynb`中相同的数据。我们将其拆分为`end_to_end_dataset.csv`和`retrieval_dataset.csv`，并为每个数据集添加了`__expected`列，这使我们能够为每一行自动运行断言
+    - Promptfoo有广泛的内置测试，可在[这里](https://www.promptfoo.dev/docs/configuration/expected-outputs/deterministic)找到。
+    - 您可以在`eval_retrieval.py`中找到检索系统的测试逻辑，在`eval_end_to_end.py`中找到端到端系统的测试逻辑
+- 输出
+    - 我们定义输出文件的路径。Promptfoo可以输出多种格式的结果，[参见这里](https://www.promptfoo.dev/docs/configuration/parameters/#output-file)。或者，您可以使用Promptfoo的Web UI，[参见这里](https://www.promptfoo.dev/docs/usage/web-ui)。
+
+
+### 运行评估
+
+要开始使用Promptfoo，请打开您的终端并导航到此目录（`./evaluation`）。
+
+在运行评估之前，您必须定义以下环境变量：
+
+`export ANTHROPIC_API_KEY=YOUR_API_KEY`
 `export VOYAGE_API_KEY=YOUR_API_KEY`
 
-From the `evaluation` directory, run one of the following commands.  
+从`evaluation`目录中，运行以下命令之一。
 
-- To evaluate the end to end system performance: `npx promptfoo@latest eval -c promptfooconfig_end_to_end.yaml --output ../data/end_to_end_results.json`
+- 要评估端到端系统性能：`npx promptfoo@latest eval -c promptfooconfig_end_to_end.yaml --output ../data/end_to_end_results.json`
 
-- To evaluate the retrieval system performance in isolation: `npx promptfoo@latest eval -c promptfooconfig_retrieval.yaml --output ../data/retrieval_results.json`
+- 要单独评估检索系统性能：`npx promptfoo@latest eval -c promptfooconfig_retrieval.yaml --output ../data/retrieval_results.json`
 
-When the evaluation is complete the terminal will print the results for each row in the dataset. You can also run `npx promptfoo@latest view` to view outputs in the promptfoo UI viewer.
+当评估完成时，终端将打印数据集中每一行的结果。您也可以运行`npx promptfoo@latest view`在promptfoo UI查看器中查看输出。

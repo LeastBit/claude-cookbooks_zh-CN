@@ -18,17 +18,17 @@ class VectorDB:
 
     def load_data(self, data):
         if self.embeddings and self.metadata:
-            print("Vector database is already loaded. Skipping data loading.")
+            print("向量数据库已加载。跳过数据加载。")
             return
         if os.path.exists(self.db_path):
-            print("Loading vector database from disk.")
+            print("从磁盘加载向量数据库。")
             self.load_db()
             return
 
         texts = [f"Heading: {item['chunk_heading']}\n\n Chunk Text:{item['text']}" for item in data]
         self._embed_and_store(texts, data)
         self.save_db()
-        print("Vector database loaded and saved.")
+        print("向量数据库已加载并保存。")
 
     def _embed_and_store(self, texts, data):
         batch_size = 128
@@ -79,7 +79,7 @@ class VectorDB:
     def load_db(self):
         if not os.path.exists(self.db_path):
             raise ValueError(
-                "Vector database file not found. Use load_data to create a new database."
+                "未找到向量数据库文件。请使用load_data创建新数据库。"
             )
         with open(self.db_path, "rb") as file:
             data = pickle.load(file)
@@ -101,19 +101,19 @@ class SummaryIndexedVectorDB:
 
     def load_data(self, data):
         if self.embeddings and self.metadata:
-            print("Vector database is already loaded. Skipping data loading.")
+            print("向量数据库已加载。跳过数据加载。")
             return
         if os.path.exists(self.db_path):
-            print("Loading vector database from disk.")
+            print("从磁盘加载向量数据库。")
             self.load_db()
             return
 
         texts = [
             f"{item['chunk_heading']}\n\n{item['text']}\n\n{item['summary']}" for item in data
-        ]  # Embed Chunk Heading + Text + Summary Together
+        ]  # 将块标题+文本+摘要一起嵌入
         self._embed_and_store(texts, data)
         self.save_db()
-        print("Vector database loaded and saved.")
+        print("向量数据库已加载并保存。")
 
     def _embed_and_store(self, texts, data):
         batch_size = 128
@@ -164,7 +164,7 @@ class SummaryIndexedVectorDB:
     def load_db(self):
         if not os.path.exists(self.db_path):
             raise ValueError(
-                "Vector database file not found. Use load_data to create a new database."
+                "未找到向量数据库文件。请使用load_data创建新数据库。"
             )
         with open(self.db_path, "rb") as file:
             data = pickle.load(file)

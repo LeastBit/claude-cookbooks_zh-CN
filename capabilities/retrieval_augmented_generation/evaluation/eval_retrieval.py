@@ -29,7 +29,7 @@ def get_assert(output: str, context) -> Union[bool, float, Dict[str, Any]]:
         metrics["recall"] = recall
         metrics["f1"] = f1
         metrics["mrr"] = mrr
-        print("METRICS")
+        print("指标")
         print(metrics)
         overall_score = True
         if f1 < 0.3:
