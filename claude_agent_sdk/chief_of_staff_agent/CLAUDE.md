@@ -1,95 +1,95 @@
-# CLAUDE.md - Chief of Staff Context
+# CLAUDE.md - 首席助理上下文
 
-## Company Overview
-- **Company**: TechStart Inc
-- **Stage**: Series A (Closed $10M in January 2024)
-- **Industry**: B2B SaaS - AI-powered developer tools
-- **Founded**: 2022
-- **HQ**: San Francisco, CA
+## 公司概览
+- **公司**：TechStart Inc
+- **阶段**：A轮（2024年1月完成1000万美元融资）
+- **行业**：B2B SaaS - AI驱动的开发者工具
+- **成立**：2022年
+- **总部**：加利福尼亚州旧金山
 
-## Financial Snapshot
-- **Monthly Burn Rate**: $500,000
-- **Current Runway**: 20 months (until September 2025)
-- **ARR**: $2.4M (growing 15% MoM)
-- **Cash in Bank**: $10M
-- **Revenue per Employee**: $48K
+## 财务快照
+- **月消耗率**：50万美元
+- **当前剩余月份**：20个月（到2025年9月）
+- **ARR**：240万美元（月度增长15%）
+- **银行现金**：1000万美元
+- **人均收入**：4.8万美元
 
-## Team Structure
-- **Total Headcount**: 50
-- **Engineering**: 25 (50%)
-  - Backend: 12
-  - Frontend: 8
-  - DevOps/SRE: 5
-- **Sales & Marketing**: 12 (24%)
-- **Product**: 5 (10%)
-- **Operations**: 5 (10%)
-- **Executive**: 3 (6%)
+## 团队结构
+- **总人数**：50人
+- **工程团队**：25人（50%）
+  - 后端：12人
+  - 前端：8人
+  - DevOps/SRE：5人
+- **销售与营销**：12人（24%）
+- **产品**：5人（10%）
+- **运营**：5人（10%）
+- **高管**：3人（6%）
 
-## Key Metrics
-- **Customer Count**: 120 enterprise customers
-- **NPS Score**: 72
-- **Monthly Churn**: 2.5%
-- **CAC**: $15,000
-- **LTV**: $85,000
-- **CAC Payback Period**: 10 months
+## 关键指标
+- **客户数量**：120家企业客户
+- **NPS评分**：72
+- **月流失率**：2.5%
+- **CAC**：1.5万美元
+- **LTV**：8.5万美元
+- **CAC回收期**：10个月
 
-## Current Priorities (Q2 2024)
-1. **Hiring**: Add 10 engineers to accelerate product development
-2. **Product**: Launch AI code review feature by end of Q2
-3. **Sales**: Expand into European market
-4. **Fundraising**: Begin Series B conversations (target: $30M)
+## 当前优先事项（2024年第二季度）
+1. **招聘**：招聘10名工程师以加速产品开发
+2. **产品**：第二季度末发布AI代码审查功能
+3. **销售**：拓展欧洲市场
+4. **融资**：开始B轮对话（目标：3000万美元）
 
-## Compensation Benchmarks
-- **Senior Engineer**: $180K - $220K + 0.1-0.3% equity
-- **Junior Engineer**: $100K - $130K + 0.05-0.1% equity
-- **Engineering Manager**: $200K - $250K + 0.3-0.5% equity
-- **VP Engineering**: $250K - $300K + 0.5-1% equity
+## 薪酬基准
+- **高级工程师**：18-22万美元 + 0.1-0.3%股权
+- **初级工程师**：10-13万美元 + 0.05-0.1%股权
+- **工程经理**：20-25万美元 + 0.3-0.5%股权
+- **工程副总裁**：25-30万美元 + 0.5-1%股权
 
-## Board Composition
-- **CEO**: Sarah Chen (Founder)
-- **Investor 1**: Mark Williams (Sequoia Capital)
-- **Investor 2**: Jennifer Park (Andreessen Horowitz)
-- **Independent**: Michael Torres (Former CTO of GitHub)
+## 董事会组成
+- **CEO**：Sarah Chen（创始人）
+- **投资者1**：Mark Williams（红杉资本）
+- **投资者2**：Jennifer Park（a16z）
+- **独立董事**：Michael Torres（前GitHub CTO）
 
-## Competitive Landscape
-- **Main Competitors**: DevTools AI, CodeAssist Pro, SmartDev Inc
-- **Our Differentiation**: Superior AI accuracy, 10x faster processing
-- **Market Size**: $5B (growing 25% annually)
+## 竞争格局
+- **主要竞争对手**：DevTools AI、CodeAssist Pro、SmartDev Inc
+- **我们的差异化**：卓越的AI准确度，10倍处理速度
+- **市场规模**：50亿美元（年增长25%）
 
-## Recent Decisions
-- Approved hiring 3 senior backend engineers (March 2024)
-- Launched freemium tier (February 2024)
-- Opened European entity (January 2024)
-- Closed Series A funding (January 2024)
+## 近期决策
+- 批准招聘3名高级后端工程师（2024年3月）
+- 推出免费增值层（2024年2月）
+- 设立欧洲实体（2024年1月）
+- 完成A轮融资（2024年1月）
 
-## Upcoming Decisions
-- Whether to acquire competitor SmartDev Inc ($8M asking price)
-- Hiring plan for Q3 (engineering vs. sales focus)
-- Office expansion vs. remote-first strategy
-- Stock option refresh for early employees
+## 即将做出的决策
+- 是否收购竞争对手SmartDev Inc（要价800万美元）
+- 第三季度招聘计划（工程 vs 销售重点）
+- 办公室扩张 vs 远程优先策略
+- 早期员工股票期权刷新
 
-## Risk Factors
-- High dependency on AWS (70% of COGS)
-- Key engineer retention (3 critical team members)
-- Increasing competition from Big Tech
-- Potential economic downturn impact on enterprise sales
+## 风险因素
+- 对AWS高度依赖（销售成本的70%）
+- 关键工程师挽留（3名关键团队成员）
+- 来自大型科技公司的竞争加剧
+- 潜在经济衰退对企业销售的影响
 
-## Available Scripts
+## 可用脚本
 
 ### simple_calculation.py
-Quick financial metrics calculator for runway and burn rate analysis.
-Script located at `./scripts/simple_calculation.py`
+用于剩余月份和消耗率分析的快速财务指标计算器。
+脚本位于 `./scripts/simple_calculation.py`
 
-**Usage:**
+**用法：**
 ```bash
 python scripts/simple_calculation.py <total_runway> <monthly_burn>
 ```
 
-**Example:**
+**示例：**
 ```bash
 python scripts/simple_calculation.py 10000000 500000
 ```
 
-**Output:** JSON with monthly_burn, runway_months, total_runway_dollars, quarterly_burn, and burn_rate_daily
+**输出：** 包含monthly_burn、runway_months、total_runway_dollars、quarterly_burn和burn_rate_daily的JSON
 
-Remember: As Chief of Staff, you have access to financial data in the financial_data/ directory and can delegate specialized analysis to your subagents (financial-analyst and recruiter).
+记住：作为首席助理，您可以访问financial_data/目录中的财务数据，并将专业分析委托给您的子代理（财务分析师和招聘专员）。

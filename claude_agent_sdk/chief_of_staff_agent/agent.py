@@ -1,5 +1,5 @@
 """
-Chief of Staff Agent
+首席助理代理
 """
 
 import asyncio
@@ -16,23 +16,23 @@ load_dotenv()
 
 
 def get_activity_text(msg) -> str | None:
-    """Extract activity text from a message"""
+    """从消息中提取活动文本"""
     try:
         if "Assistant" in msg.__class__.__name__:
             if hasattr(msg, "content") and msg.content:
                 first_content = msg.content[0] if isinstance(msg.content, list) else msg.content
                 if hasattr(first_content, "name"):
-                    return f"🤖 Using: {first_content.name}()"
-            return "🤖 Thinking..."
+                    return f"🤖 使用中: {first_content.name}()"
+            return "🤖 思考中..."
         elif "User" in msg.__class__.__name__:
-            return "✓ Tool completed"
+            return "✓ 工具执行完成"
     except (AttributeError, IndexError):
         pass
     return None
 
 
 def print_activity(msg) -> None:
-    """Print activity to console"""
+    """向控制台打印活动信息"""
     activity = get_activity_text(msg)
     if activity:
         print(activity)
@@ -46,42 +46,42 @@ async def send_query(
     activity_handler: Callable[[Any], None | Any] = print_activity,
 ) -> tuple[str | None, list]:
     """
-    Send a query to the Chief of Staff agent with all features integrated.
+    向首席助理代理发送查询，集成了所有功能。
 
     Args:
-        prompt: The query to send (can include slash commands like /budget-impact)
-        activity_handler: Callback for activity updates (default: print_activity)
-        continue_conversation: Continue the previous conversation if True
-        permission_mode: "default" (execute), "plan" (think only), or "acceptEdits"
-        output_style: Override output style (e.g., "executive", "technical", "board-report")
+        prompt: 要发送的查询（可以包含斜杠命令如 /budget-impact）
+        activity_handler: 活动更新回调（默认：print_activity）
+        continue_conversation: 如果为True则继续之前的对话
+        permission_mode: "default"（执行）、"plan"（仅思考）或 "acceptEdits"
+        output_style: 覆盖输出样式（例如："executive"、"technical"、"board-report"）
 
     Returns:
-        Tuple of (result, messages) - result is the final text, messages is the full conversation
+        (result, messages) 的元组 - result是最终文本，messages是完整对话
 
-    Features automatically included/leveraged:
-        - Memory: CLAUDE.md context loaded from chief_of_staff/CLAUDE.md
-        - Subagents: financial-analyst and recruiter via Task tool (defined in .claude/agents)
-        - Custom scripts: Python scripts in tools/ via Bash
-        - Slash commands: Expanded from .claude/commands/
-        - Output styles: Custom output styles defined in .claude/output-styles
-        - Hooks: Triggered based on settings.local.json, defined in .claude/hooks
+    自动包含/利用的功能：
+        - 内存：从 chief_of_staff/CLAUDE.md 加载的 CLAUDE.md 上下文
+        - 子代理：通过 Task 工具的 financial-analyst 和 recruiter（定义在 .claude/agents 中）
+        - 自定义脚本：通过 Bash 运行的 tools/ 中的 Python 脚本
+        - 斜杠命令：从 .claude/commands/ 展开
+        - 输出样式：定义在 .claude/output-styles 中的自定义输出样式
+        - 钩子：基于 settings.local.json 触发，定义在 .claude/hooks 中
     """
 
-    system_prompt = """You are the Chief of Staff for TechStart Inc, a 50-person startup.
+    system_prompt = """你是 TechStart Inc 的首席助理，这是一家50人的初创公司。
 
-        Apart from your tools and two subagents, you also have custom Python scripts in the scripts/ directory you can run with Bash:
-        - python scripts/financial_forecast.py: Advanced financial modeling
-        - python scripts/talent_scorer.py: Candidate scoring algorithm
-        - python scripts/decision_matrix.py: Strategic decision framework
+        除了你的工具和两个子代理外，你还有 scripts/ 目录中的自定义 Python 脚本可以通过 Bash 运行：
+        - python scripts/financial_forecast.py: 高级财务建模
+        - python scripts/talent_scorer.py: 候选人评分算法
+        - python scripts/decision_matrix.py: 战略决策框架
 
-        You have access to company data in the financial_data/ directory.
+        你可以访问 financial_data/ 目录中的公司数据。
         """
 
-    # build options with optional output style
+    # 构建带有可选输出样式的选项
     options_dict = {
         "model": "claude-sonnet-4-5",
         "allowed_tools": [
-            "Task",  # enables subagent delegation
+            "Task",  # 启用子代理委派
             "Read",
             "Write",
             "Edit",
@@ -94,14 +94,14 @@ async def send_query(
         "cwd": os.path.dirname(os.path.abspath(__file__)),
     }
 
-    # add output style if specified
+    # 如果指定了输出样式则添加
     if output_style:
         options_dict["settings"] = json.dumps({"outputStyle": output_style})
 
     options = ClaudeAgentOptions(**options_dict)
 
     result = None
-    messages = []  # this is to append the messages ONLY for this agent turn
+    messages = []  # 这是仅用于此代理轮次的附加消息
 
     try:
         async with ClaudeSDKClient(options=options) as agent:
@@ -116,7 +116,7 @@ async def send_query(
                 if hasattr(msg, "result"):
                     result = msg.result
     except Exception as e:
-        print(f"❌ Query error: {e}")
+        print(f"❌ 查询错误: {e}")
         raise
 
     return result, messages

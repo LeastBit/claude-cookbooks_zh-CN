@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-PostToolUse hook: Tracks ALL file writes and edits
-Maintains history of all document changes for compliance
+PostToolUse 钩子：跟踪所有文件写入和编辑
+维护所有文档更改历史以供合规性使用
 """
 
 import json
@@ -11,43 +11,43 @@ from datetime import datetime
 
 
 def track_report(tool_name, tool_input, tool_response):
-    """Log ALL file creation/modification for audit trail"""
+    """记录所有文件创建/修改以供审计跟踪"""
 
-    # Debug: Log that hook was called
-    print(f"🔍 Hook called for tool: {tool_name}", file=sys.stderr)
+    # 调试：记录调用了钩子
+    print(f"🔍 钩子被调用用于工具: {tool_name}", file=sys.stderr)
 
-    # Get file path from tool input
+    # 从工具输入获取文件路径
     file_path = tool_input.get("file_path", "")
 
     if not file_path:
-        print("⚠️ No file_path in tool_input", file=sys.stderr)
+        print("⚠️ tool_input中没有file_path", file=sys.stderr)
         return
 
-    print(f"📝 Tracking file: {file_path}", file=sys.stderr)
+    print(f"📝 跟踪文件: {file_path}", file=sys.stderr)
 
-    # Track ALL file writes/edits (no filtering)
+    # 跟踪所有文件写入/编辑（无过滤）
 
-    # Prepare history file path
+    # 准备历史文件路径
     history_file = os.path.join(
         os.path.dirname(os.path.abspath(__file__)), "../../audit/report_history.json"
     )
 
     try:
-        # Load existing history or create new
+        # 加载现有历史或创建新历史
         if os.path.exists(history_file):
             with open(history_file) as f:
                 history = json.load(f)
         else:
             history = {"reports": []}
 
-        # Determine action type
+        # 确定操作类型
         action = "created" if tool_name == "Write" else "modified"
 
-        # Calculate word count if content available
+        # 如果有内容则计算字数
         content = tool_input.get("content", "") or tool_input.get("new_string", "")
         word_count = len(content.split()) if content else 0
 
-        # Create history entry
+        # 创建历史条目
         entry = {
             "timestamp": datetime.now().isoformat(),
             "file": os.path.basename(file_path),
@@ -57,39 +57,39 @@ def track_report(tool_name, tool_input, tool_response):
             "tool": tool_name,
         }
 
-        # Add to history
+        # 添加到历史
         history["reports"].append(entry)
 
-        # Keep only last 50 entries
+        # 只保留最后50条记录
         history["reports"] = history["reports"][-50:]
 
-        # Save updated history
+        # 保存更新的历史
         os.makedirs(os.path.dirname(history_file), exist_ok=True)
         with open(history_file, "w") as f:
             json.dump(history, f, indent=2)
 
-        print(f"📊 File tracked: {os.path.basename(file_path)} ({action})")
+        print(f"📊 文件已跟踪: {os.path.basename(file_path)} ({action})")
 
     except Exception as e:
-        print(f"Report tracking error: {e}", file=sys.stderr)
+        print(f"报告跟踪错误: {e}", file=sys.stderr)
 
 
-# Main execution
+# 主执行
 if __name__ == "__main__":
     try:
-        # Read input from stdin
+        # 从标准输入读取输入
         input_data = json.load(sys.stdin)
 
         tool_name = input_data.get("tool_name", "")
         tool_input = input_data.get("tool_input", {})
         tool_response = input_data.get("tool_response", {})
 
-        # Track the report
+        # 跟踪报告
         track_report(tool_name, tool_input, tool_response)
 
-        # Always exit successfully
+        # 始终成功退出
         sys.exit(0)
 
     except Exception as e:
-        print(f"Hook error: {e}", file=sys.stderr)
+        print(f"钩子错误: {e}", file=sys.stderr)
         sys.exit(0)

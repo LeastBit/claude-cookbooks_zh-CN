@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Hiring Impact Calculator for TechStart Inc
-Calculates the financial impact of hiring engineers
+TechStart Inc 的招聘影响计算器
+计算招聘工程师的财务影响
 """
 
 import json
@@ -10,44 +10,44 @@ import sys
 
 def calculate_hiring_impact(num_engineers, salary_per_engineer=200000):
     """
-    Calculate the financial impact of hiring engineers.
+    计算招聘工程师的财务影响。
 
     Args:
-        num_engineers: Number of engineers to hire
-        salary_per_engineer: Annual salary per engineer (default: $200K)
+        num_engineers: 要招聘的工程师数量
+        salary_per_engineer: 每位工程师的年薪（默认：20万美元）
 
     Returns:
-        Dictionary with financial impact metrics
+        包含财务影响指标的字典
     """
-    # Current financials (from CLAUDE.md)
-    CURRENT_BURN_MONTHLY = 500000  # $500K/month
-    CURRENT_RUNWAY_MONTHS = 20  # 20 months
-    CASH_IN_BANK = 10000000  # $10M
+    # 当前财务数据（来自 CLAUDE.md）
+    CURRENT_BURN_MONTHLY = 500000  # 每月50万美元
+    CURRENT_RUNWAY_MONTHS = 20  # 20个月
+    CASH_IN_BANK = 10000000  # 1000万美元
 
-    # Calculate loaded cost (salary + benefits + taxes = salary * 1.3)
+    # 计算总成本（工资 + 福利 + 税 = 工资 * 1.3）
     annual_loaded_cost_per_engineer = salary_per_engineer * 1.3
     monthly_cost_per_engineer = annual_loaded_cost_per_engineer / 12
 
-    # Total monthly cost increase
+    # 总月成本增加
     total_monthly_increase = monthly_cost_per_engineer * num_engineers
 
-    # New burn rate
+    # 新的消耗率
     new_burn_monthly = CURRENT_BURN_MONTHLY + total_monthly_increase
 
-    # New runway
+    # 新的剩余月份
     new_runway_months = CASH_IN_BANK / new_burn_monthly
     runway_reduction_months = CURRENT_RUNWAY_MONTHS - new_runway_months
 
-    # Calculate potential revenue impact (assumption: engineers increase velocity by 15%)
-    velocity_increase = 0.15 * num_engineers / 5  # Assuming 5 engineers = 15% increase
+    # 计算潜在收入影响（假设：工程师将速度提高15%）
+    velocity_increase = 0.15 * num_engineers / 5  # 假设5名工程师 = 15%的提升
 
-    # Recommendation
+    # 建议
     if runway_reduction_months > 3:
-        recommendation = "HIGH RISK: Significant runway reduction. Consider phased hiring."
+        recommendation = "高风险：剩余月份显著减少。建议考虑分阶段招聘。"
     elif runway_reduction_months > 1.5:
-        recommendation = "MODERATE RISK: Manageable if revenue growth accelerates."
+        recommendation = "中等风险：如果收入增长加速则可控。"
     else:
-        recommendation = "LOW RISK: Minimal impact on runway. Proceed if talent is available."
+        recommendation = "低风险：对剩余月份影响最小。如果有合适人才可继续。"
 
     return {
         "num_engineers": num_engineers,
@@ -65,29 +65,29 @@ def calculate_hiring_impact(num_engineers, salary_per_engineer=200000):
 
 
 def main():
-    # Parse command line arguments
+    # 解析命令行参数
     if len(sys.argv) < 2:
-        print("Usage: python hiring_impact.py <num_engineers> [salary_per_engineer]")
+        print("用法: python hiring_impact.py <num_engineers> [salary_per_engineer]")
         sys.exit(1)
 
     num_engineers = int(sys.argv[1])
     salary = int(sys.argv[2]) if len(sys.argv) > 2 else 200000
 
-    # Calculate impact
+    # 计算影响
     impact = calculate_hiring_impact(num_engineers, salary)
 
-    # Output as JSON for easy parsing
+    # 输出为JSON以便于解析
     print(json.dumps(impact, indent=2))
 
-    # Also print summary
-    print("\n=== HIRING IMPACT SUMMARY ===")
-    print(f"Hiring {impact['num_engineers']} engineers at ${impact['salary_per_engineer']:,}/year")
-    print(f"Monthly burn increase: ${impact['total_monthly_increase']:,.0f}")
-    print(f"New burn rate: ${impact['new_burn_monthly']:,.0f}/month")
+    # 同时打印摘要
+    print("\n=== 招聘影响摘要 ===")
+    print(f"招聘 {impact['num_engineers']} 名工程师，年薪 ${impact['salary_per_engineer']:,}")
+    print(f"月消耗增加: ${impact['total_monthly_increase']:,.0f}")
+    print(f"新消耗率: ${impact['new_burn_monthly']:,.0f}/月")
     print(
-        f"Runway change: {impact['current_runway_months']:.1f} → {impact['new_runway_months']:.1f} months"
+        f"剩余月份变化: {impact['current_runway_months']:.1f} → {impact['new_runway_months']:.1f} 月"
     )
-    print(f"Velocity increase: +{impact['velocity_increase_percent']}%")
+    print(f"速度提升: +{impact['velocity_increase_percent']}%")
     print(f"\n{impact['recommendation']}")
 
 

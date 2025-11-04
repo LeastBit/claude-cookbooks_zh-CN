@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Decision Matrix Tool - Strategic decision framework for complex choices
-Custom Python script for the Chief of Staff agent
+决策矩阵工具 - 用于复杂选择的战略决策框架
+首席助理代理的自定义Python脚本
 """
 
 import argparse
@@ -9,7 +9,7 @@ import json
 
 
 def create_decision_matrix(options: list[dict], criteria: list[dict]) -> dict:
-    """Create a weighted decision matrix for strategic choices"""
+    """为战略选择创建加权决策矩阵"""
 
     results = {"options": [], "winner": None, "analysis": {}}
 
@@ -24,12 +24,12 @@ def create_decision_matrix(options: list[dict], criteria: list[dict]) -> dict:
             "verdict": "",
         }
 
-        # Calculate scores for each criterion
+        # 为每个标准计算分数
         for criterion in criteria:
             crit_name = criterion["name"]
             weight = criterion["weight"]
 
-            # Get score for this option on this criterion (1-10)
+            # 获得此选项在此标准上的分数 (1-10)
             score = option.get(crit_name, 5)
             weighted = score * weight
 
@@ -37,42 +37,42 @@ def create_decision_matrix(options: list[dict], criteria: list[dict]) -> dict:
             option_scores["weighted_scores"][crit_name] = round(weighted, 2)
             option_scores["total"] += weighted
 
-            # Track pros and cons
+            # 跟踪优缺点
             if score >= 8:
-                option_scores["pros"].append(f"Excellent {crit_name}")
+                option_scores["pros"].append(f"优秀的{crit_name}")
             elif score >= 6:
-                option_scores["pros"].append(f"Good {crit_name}")
+                option_scores["pros"].append(f"良好的{crit_name}")
             elif score <= 3:
-                option_scores["cons"].append(f"Poor {crit_name}")
+                option_scores["cons"].append(f"较差的{crit_name}")
             elif score <= 5:
-                option_scores["cons"].append(f"Weak {crit_name}")
+                option_scores["cons"].append(f"较弱的{crit_name}")
 
         option_scores["total"] = round(option_scores["total"], 2)
 
-        # Generate verdict
+        # 生成结论
         if option_scores["total"] >= 8:
-            option_scores["verdict"] = "STRONGLY RECOMMENDED"
+            option_scores["verdict"] = "强烈推荐"
         elif option_scores["total"] >= 6.5:
-            option_scores["verdict"] = "RECOMMENDED"
+            option_scores["verdict"] = "推荐"
         elif option_scores["total"] >= 5:
-            option_scores["verdict"] = "ACCEPTABLE"
+            option_scores["verdict"] = "可接受"
         else:
-            option_scores["verdict"] = "NOT RECOMMENDED"
+            option_scores["verdict"] = "不推荐"
 
         results["options"].append(option_scores)
 
-    # Find winner
+    # 找到获胜者
     results["options"].sort(key=lambda x: x["total"], reverse=True)
     results["winner"] = results["options"][0]["name"]
 
-    # Generate analysis
+    # 生成分析
     results["analysis"] = generate_analysis(results["options"])
 
     return results
 
 
 def generate_analysis(options: list[dict]) -> dict:
-    """Generate strategic analysis of the decision"""
+    """生成决策的战略分析"""
 
     analysis = {
         "clear_winner": False,
@@ -89,54 +89,54 @@ def generate_analysis(options: list[dict]) -> dict:
 
         if analysis["clear_winner"]:
             analysis["recommendation"] = (
-                f"Strongly recommend {options[0]['name']} with {margin:.1f} point advantage"
+                f"强烈推荐{options[0]['name']}，领先{margin:.1f}分"
             )
         elif margin > 0.5:
             analysis["recommendation"] = (
-                f"Recommend {options[0]['name']} but consider {options[1]['name']} as viable alternative"
+                f"推荐{options[0]['name']}，但可考虑{options[1]['name']}作为可行替代方案"
             )
         else:
             analysis["recommendation"] = (
-                f"Close decision between {options[0]['name']} and {options[1]['name']} - consider additional factors"
+                f"{options[0]['name']}和{options[1]['name']}之间难分伯仲 - 需考虑其他因素"
             )
 
-        # Find key differentiators
+        # 找到关键差异化因素
         top = options[0]
         for criterion in top["scores"]:
             if top["scores"][criterion] >= 8:
                 analysis["key_differentiators"].append(criterion)
 
-        # Identify risks
+        # 识别风险
         if top["total"] < 6:
-            analysis["risks"].append("Overall score below recommended threshold")
+            analysis["risks"].append("总分低于推荐阈值")
         if len(top["cons"]) > len(top["pros"]):
-            analysis["risks"].append("More weaknesses than strengths")
+            analysis["risks"].append("缺点多于优点")
 
     return analysis
 
 
 def main():
-    parser = argparse.ArgumentParser(description="Strategic decision matrix tool")
-    parser.add_argument("--scenario", type=str, help="Predefined scenario")
-    parser.add_argument("--input", type=str, help="JSON file with options and criteria")
+    parser = argparse.ArgumentParser(description="战略决策矩阵工具")
+    parser.add_argument("--scenario", type=str, help="预定义场景")
+    parser.add_argument("--input", type=str, help="包含选项和标准的JSON文件")
     parser.add_argument("--format", choices=["json", "text"], default="text")
 
     args = parser.parse_args()
 
-    # Default scenario: Build vs Buy vs Partner
+    # 默认场景：自主开发 vs 购买 vs 合作
     if args.scenario == "build-buy-partner":
         options = [
             {
-                "name": "Build In-House",
-                "cost": 3,  # 1-10, higher is better (so 3 = high cost)
-                "time_to_market": 2,  # 2 = slow
-                "control": 10,  # 10 = full control
-                "quality": 8,  # 8 = high quality potential
-                "scalability": 9,  # 9 = very scalable
-                "risk": 3,  # 3 = high risk
+                "name": "自主开发",
+                "cost": 3,  # 1-10，分数越高越好（所以3 = 高成本）
+                "time_to_market": 2,  # 2 = 慢
+                "control": 10,  # 10 = 完全控制
+                "quality": 8,  # 8 = 高质量潜力
+                "scalability": 9,  # 9 = 非常可扩展
+                "risk": 3,  # 3 = 高风险
             },
             {
-                "name": "Buy Solution",
+                "name": "购买解决方案",
                 "cost": 5,
                 "time_to_market": 9,
                 "control": 4,
@@ -145,7 +145,7 @@ def main():
                 "risk": 7,
             },
             {
-                "name": "Strategic Partnership",
+                "name": "战略合作",
                 "cost": 7,
                 "time_to_market": 7,
                 "control": 6,
@@ -169,10 +169,10 @@ def main():
             options = data["options"]
             criteria = data["criteria"]
     else:
-        # Default hiring scenario
+        # 默认招聘场景
         options = [
             {
-                "name": "Hire 3 Senior Engineers",
+                "name": "招聘3名高级工程师",
                 "cost": 4,
                 "productivity": 9,
                 "time_to_impact": 8,
@@ -180,7 +180,7 @@ def main():
                 "runway_impact": 3,
             },
             {
-                "name": "Hire 5 Junior Engineers",
+                "name": "招聘5名初级工程师",
                 "cost": 7,
                 "productivity": 5,
                 "time_to_impact": 4,
@@ -201,38 +201,38 @@ def main():
     if args.format == "json":
         print(json.dumps(matrix, indent=2))
     else:
-        # Text output
-        print("🎯 STRATEGIC DECISION MATRIX")
+        # 文本输出
+        print("🎯 战略决策矩阵")
         print("=" * 60)
 
-        print("\nOPTIONS EVALUATED:")
+        print("\n评估的选项:")
         for i, opt in enumerate(matrix["options"], 1):
             print(f"\n{i}. {opt['name']}")
             print("-" * 40)
-            print(f"   Total Score: {opt['total']}/10 - {opt['verdict']}")
+            print(f"   总分: {opt['total']}/10 - {opt['verdict']}")
 
-            print("   Strengths:")
+            print("   优势:")
             for pro in opt["pros"][:3]:
                 print(f"   ✓ {pro}")
 
             if opt["cons"]:
-                print("   Weaknesses:")
+                print("   劣势:")
                 for con in opt["cons"][:3]:
                     print(f"   ✗ {con}")
 
         print("\n" + "=" * 60)
-        print("RECOMMENDATION:")
+        print("建议:")
         print("-" * 40)
         analysis = matrix["analysis"]
-        print(f"Winner: {matrix['winner']}")
-        print(f"Margin: {analysis['margin']} points")
+        print(f"获胜者: {matrix['winner']}")
+        print(f"领先分数: {analysis['margin']} 分")
         print(f"\n{analysis['recommendation']}")
 
         if analysis["key_differentiators"]:
-            print(f"\nKey advantages: {', '.join(analysis['key_differentiators'])}")
+            print(f"\n关键优势: {', '.join(analysis['key_differentiators'])}")
 
         if analysis["risks"]:
-            print("\n⚠️  Risks to consider:")
+            print("\n⚠️  需要考虑的风险:")
             for risk in analysis["risks"]:
                 print(f"   - {risk}")
 

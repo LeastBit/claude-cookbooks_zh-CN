@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Simple script to demonstrate Bash tool usage from an agent.
-Calculates basic metrics that an AI Chief of Staff might need.
+简单的脚本，用于演示代理如何使用Bash工具。
+计算AI首席助理可能需要的基本指标。
 """
 
 import json
@@ -9,7 +9,7 @@ import sys
 
 
 def calculate_metrics(total_runway, monthly_burn):
-    """Calculate key financial metrics."""
+    """计算关键财务指标。"""
     runway_months = total_runway / monthly_burn
     quarterly_burn = monthly_burn * 3
 
@@ -26,7 +26,7 @@ def calculate_metrics(total_runway, monthly_burn):
 
 if __name__ == "__main__":
     if len(sys.argv) < 3:
-        print("Usage: python simple_calculation.py <total_runway> <monthly_burn>")
+        print("用法: python simple_calculation.py <total_runway> <monthly_burn>")
         sys.exit(1)
 
     try:
@@ -38,5 +38,5 @@ if __name__ == "__main__":
         print(json.dumps(results, indent=2))
 
     except ValueError:
-        print("Error: Arguments must be numbers")
+        print("错误: 参数必须是数字")
         sys.exit(1)

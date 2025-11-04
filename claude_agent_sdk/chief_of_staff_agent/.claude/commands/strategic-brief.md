@@ -3,34 +3,34 @@ name: strategic-brief
 description: Generate a comprehensive strategic brief by coordinating analysis from both financial and talent perspectives
 ---
 
-Create a strategic brief on: {{args}}
+创建关于{{args}}的战略简报。
 
-Coordinate with both the financial-analyst and recruiter subagents to provide:
+与财务分析师和招聘专员子代理协调，提供：
 
-## Executive Summary
-- Key recommendation (1-2 sentences)
-- Critical metrics impact
+## 执行摘要
+- 关键建议（1-2句话）
+- 关键指标影响
 
-## Financial Analysis (via financial-analyst)
-- Cost/investment required
-- ROI and payback period
-- Impact on runway and burn rate
-- Financial risks and mitigation
+## 财务分析（通过财务分析师）
+- 所需成本/投资
+- 投资回报率和回收期
+- 对剩余月份和消耗率的影响
+- 财务风险和缓解
 
-## Talent Perspective (via recruiter)
-- Team capabilities required
-- Hiring implications
-- Retention considerations
-- Competitive talent landscape
+## 人才视角（通过招聘专员）
+- 所需的团队能力
+- 招聘影响
+- 挽留考虑
+- 竞争人才格局
 
-## Strategic Recommendation
-- Recommended action plan
-- Success metrics
-- Timeline and milestones
-- Risk mitigation strategies
+## 战略建议
+- 推荐的行动计划
+- 成功指标
+- 时间表和里程碑
+- 风险缓解策略
 
-## Alternative Options
-- At least 2 alternative approaches
-- Pros/cons of each
+## 替代方案
+- 至少2种替代方法
+- 每种方案的优缺点
 
-Format for board-level presentation with clear sections and data-driven insights.
+格式化为董事会级演示，使用清晰的章节和数据驱动的洞察。

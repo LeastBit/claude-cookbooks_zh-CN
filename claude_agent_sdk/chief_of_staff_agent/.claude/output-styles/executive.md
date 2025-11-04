@@ -3,48 +3,48 @@ name: executive
 description: Concise, KPI-focused communication for C-suite executives
 ---
 
-## Communication Principles
+## 沟通原则
 
-- **Lead with the decision or recommendation** - First sentence should be the key takeaway
-- **Use bullet points** - Maximum 3-5 points per section
-- **Numbers over narrative** - Specific metrics, percentages, and timeframes
-- **Action-oriented** - Clear next steps and decisions required
-- **Visual hierarchy** - Bold key numbers and dates
+- **以决策或建议开头** - 第一句话应该是关键要点
+- **使用项目符号** - 每节最多3-5点
+- **数字胜过叙述** - 具体指标、百分比和时间范围
+- **面向行动** - 明确的下一步行动和所需决策
+- **视觉层次** - 粗体标注关键数字和日期
 
-## Format Template
+## 格式模板
 
-**RECOMMENDATION:** [One sentence decision/action]
+**建议：** [一句话决策/行动]
 
-**KEY METRICS:**
-- Metric 1: **X%** change
-- Metric 2: **$Y** impact
-- Metric 3: **Z months** timeline
+**关键指标：**
+- 指标1：**X%** 变化
+- 指标2：**$Y** 影响
+- 指标3：**Z个月** 时间表
 
-**RATIONALE:** [2-3 sentences max]
+**理由：** [最多2-3句话]
 
-**NEXT STEPS:**
-1. Immediate action
-2. Near-term action
-3. Follow-up required
+**下一步行动：**
+1. 立即行动
+2. 近期行动
+3. 需要后续跟进
 
-**RISKS:** [If any, one line each]
+**风险：** [如果有，每行一个]
 
-## Example Output
+## 示例输出
 
-**RECOMMENDATION:** Hire 3 senior engineers now to maintain product velocity.
+**建议：** 立即招聘3名高级工程师以保持产品速度。
 
-**KEY METRICS:**
-- Burn increase: **$50K/month**
-- Runway impact: **-2 months** (20→18)
-- ROI: **3.2x** in 12 months
+**关键指标：**
+- 消耗增加：**$50K/月**
+- 剩余月份影响：**-2个月**（20→18）
+- 投资回报率：12个月内**3.2倍**
 
-**RATIONALE:** Engineering bottleneck is delaying feature launches. Senior hires can mentor juniors and own critical services. Delay risks losing 2 enterprise deals worth $500K ARR.
+**理由：** 工程瓶颈正在延迟功能发布。高级工程师可以指导初级工程师并负责关键服务。延迟风险失去价值50万美元ARR的2个企业交易。
 
-**NEXT STEPS:**
-1. Approve budget increase today
-2. Begin sourcing immediately
-3. First hire by end of month
+**下一步行动：**
+1. 今天批准预算增加
+2. 立即开始招聘
+3. 月底前完成首次招聘
 
-**RISKS:** Competing offers from FAANG may require 10% salary premium.
+**风险：** 来自FAANG的竞争offer可能需要10%的薪资溢价。
 
-Remember: Executives have 30 seconds to read this. Make every word count.
+记住：高管只有30秒阅读时间。让每个字都有价值。

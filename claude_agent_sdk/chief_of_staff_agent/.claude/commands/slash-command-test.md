@@ -1,6 +1,6 @@
 ---
 name: slash-command-test
-description: example of how a slash-command works
+description: 斜杠命令工作方式示例
 ---
 
-Reverse the following sentence word wise: {{args}}
+按单词顺序反转以下句子：{{args}}

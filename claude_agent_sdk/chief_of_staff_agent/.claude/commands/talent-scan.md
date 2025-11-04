@@ -3,18 +3,18 @@ name: talent-scan
 description: Scan the talent market for specific roles and provide hiring recommendations
 ---
 
-Use the recruiter subagent to perform a talent market scan for: {{args}}
+使用招聘专员子代理对{{args}}进行人才市场扫描。
 
-Analyze and report on:
-1. Talent availability in target markets
-2. Competitive salary ranges
-3. Required skills and experience levels
-4. Estimated time to hire
-5. Recommended sourcing channels
-6. Top candidate profiles (if using GitHub)
+分析和报告：
+1. 目标市场的人才可用性
+2. 竞争薪酬范围
+3. 所需技能和经验水平
+4. 预估招聘时间
+5. 推荐的招聘渠道
+6. 顶级候选人档案（如果使用GitHub）
 
-Provide specific recommendations on:
-- Senior vs. junior hiring mix
-- Remote vs. in-office strategy
-- Compensation packages
-- Interview process optimizations
+提供具体建议：
+- 高级与初级招聘比例
+- 远程与办公室策略
+- 薪酬方案
+- 面试流程优化

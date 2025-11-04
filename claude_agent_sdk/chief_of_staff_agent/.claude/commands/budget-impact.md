@@ -3,14 +3,14 @@ name: budget-impact
 description: Analyze the financial impact of a decision on budget, burn rate, and runway
 ---
 
-Use the financial-analyst subagent to analyze the budget impact of: {{args}}
+使用财务分析师子代理来分析{{args}}的预算影响。
 
-Provide a comprehensive analysis including:
-1. Total cost (one-time and recurring)
-2. Impact on monthly burn rate
-3. Change in runway (months)
-4. ROI analysis if applicable
-5. Alternative options to consider
-6. Risk factors
+提供全面分析，包括：
+1. 总成本（一次性成本和经常性成本）
+2. 对月消耗率的影响
+3. 剩余月份变化（月）
+4. 投资回报率分析（如果适用）
+5. 考虑的替代方案
+6. 风险因素
 
-Format the response with clear sections and specific numbers. Include a final recommendation.
+使用清晰的章节和具体数字格式化响应。包括最终建议。
