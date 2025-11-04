@@ -1,19 +1,19 @@
-# Claude Capabilities
+# Claude 能力指南
 
-Welcome to the Capabilities section of the Claude Cookbooks! This directory contains a collection of guides that showcase specific capabilities where Claude excels. Each guide provides an in-depth exploration of a particular capability, discussing potential use cases, prompt engineering techniques to optimize results, and approaches for evaluating Claude's performance.
+欢迎来到 Claude Cookbook 的能力指南部分！本目录包含了一系列展示 Claude 出色能力的指南集合。每个指南都深入探讨了特定能力，讨论了潜在的使用场景、优化结果的提示工程技术以及评估 Claude 性能的方法。
 
-## Guides
+## 指南
 
-- **[Classification with Claude](./classification/guide.ipynb)**: Discover how Claude can revolutionize classification tasks, especially in scenarios with complex business rules and limited training data. This guide walks you through data preparation, prompt engineering with retrieval-augmented generation (RAG), testing, and evaluation.
+- **[使用 Claude 进行分类](./classification/guide.ipynb)**：了解 Claude 如何革新分类任务，特别是在具有复杂业务规则和有限训练数据的场景中。本指南将引导您完成数据准备、使用检索增强生成（RAG）进行提示工程、测试和评估。
 
-- **[Retrieval Augmented Generation with Claude](./retrieval_augmented_generation/guide.ipynb)**: Learn how to enhance Claude's capabilities with domain-specific knowledge using RAG. This guide demonstrates how to build a RAG system from scratch, optimize its performance, and create an evaluation suite. You'll learn how techniques like summary indexing and re-ranking can significantly improve precision, recall, and overall accuracy in question-answering tasks.
+- **[使用 Claude 进行检索增强生成](./retrieval_augmented_generation/guide.ipynb)**：了解如何使用领域特定知识增强 Claude 的能力。本指南演示如何从头开始构建 RAG 系统、优化其性能并创建评估套件。您将学习摘要索引和重排序等技术如何显著提高问答任务中的精确度、召回率和整体准确性。
 
-- **[Retrieval Augmented Generation with Contextual Embeddings](./contextual-embeddings/guide.ipynb)**: Learn how to use a new technique to improve the performance of your RAG system. In traditional RAG, documents are typically split into smaller chunks for efficient retrieval. While this approach works well for many applications, it can lead to problems when individual chunks lack sufficient context. Contextual Embeddings solve this problem by adding relevant context to each chunk before embedding. You'll learn how to use contextual embeddings with semantic search, BM25 search, and reranking to improve performance.
+- **[使用上下文嵌入的检索增强生成](./contextual-embeddings/guide.ipynb)**：了解如何使用新技术来提高 RAG 系统的性能。在传统 RAG 中，文档通常被拆分为较小的块以实现高效检索。虽然这种方法在许多应用中都效果良好，但当单个块缺乏足够上下文时可能会导致问题。上下文嵌入通过在嵌入前为每个块添加相关上下文来解决这个问题。您将学习如何将上下文嵌入与语义搜索、BM25 搜索和重排序结合使用来提高性能。
 
-- **[Summarization with Claude](./summarization/guide.ipynb)**: Explore Claude's ability to summarize and synthesize information from multiple sources. This guide covers a variety of summarization techniques, including multi-shot, domain-based, and chunking methods, as well as strategies for handling long-form content and multiple documents. We also explore evaluating summaries, which can be a balance of art, subjectivity, and the right approach!
+- **[使用 Claude 进行摘要](./summarization/guide.ipynb)**：探索 Claude 从多个来源总结和综合信息的能力。本指南涵盖各种摘要技术，包括多样本、基于领域和分块方法，以及处理长篇内容和多个文档的策略。我们还探讨评估摘要的方法，这可能需要平衡艺术性、主观性和正确的方法！
 
-- **[Text-to-SQL with Claude](./text_to_sql/guide.ipynb)**: This guide covers how to generate complex SQL queries from natural language using prompting techniques, self-improvement, and RAG. We'll also explore how to evaluate and improve the accuracy of generated SQL queries, with evals that test for syntax, data correctness, row count, and more.
+- **[使用 Claude 进行文本到 SQL](./text_to_sql/guide.ipynb)**：本指南介绍如何使用提示工程技术、自改进和 RAG 从自然语言生成复杂 SQL 查询。我们还将探讨如何评估和提高生成 SQL 查询的准确性，使用评估方法测试语法、数据正确性、行数等。
 
-## Getting Started
+## 入门指南
 
-To get started with these guides, simply navigate to the desired guide's directory and follow the instructions provided in the `guide.ipynb` file. Each guide is self-contained and includes all the necessary code, data, and evaluation scripts to reproduce the examples and experiments.
+要开始使用这些指南，只需导航到所需指南的目录并按照 `guide.ipynb` 文件中提供的说明操作。每个指南都是自包含的，包含了重现示例和实验所需的所有代码、数据和评估脚本。
