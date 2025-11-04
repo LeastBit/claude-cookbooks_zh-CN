@@ -1,4 +1,4 @@
-# All of these sublease agreements were created by Claude.
+# 所有这些转租协议均由Claude创建。
 
 document1 = """
 COMMERCIAL SUBLEASE AGREEMENT

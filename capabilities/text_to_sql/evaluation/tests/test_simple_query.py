@@ -9,5 +9,5 @@ def get_assert(output, context):
     return {
         "pass": result,
         "score": 1 if result else 0,
-        "reason": f"SQL query {'is correct' if result else 'is incorrect or not found'}",
+        "reason": f"SQL查询{'正确' if result else '不正确或未找到'}",
     }

@@ -1,60 +1,60 @@
-Description: This is a commercial sublease agreement between Cohen Brothers, LLC d/b/a Cohen & Company (Sublessor) and Taberna Capital Management, LLC (Sublessee) for a portion of premises originally leased from Brandywine Cira, L.P. (Master Lessor). The sublease is for office space with a 5-year initial term.
+描述：这是Cohen Brothers, LLC d/b/a Cohen & Company（转租方）与Taberna Capital Management, LLC（转租方）之间就原从Brandywine Cira, L.P.（原始出租方）租赁的部分场所签订的商用转租协议。转租期为办公空间，初始期限为5年。
 
-<parties involved>
+<涉及方>
 
-- Sublessor: Cohen Brothers, LLC d/b/a Cohen & Company
-- Sublessee: Taberna Capital Management, LLC
-- Original lessor: Brandywine Cira, L.P.
+- 转租方：Cohen Brothers, LLC d/b/a Cohen & Company
+- 转租方：Taberna Capital Management, LLC
+- 原始出租方：Brandywine Cira, L.P.
 
-</parties involved>
+</涉及方>
 
-<property details>
+<物业详情>
 
-- Address: 2929 Arch Street, Suite 1703, Philadelphia, PA 19104
-- Description: 2,000 square feet of office space, part of a larger 13,777 square foot master premises
-- Permitted use: Not explicitly stated, but likely general office use as per the master lease
+- 地址：2929 Arch Street, Suite 1703, Philadelphia, PA 19104
+- 描述：2,000平方英尺的办公空间，是更大的13,777平方英尺主场所的一部分
+- 允许用途：未明确说明，但可能根据主租约为一般办公用途
 
-</property details>
+</物业详情>
 
-<term and rent>
+<期限和租金>
 
-- Start date: April 1, 2024
-- End date: March 31, 2029 (5-year term)
-- Monthly rent:
-  • Months 1-12: $5,750.00
-  • Months 13-24: $5,865.00
-  • Months 25-36: $5,981.67
-  • Months 37-48: $6,101.67
-  • Months 49-60: $6,223.33
-- Security deposit: Not specified
-- Option to extend: Parties may renew on similar terms if Sublessor renews the Master Lease
-- Additional rent: Pro rata share of Sublessor's Allocated Share of Recognized Expenses
+- 开始日期：2024年4月1日
+- 结束日期：2029年3月31日（5年期限）
+- 月租金：
+  • 第1-12月：$5,750.00
+  • 第13-24月：$5,865.00
+  • 第25-36月：$5,981.67
+  • 第37-48月：$6,101.67
+  • 第49-60月：$6,223.33
+- 保证金：未指定
+- 续约选项：如果转租方续约主租约，各方可以类似条款续约
+- 额外租金：转租方认可费用分摊份额的比例分摊
 
-</term and rent>
+</期限和租金>
 
-<responsibilities>
+<责任>
 
-- Utilities: Not explicitly specified
-- Maintenance: Not explicitly specified
-- Repairs: Not explicitly specified
-- Insurance: Sublessee required to maintain all insurance as required by the Tenant under the Master Lease
+- 公用事业：未明确说明
+- 维护：未明确说明
+- 维修：未明确说明
+- 保险：转租方需要根据主租约下租户的要求维持所有保险
 
-</responsibilities>
+</责任>
 
-<consent and notices>
+<同意和通知>
 
-- Landlord's consent: Required for sublease to be effective
-- Notice requirements: Written notices to be delivered by registered or certified mail, prepaid nationally recognized overnight delivery service, or hand delivery to specified addresses
+- 出租方同意：转租生效需要出租方同意
+- 通知要求：通过注册或认证邮件、预付的国家认可隔夜送达服务或专人递送至指定地址的书面通知
 
-</consent and notices>
+</同意和通知>
 
-<special provisions>
+<特殊条款>
 
-- Furniture and services: Sublessee has access to file space, printers, copiers, kitchen, conference room facilities, and receptionist and secretarial services
-- Assignment and subletting: Prohibited without Sublessor's prior written consent
-- Damage and destruction: Not explicitly addressed in the sublease summary
-- Default: Detailed events of default and remedies specified
-- Holdover: Rent at twice the amount of monthly rent payable before termination of sublease
-- Broker participation: Parties warrant no broker involvement except as specified
+- 家具和服务：转租方有权使用文件空间、打印机、复印机、厨房、会议室设施以及前台和秘书服务
+- 转让和分租：未经转租方事先书面同意禁止
+- 损坏和销毁：转租摘要中未明确说明
+- 违约：详细说明违约事件和补救措施
+- 超期占用：按转租终止前应付月租金的两倍金额计租
+- 经纪人参与：各方保证除指定外无经纪人参与
 
-</special provisions>
+</特殊条款>

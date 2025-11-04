@@ -11,13 +11,13 @@ def get_assert(output, context):
     except Exception as e:
         execution_success = False
         count = 0
-        print(f"SQL execution error: {e}")
+        print(f"SQL执行错误: {e}")
 
     expected_count = 20
 
     return {
         "pass": execution_success and count == expected_count,
         "score": 1 if (execution_success and count == expected_count) else 0,
-        "reason": f"SQL {'executed successfully' if execution_success else 'execution failed'}. "
-        f"Returned count: {count}, Expected count: {expected_count}.",
+        "reason": f"SQL{'成功执行' if execution_success else '执行失败'}。"
+        f"返回计数: {count}, 预期计数: {expected_count}。",
     }

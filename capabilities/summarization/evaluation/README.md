@@ -1,66 +1,66 @@
 
-# Evaluations with Promptfoo
+# 使用Promptfoo进行评估
 
-### A Note on This Evaluation Suite
+### 关于本评估套件的说明
 
-1) Be sure to follow the instructions below - specifically the pre-requisites about required packages.
+1) 请务必遵循下面的说明——特别是关于所需软件包的先决条件。
 
-2) Running the full eval suite may require higher than normal rate limits. Consider only running a subset of tests in promptfoo.
+2) 运行完整的评估套件可能需要高于正常的速率限制。考虑仅在promptfoo中运行测试的子集。
 
-3) Not every test will pass out of the box - we've designed the evaluation to be moderately challenging.
+3) 并非每个测试都能开箱即用——我们设计的评估是中等挑战性的。
 
-### Pre-requisities 
-To use Promptfoo you will need to have node.js & npm installed on your system. For more information follow [this guide](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)  
+### 先决条件
+要使用Promptfoo，您需要在系统上安装node.js和npm。有关更多信息，请遵循[本指南](https://docs.npmjs.com/downloading-and-installing-node-js-and-npm)
 
-You can install promptfoo using npm or run it directly using npx. In this guide we will use npx.  
+您可以使用npm安装promptfoo或使用npx直接运行它。在本指南中，我们将使用npx。
 
-*Note: For this example you will not need to run `npx promptfoo@latest init` there is already an initialized `promptfooconfig.yaml` file in this directory*  
+*注意：对于此示例，您不需要运行`npx promptfoo@latest init`，因为此目录中已有一个初始化的`promptfooconfig.yaml`文件*
 
-See the official docs [here](https://www.promptfoo.dev/docs/getting-started)  
+在此处查看官方文档[here](https://www.promptfoo.dev/docs/getting-started)
 
-#### NOTE - Additional Deps
-For this example you will need to install the following dependencies in order for our custom_evals to run properly.
+#### 注意 - 额外依赖项
+对于此示例，您需要安装以下依赖项，以便我们的custom_evals正常运行。
 
 `pip install nltk rouge-score`
 
-### Getting Started
+### 入门
 
-To get started, set your ANTHROPIC_API_KEY environment variable, or other required keys for the providers you selected. You can do `export ANTHROPIC_API_KEY=YOUR_API_KEY`.
+要开始，请设置您的ANTHROPIC_API_KEY环境变量，或为您选择的提供商设置其他必需的密钥。您可以执行`export ANTHROPIC_API_KEY=YOUR_API_KEY`。
 
-Then, `cd` into the `evaluation` directory and write `npx promptfoo@latest eval -c promptfooconfig.yaml --output ../data/results.csv`
+然后，`cd`到`evaluation`目录并写入`npx promptfoo@latest eval -c promptfooconfig.yaml --output ../data/results.csv`
 
-Afterwards, you can view the results by running `npx promptfoo@latest view`.
+之后，您可以通过运行`npx promptfoo@latest view`查看结果。
 
-### How it Works
+### 工作原理
 
-The promptfooconfig.yaml file is the heart of our evaluation setup. It defines several crucial sections:
+promptfooconfig.yaml文件是我们评估设置的核心。它定义了以下几个关键部分：
 
-Prompts:
-- Prompts are imported from the prompts.py file.
-- These prompts are designed to test various aspects of LM performance.
-
-
-Providers:
-- We configure different Claude versions and their settings here.
-- This allows us to test across multiple models or with varying parameters (e.g., different temperature settings).
+提示：
+- 提示从prompts.py文件导入。
+- 这些提示旨在测试LM性能的各个方面。
 
 
-Tests:
-- Test cases are defined either in this file, or in this case imported from tests.yaml.
-- These tests specify the inputs and expected outputs for our evaluations.
-- Promptfoo offers various built-in test types (see docs), or you can define your own. We have 3 custom evaluations and 1 out of the box (contains method):
-    - `bleu_eval.py`: Implements the BLEU (Bilingual Evaluation Understudy) score, which measures the similarity between machine-generated text and reference texts.
-    - `rouge_eval.py`: Implements the ROUGE (Recall-Oriented Understudy for Gisting Evaluation) score, which assesses the quality of summarization by comparing it to reference summaries.
-    - `llm_eval.py`: Contains custom evaluation metrics that leverage Language Models to assess various aspects of generated text, such as coherence, relevance, or factual accuracy.
+提供商：
+- 我们在此处配置不同的Claude版本及其设置。
+- 这使我们能够跨多个模型或使用不同参数（例如，不同的温度设置）进行测试。
 
-Output:
-- Specifies the format and location of evaluation results.
-- Promptfoo supports various output formats too!
 
-### Overriding the Python binary
+测试：
+- 测试用例在此文件中定义，或者在此情况下从tests.yaml导入。
+- 这些测试指定了我们评估的输入和预期输出。
+- Promptfoo提供各种内置测试类型（请参阅文档），或者您可以定义自己的测试。我们有3个自定义评估和1个开箱即用（包含方法）：
+    - `bleu_eval.py`：实现BLEU（双语评估替代）分数，衡量机器生成文本与参考文本之间的相似性。
+    - `rouge_eval.py`：实现ROUGE（面向召回的摘要评估替代）分数，通过与参考摘要比较来评估摘要质量。
+    - `llm_eval.py`：包含利用语言模型评估生成文本各个方面（如连贯性、相关性或事实准确性）的自定义评估指标。
 
-By default, promptfoo will run python in your shell. Make sure python points to the appropriate executable.
+输出：
+- 指定评估结果的格式和位置。
+- Promptfoo也支持各种输出格式！
 
-If a python binary is not present, you will see a "python: command not found" error.
+### 覆盖Python二进制文件
 
-To override the Python binary, set the PROMPTFOO_PYTHON environment variable. You may set it to a path (such as /path/to/python3.11) or just an executable in your PATH (such as python3.11).
+默认情况下，promptfoo将在您的shell中运行python。确保python指向适当的可执行文件。
+
+如果不存在python二进制文件，您将看到"python: command not found"错误。
+
+要覆盖Python二进制文件，请设置PROMPTFOO_PYTHON环境变量。您可以将其设置为路径（如/path/to/python3.11）或PATH中的可执行文件（如python3.11）。

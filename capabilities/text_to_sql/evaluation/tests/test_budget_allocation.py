@@ -9,7 +9,7 @@ def get_assert(output, context):
         execution_success = True
         result_valid = (
             len(results) > 0 and len(results[0]) >= 5
-        )  # department, budget %, top employees, their salary %, efficiency score
+        )  # 部门, 预算%, 前几名员工, 他们的工资%, 效率分数
         if result_valid:
             for row in results:
                 if not (
@@ -20,10 +20,10 @@ def get_assert(output, context):
     except Exception as e:
         execution_success = False
         result_valid = False
-        print(f"SQL execution error: {e}")
+        print(f"SQL执行错误: {e}")
 
     return {
         "pass": execution_success and result_valid,
         "score": 1 if (execution_success and result_valid) else 0,
-        "reason": f"SQL {'executed successfully' if execution_success else 'failed to execute'}. {'Valid budget analysis results obtained' if result_valid else 'Invalid or incomplete analysis results'}",
+        "reason": f"SQL{'成功执行' if execution_success else '执行失败'}。{'获得有效的预算分析结果' if result_valid else '无效或不完整的分析结果'}",
     }

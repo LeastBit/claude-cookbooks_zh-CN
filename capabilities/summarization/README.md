@@ -1,11 +1,11 @@
-# Summarization with Claude
+# 使用Claude进行摘要
 
-Explore Claude's ability to summarize and synthesize information from multiple sources using various techniques.
+探索Claude使用各种技术从多个来源总结和合成信息的能力。
 
-## Contents
+## 内容
 
-- `guide.ipynb`: Main tutorial notebook
-- `data/`: Data files for examples and testing
-- `evaluation/`: Evaluation scripts using Promptfoo
+- `guide.ipynb`: 主要教程笔记本
+- `data/`: 示例和测试数据文件
+- `evaluation/`: 使用Promptfoo的评估脚本
 
-For evaluation instructions, see `evaluation/README.md`.
+有关评估说明，请参阅`evaluation/README.md`。

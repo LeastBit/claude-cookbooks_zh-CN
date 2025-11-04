@@ -11,7 +11,7 @@ def get_assert(output, context):
     except Exception as e:
         execution_success = False
         row = None
-        print(f"SQL execution error: {e}")
+        print(f"SQL执行错误: {e}")
 
     expected_result = {"name": "Julia Clark", "age": 64, "salary": 103699.17}
 
@@ -24,7 +24,7 @@ def get_assert(output, context):
     return {
         "pass": execution_success and data_match,
         "score": 1 if (execution_success and data_match) else 0,
-        "reason": f"SQL {'executed successfully' if execution_success else 'execution failed'}. "
-        f"Data {'matches' if data_match else 'does not match'} expected result. "
-        f"Actual: {actual_result if row else 'No data'}, Expected: {expected_result}",
+        "reason": f"SQL{'成功执行' if execution_success else '执行失败'}。"
+        f"数据{'匹配' if data_match else '不匹配'}预期结果。"
+        f"实际: {actual_result if row else '无数据'}, 预期: {expected_result}",
     }

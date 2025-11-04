@@ -1,11 +1,11 @@
-# Text-to-SQL with Claude
+# 使用Claude进行文本到SQL的转换
 
-Learn how to generate complex SQL queries from natural language using prompting techniques, self-improvement, and RAG.
+学习如何使用提示技术、自改进和RAG从自然语言生成复杂SQL查询。
 
-## Contents
+## 目录
 
-- `guide.ipynb`: Main tutorial notebook
-- `data/`: Data files for examples and testing
-- `evaluation/`: Evaluation scripts using Promptfoo
+- `guide.ipynb`：主要教程笔记本
+- `data/`：用于示例和测试的数据文件
+- `evaluation/`：使用Promptfoo的评估脚本
 
-For evaluation instructions, see `evaluation/README.md`.
+有关评估说明，请参阅`evaluation/README.md`。
