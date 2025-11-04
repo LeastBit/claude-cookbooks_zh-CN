@@ -1,28 +1,28 @@
-# Lychee configuration for Claude Cookbooks
-# Validates links in notebooks and documentation
+# Claude Cookbooks 的 Lychee 配置
+# 验证 notebook 和文档中的链接
 
-# Core settings
+# 核心设置
 timeout = 30
 max_redirects = 10
 include_fragments = true
 require_https = false
 
-# Caching to speed up repeated checks
+# 缓存以加速重复检查
 cache = true
 max_cache_age = "1d"
 
-# Retry configuration for transient failures
+# 临时故障的重试配置
 max_retries = 3
 retry_wait_time = 2
 
-# Skip checking code blocks (important for notebooks with example code)
+# 跳过检查代码块（对包含示例代码的 notebook 很重要）
 skip_code_blocks = true
 
-# Fallback extensions for local file checking
-# When checking relative links, try these extensions if the exact path doesn't exist
+# 本地文件检查的备用扩展名
+# 检查相对链接时，如果精确路径不存在，尝试这些扩展名
 fallback_extensions = ["ipynb", "md", "html", "py"]
 
-# Exclude certain paths from being searched
+# 从搜索中排除某些路径
 exclude_path = [
     ".git/",
     "__pycache__/",
@@ -32,7 +32,7 @@ exclude_path = [
     "scripts/"
 ]
 
-# Exclude API endpoints and local development URLs from link checking
+# 从链接检查中排除 API 端点和本地开发 URL
 exclude = [
     "https://api.anthropic.com.*",
     "https://console.anthropic.com.*",
@@ -41,11 +41,11 @@ exclude = [
     "http://127.0.0.1.*"
 ]
 
-# Accept 403 (forbidden) and 429 (rate limited) as valid
-# These are returned by gated and rate-limited sites
+# 接受 403（禁止）和 429（速率限制）为有效状态
+# 这些状态由受限和速率限制站点返回
 accept = [403, 429]
 
-# Headers for authenticated requests
+# 认证请求的标头
 headers = [
     "User-Agent=Mozilla/5.0 (compatible; lychee/0.20.1; anthropic-cookbook)"
 ]

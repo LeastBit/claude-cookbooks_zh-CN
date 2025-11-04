@@ -1,171 +1,171 @@
 ---
 name: applying-brand-guidelines
-description: This skill applies consistent corporate branding and styling to all generated documents including colors, fonts, layouts, and messaging
+description: 此技能为所有生成的文档应用一致的企业品牌和样式，包括颜色、字体、布局和消息
 ---
 
-# Corporate Brand Guidelines Skill
+# 企业品牌指南技能
 
-This skill ensures all generated documents adhere to corporate brand standards for consistent, professional communication.
+此技能确保所有生成的文档都符合企业品牌标准，以实现一致、专业的沟通。
 
-## Brand Identity
+## 品牌标识
 
-### Company: Acme Corporation
-**Tagline**: "Innovation Through Excellence"
-**Industry**: Technology Solutions
+### 公司：Acme Corporation
+**标语**: "卓越创新"
+**行业**: 技术解决方案
 
-## Visual Standards
+## 视觉标准
 
-### Color Palette
+### 调色板
 
-**Primary Colors**:
-- **Acme Blue**: #0066CC (RGB: 0, 102, 204) - Headers, primary buttons
-- **Acme Navy**: #003366 (RGB: 0, 51, 102) - Text, accents
-- **White**: #FFFFFF - Backgrounds, reverse text
+**主要颜色**:
+- **Acme 蓝**: #0066CC (RGB: 0, 102, 204) - 标题、主要按钮
+- **Acme 海军蓝**: #003366 (RGB: 0, 51, 102) - 文本、强调
+- **白色**: #FFFFFF - 背景、反白文本
 
-**Secondary Colors**:
-- **Success Green**: #28A745 (RGB: 40, 167, 69) - Positive metrics
-- **Warning Amber**: #FFC107 (RGB: 255, 193, 7) - Cautions
-- **Error Red**: #DC3545 (RGB: 220, 53, 69) - Negative values
-- **Neutral Gray**: #6C757D (RGB: 108, 117, 125) - Secondary text
+**辅助颜色**:
+- **成功绿**: #28A745 (RGB: 40, 167, 69) - 正面指标
+- **警告琥珀**: #FFC107 (RGB: 255, 193, 7) - 警告
+- **错误红**: #DC3545 (RGB: 220, 53, 69) - 负面值
+- **中性灰**: #6C757D (RGB: 108, 117, 125) - 辅助文本
 
-### Typography
+### 字体排版
 
-**Primary Font Family**: Segoe UI, system-ui, -apple-system, sans-serif
+**主要字体族**: Segoe UI, system-ui, -apple-system, sans-serif
 
-**Font Hierarchy**:
-- **H1**: 32pt, Bold, Acme Blue
-- **H2**: 24pt, Semibold, Acme Navy
-- **H3**: 18pt, Semibold, Acme Navy
-- **Body**: 11pt, Regular, Acme Navy
-- **Caption**: 9pt, Regular, Neutral Gray
+**字体层级**:
+- **H1**: 32pt, 粗体, Acme 蓝
+- **H2**: 24pt, 半粗体, Acme 海军蓝
+- **H3**: 18pt, 半粗体, Acme 海军蓝
+- **正文**: 11pt, 常规, Acme 海军蓝
+- **说明**: 9pt, 常规, 中性灰
 
-### Logo Usage
+### 标志使用
 
-- Position: Top-left corner on first page/slide
-- Size: 120px width (maintain aspect ratio)
-- Clear space: Minimum 20px padding on all sides
-- Never distort, rotate, or apply effects
+- 位置：第一页/幻灯片的左上角
+- 大小：120px 宽度（保持纵横比）
+- 留白：所有侧面最少 20px 边距
+- 切勿扭曲、旋转或应用效果
 
-## Document Standards
+## 文档标准
 
-### PowerPoint Presentations
+### PowerPoint 演示文稿
 
-**Slide Templates**:
-1. **Title Slide**: Company logo, presentation title, date, presenter
-2. **Section Divider**: Section title with blue background
-3. **Content Slide**: Title bar with blue background, white content area
-4. **Data Slide**: For charts/graphs, maintain color palette
+**幻灯片模板**:
+1. **标题幻灯片**: 公司标志、演示标题、日期、演讲者
+2. **章节分隔页**: 带蓝色背景的章节标题
+3. **内容幻灯片**: 带蓝色背景的标题栏、白色内容区域
+4. **数据幻灯片**: 图表/图形，保持调色板
 
-**Layout Rules**:
-- Margins: 0.5 inches all sides
-- Title position: Top 15% of slide
-- Bullet indentation: 0.25 inches per level
-- Maximum 6 bullet points per slide
-- Charts use brand colors exclusively
+**布局规则**:
+- 页边距：所有侧面 0.5 英寸
+- 标题位置：幻灯片顶部 15%
+- 项目符号缩进：每级 0.25 英寸
+- 每张幻灯片最多 6 个项目符号
+- 图表仅使用品牌颜色
 
-### Excel Spreadsheets
+### Excel 电子表格
 
-**Formatting Standards**:
-- **Headers**: Row 1, Bold, White text on Acme Blue background
-- **Subheaders**: Bold, Acme Navy text
-- **Data cells**: Regular, Acme Navy text
-- **Borders**: Thin, Neutral Gray
-- **Alternating rows**: Light gray (#F8F9FA) for readability
+**格式化标准**:
+- **表头**: 第 1 行，粗体，Acme 蓝背景上的白色文本
+- **副标题**: 粗体，Acme 海军蓝文本
+- **数据单元格**: 常规，Acme 海军蓝文本
+- **边框**: 细线，中性灰
+- **交替行**: 浅灰色 (#F8F9FA) 以提高可读性
 
-**Chart Defaults**:
-- Primary series: Acme Blue
-- Secondary series: Success Green
-- Gridlines: Neutral Gray, 0.5pt
-- No 3D effects or gradients
+**图表默认设置**:
+- 主要系列：Acme 蓝
+- 辅助系列：成功绿
+- 网格线：中性灰，0.5pt
+- 无 3D 效果或渐变
 
-### PDF Documents
+### PDF 文档
 
-**Page Layout**:
-- **Header**: Company logo left, document title center, page number right
-- **Footer**: Copyright notice left, date center, classification right
-- **Margins**: 1 inch all sides
-- **Line spacing**: 1.15
-- **Paragraph spacing**: 12pt after
+**页面布局**:
+- **页眉**: 公司标志居左，文档标题居中，页码居右
+- **页脚**: 版权声明居左，日期居中，分类居右
+- **页边距**：所有侧面 1 英寸
+- **行间距**: 1.15
+- **段落间距**: 之后 12pt
 
-**Section Formatting**:
-- Main headings: Acme Blue, 16pt, bold
-- Subheadings: Acme Navy, 14pt, semibold
-- Body text: Acme Navy, 11pt, regular
+**章节格式化**:
+- 主标题：Acme 蓝，16pt，粗体
+- 副标题：Acme 海军蓝，14pt，半粗体
+- 正文：Acme 海军蓝，11pt，常规
 
-## Content Guidelines
+## 内容指南
 
-### Tone of Voice
+### 语调
 
-- **Professional**: Formal but approachable
-- **Clear**: Avoid jargon, use simple language
-- **Active**: Use active voice, action-oriented
-- **Positive**: Focus on solutions and benefits
+- **专业**: 正式但平易近人
+- **清晰**: 避免行话，使用简单语言
+- **主动**: 使用主动语态，以行动为导向
+- **积极**: 关注解决方案和收益
 
-### Standard Phrases
+### 标准用语
 
-**Opening Statements**:
-- "At Acme Corporation, we..."
-- "Our commitment to innovation..."
-- "Delivering excellence through..."
+**开场白**:
+- "在 Acme Corporation，我们..."
+- "我们对创新的承诺..."
+- "通过...传递卓越"
 
-**Closing Statements**:
-- "Thank you for your continued partnership."
-- "We look forward to serving your needs."
-- "Together, we achieve excellence."
+**结束语**:
+- "感谢您持续的合作。"
+- "我们期待为您服务。"
+- "携手共创卓越。"
 
-### Data Presentation
+### 数据呈现
 
-**Numbers**:
-- Use comma separators for thousands
-- Currency: $X,XXX.XX format
-- Percentages: XX.X% (one decimal)
-- Dates: Month DD, YYYY
+**数字**:
+- 千位使用逗号分隔符
+- 货币：$X,XXX.XX 格式
+- 百分比：XX.X%（一位小数）
+- 日期：月 DD, YYYY
 
-**Tables**:
-- Headers in brand blue
-- Alternating row colors
-- Right-align numbers
-- Left-align text
+**表格**:
+- 品牌蓝色标题
+- 交替行颜色
+- 数字右对齐
+- 文本左对齐
 
-## Quality Standards
+## 质量标准
 
-### Before Finalizing
+### 最终确定前
 
-Always ensure:
-1. Logo is properly placed and sized
-2. All colors match brand palette exactly
-3. Fonts are consistent throughout
-4. No typos or grammatical errors
-5. Data is accurately presented
-6. Professional tone maintained
+始终确保：
+1. 标志位置和大小适当
+2. 所有颜色完全匹配品牌调色板
+3. 字体在整个文档中一致
+4. 无拼写或语法错误
+5. 数据准确呈现
+6. 保持专业语调
 
-### Prohibited Elements
+### 禁止元素
 
-Never use:
-- Clip art or stock photos without approval
-- Comic Sans, Papyrus, or decorative fonts
-- Rainbow colors or gradients
-- Animations or transitions (unless specified)
-- Competitor branding or references
+切勿使用：
+- 未经批准的剪贴画或库存照片
+- Comic Sans、Papyrus 或装饰性字体
+- 彩虹色或渐变
+- 动画或过渡（除非指定）
+- 竞争对手的品牌或引用
 
-## Application Instructions
+## 应用说明
 
-When creating any document:
-1. Start with brand colors and fonts
-2. Apply appropriate template structure
-3. Include logo on first page/slide
-4. Use consistent formatting throughout
-5. Review against brand standards
-6. Ensure professional appearance
+创建任何文档时：
+1. 从品牌颜色和字体开始
+2. 应用适当的模板结构
+3. 在第一页/幻灯片包含标志
+4. 整体使用一致格式
+5. 根据品牌标准审查
+6. 确保专业外观
 
-## Scripts
+## 脚本
 
-- `apply_brand.py`: Automatically applies brand formatting to documents
-- `validate_brand.py`: Checks documents for brand compliance
+- `apply_brand.py`：自动对文档应用品牌格式
+- `validate_brand.py`：检查文档的品牌合规性
 
-## Notes
+## 注释
 
-- These guidelines apply to all external communications
-- Internal documents may use simplified formatting
-- Special projects may have exceptions (request approval)
-- Brand guidelines updated quarterly - check for latest version
+- 这些指南适用于所有外部沟通
+- 内部文档可以使用简化格式
+- 特殊项目可能有例外（需申请批准）
+- 品牌指南每季度更新 - 查看最新版本

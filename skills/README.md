@@ -1,139 +1,139 @@
-# Claude Skills Cookbook 🚀
+# Claude Skills Cookbook 技能手册 🚀
 
-A comprehensive guide to using Claude's Skills feature for document generation, data analysis, and business automation. This cookbook demonstrates how to leverage Claude's built-in skills for Excel, PowerPoint, and PDF creation, as well as how to build custom skills for specialized workflows.
+全面介绍Claude的Skills功能用于文档生成、数据分析和业务自动化的综合指南。本手册演示了如何利用Claude的内置技能创建Excel、PowerPoint和PDF文件，以及如何为专业工作流构建自定义技能。
 
-> **🎯 See Skills in Action:** Check out **[Claude Creates Files](https://www.anthropic.com/news/create-files)** to see how these Skills power Claude's ability to create and edit documents directly in Claude.ai and the desktop app!
+> **🎯 查看技能实战：** 查看**[Claude创建文件](https://www.anthropic.com/news/create-files)**，了解这些技能如何赋能Claude在Claude.ai和桌面应用中直接创建和编辑文档！
 
-## What are Skills?
+## 什么是Skills？
 
-Skills are organized packages of instructions, executable code, and resources that give Claude specialized capabilities for specific tasks. Think of them as "expertise packages" that Claude can discover and load dynamically to:
+Skills是组织化的指令包、可执行代码和资源，为Claude提供针对特定任务的专业能力。可以将它们视为Claude可以动态发现和加载的"专业技能包"，用于：
 
-- Create professional documents (Excel, PowerPoint, PDF, Word)
-- Perform complex data analysis and visualization
-- Apply company-specific workflows and branding
-- Automate business processes with domain expertise
+- 创建专业文档（Excel、PowerPoint、PDF、Word）
+- 执行复杂的数据分析和可视化
+- 应用公司特定的工作流程和品牌
+- 自动化具有领域专业知识的业务流程
 
-📖 Read our engineering blog post on [Equipping agents for the real world with Skills](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills)
+📖 阅读我们的工程博客文章[用Skills武装智能体应对现实世界](https://www.anthropic.com/engineering/equipping-agents-for-the-real-world-with-agent-skills)
 
-## Key Features
+## 核心特性
 
-- ✨ **Progressive Disclosure Architecture** - Skills load only when needed, optimizing token usage
-- 📊 **Financial Focus** - Real-world examples for finance and business analytics
-- 🔧 **Custom Skills Development** - Learn to build and deploy your own skills
-- 🎯 **Production-Ready Examples** - Code you can adapt for immediate use
+- ✨ **渐进式披露架构** - 技能仅在需要时加载，优化令牌使用
+- 📊 **金融领域专注** - 金融和商业分析的真实示例
+- 🔧 **自定义技能开发** - 学习构建和部署自己的技能
+- 🎯 **生产就绪示例** - 可立即使用的代码，可根据需要调整
 
-## Cookbook Structure
+## 手册结构
 
-### 📚 [Notebook 1: Introduction to Skills](notebooks/01_skills_introduction.ipynb)
+### 📚 [Notebook 1: Skills入门](notebooks/01_skills_introduction.ipynb)
 
-Learn the fundamentals of Claude's Skills feature with quick-start examples.
+通过快速入门示例学习Claude的Skills功能基础知识。
 
-- Understanding Skills architecture
-- Setting up the API with beta headers
-- Creating your first Excel spreadsheet
-- Generating PowerPoint presentations
-- Exporting to PDF format
+- 理解Skills架构
+- 使用beta标头设置API
+- 创建你的第一个Excel电子表格
+- 生成PowerPoint演示文稿
+- 导出为PDF格式
 
-### 💼 [Notebook 2: Financial Applications](notebooks/02_skills_financial_applications.ipynb)
+### 💼 [Notebook 2: 金融应用](notebooks/02_skills_financial_applications.ipynb)
 
-Explore powerful business use cases with real financial data.
+使用真实金融数据探索强大的商业用例。
 
-- Building financial dashboards with charts and pivot tables
-- Portfolio analysis and investment reporting
-- Cross-format workflows: CSV → Excel → PowerPoint → PDF
-- Token optimization strategies
+- 构建带有图表和数据透视表的金融仪表板
+- 投资组合分析和投资报告
+- 跨格式工作流：CSV → Excel → PowerPoint → PDF
+- 令牌优化策略
 
-### 🔧 [Notebook 3: Custom Skills Development](notebooks/03_skills_custom_development.ipynb)
+### 🔧 [Notebook 3: 自定义技能开发](notebooks/03_skills_custom_development.ipynb)
 
-Master the art of creating your own specialized skills.
+掌握创建自己的专业技能的技巧。
 
-- Building a financial ratio calculator
-- Creating company brand guidelines skill
-- Advanced: Financial modeling suite
-- [Best practices](https://docs.claude.com/en/docs/agents-and-tools/agent-skills/best-practices) and security considerations
+- 构建金融比率计算器
+- 创建公司品牌指南技能
+- 高级：金融建模套件
+- [最佳实践](https://docs.claude.com/en/docs/agents-and-tools/agent-skills/best-practices) 和安全考虑
 
-## Quick Start
+## 快速开始
 
-### Prerequisites
+### 前置条件
 
-- Python 3.8 or higher
-- Anthropic API key ([get one here](https://console.anthropic.com/))
-- Jupyter Notebook or JupyterLab
+- Python 3.8或更高版本
+- Anthropic API密钥（[在此获取](https://console.anthropic.com/)）
+- Jupyter Notebook或JupyterLab
 
-### Installation
+### 安装
 
-1. **Clone the repository**
+1. **克隆仓库**
 
 ```bash
 git clone https://github.com/anthropics/claude-cookbooks.git
 cd claude-cookbooks/skills
 ```
 
-2. **Create virtual environment** (recommended)
+2. **创建虚拟环境**（推荐）
 
 ```bash
 python -m venv venv
-source venv/bin/activate  # On Windows: venv\Scripts\activate
+source venv/bin/activate  # 在Windows上：venv\Scripts\activate
 ```
 
-3. **Install dependencies**
+3. **安装依赖**
 
 ```bash
 pip install -r requirements.txt
 ```
 
-4. **Configure API key**
+4. **配置API密钥**
 
 ```bash
 cp .env.example .env
-# Edit .env and add your ANTHROPIC_API_KEY
+# 编辑.env并添加您的ANTHROPIC_API_KEY
 ```
 
-5. **Launch Jupyter**
+5. **启动Jupyter**
 
 ```bash
 jupyter notebook
 ```
 
-6. **Start with Notebook 1**
-   Open `notebooks/01_skills_introduction.ipynb` and follow along!
+6. **从Notebook 1开始**
+   打开 `notebooks/01_skills_introduction.ipynb` 并跟随学习！
 
-## Sample Data
+## 示例数据
 
-The cookbook includes realistic financial datasets in `sample_data/`:
+手册在 `sample_data/` 中包含真实的金融数据集：
 
-- 📊 **financial_statements.csv** - Quarterly P&L, balance sheet, and cash flow data
-- 💰 **portfolio_holdings.json** - Investment portfolio with performance metrics
-- 📋 **budget_template.csv** - Department budget with variance analysis
-- 📈 **quarterly_metrics.json** - KPIs and operational metrics
+- 📊 **financial_statements.csv** - 季度损益表、资产负债表和现金流数据
+- 💰 **portfolio_holdings.json** - 带有绩效指标的投资组合
+- 📋 **budget_template.csv** - 带差异分析的部门预算
+- 📈 **quarterly_metrics.json** - KPI和运营指标
 
-## Project Structure
+## 项目结构
 
 ```
 skills/
-├── notebooks/                    # Jupyter notebooks
+├── notebooks/                    # Jupyter笔记本
 │   ├── 01_skills_introduction.ipynb
 │   ├── 02_skills_financial_applications.ipynb
 │   └── 03_skills_custom_development.ipynb
-├── sample_data/                  # Financial datasets
+├── sample_data/                  # 金融数据集
 │   ├── financial_statements.csv
 │   ├── portfolio_holdings.json
 │   ├── budget_template.csv
 │   └── quarterly_metrics.json
-├── custom_skills/                # Your custom skills
+├── custom_skills/                # 您的自定义技能
 │   ├── financial_analyzer/
 │   ├── brand_guidelines/
 │   └── report_generator/
-├── outputs/                      # Generated files
-├── docs/                         # Documentation
-├── requirements.txt             # Python dependencies
-├── .env.example                 # Environment template
-└── README.md                    # This file
+├── outputs/                      # 生成的文件
+├── docs/                         # 文档
+├── requirements.txt             # Python依赖
+├── .env.example                 # 环境模板
+└── README.md                    # 本文件
 ```
 
-## API Configuration
+## API配置
 
-Skills require specific beta headers. The notebooks handle this automatically, but here's what's happening behind the scenes:
+Skills需要特定的beta标头。笔记本会自动处理这一点，但幕后发生的事情如下：
 
 ```python
 from anthropic import Anthropic
@@ -146,31 +146,31 @@ client = Anthropic(
 )
 ```
 
-**Required Beta Headers:**
+**必需的Beta标头：**
 
-- `code-execution-2025-08-25` - Enables code execution for Skills
-- `files-api-2025-04-14` - Required for downloading generated files
-- `skills-2025-10-02` - Enables Skills feature
+- `code-execution-2025-08-25` - 为Skills启用代码执行
+- `files-api-2025-04-14` - 下载生成的文件所需
+- `skills-2025-10-02` - 启用Skills功能
 
-## Working with Generated Files
+## 使用生成的文件
 
-When Skills create documents (Excel, PowerPoint, PDF, etc.), they return `file_id` attributes in the response. You must use the **Files API** to download these files.
+当Skills创建文档（Excel、PowerPoint、PDF等）时，它们在响应中返回`file_id`属性。您必须使用**Files API**下载这些文件。
 
-### How It Works
+### 工作原理
 
-1. **Skills create files** during code execution
-2. **Response includes file_ids** for each created file
-3. **Use Files API** to download the actual file content
-4. **Save locally** or process as needed
+1. **Skills在代码执行期间创建文件**
+2. **响应包含每个创建文件的file_ids**
+3. **使用Files API**下载实际文件内容
+4. **本地保存**或根据需要处理
 
-### Example: Creating and Downloading an Excel File
+### 示例：创建和下载Excel文件
 
 ```python
 from anthropic import Anthropic
 
 client = Anthropic(api_key="your-api-key")
 
-# Step 1: Use a skill to create a file
+# 步骤1：使用技能创建文件
 response = client.messages.create(
     model="claude-sonnet-4-5-20250929",
     max_tokens=4096,
@@ -186,169 +186,169 @@ response = client.messages.create(
     }]
 )
 
-# Step 2: Extract file_id from the response
+# 步骤2：从响应中提取file_id
 file_id = None
 for block in response.content:
     if block.type == "tool_result" and hasattr(block, 'output'):
-        # Look for file_id in the tool output
+        # 在工具输出中查找file_id
         if 'file_id' in str(block.output):
-            file_id = extract_file_id(block.output)  # Parse the file_id
+            file_id = extract_file_id(block.output)  # 解析file_id
             break
 
-# Step 3: Download the file using Files API
+# 步骤3：使用Files API下载文件
 if file_id:
     file_content = client.beta.files.download(file_id=file_id)
 
-    # Step 4: Save to disk
+    # 步骤4：保存到磁盘
     with open("outputs/budget.xlsx", "wb") as f:
         f.write(file_content.read())
 
     print(f"✅ File downloaded: budget.xlsx")
 ```
 
-### Files API Methods
+### Files API方法
 
 ```python
-# Download file content (binary)
+# 下载文件内容（二进制）
 content = client.beta.files.download(file_id="file_abc123...")
 with open("output.xlsx", "wb") as f:
-    f.write(content.read())  # Use .read() not .content
+    f.write(content.read())  # 使用.read()而不是.content
 
-# Get file metadata
+# 获取文件元数据
 info = client.beta.files.retrieve_metadata(file_id="file_abc123...")
-print(f"Filename: {info.filename}, Size: {info.size_bytes} bytes")  # Use size_bytes not size
+print(f"Filename: {info.filename}, Size: {info.size_bytes} bytes")  # 使用size_bytes而不是size
 
-# List all files
+# 列出所有文件
 files = client.beta.files.list()
 for file in files.data:
     print(f"{file.filename} - {file.created_at}")
 
-# Delete a file
+# 删除文件
 client.beta.files.delete(file_id="file_abc123...")
 ```
 
-**Important Notes:**
+**重要提示：**
 
-- Files are stored temporarily on Anthropic's servers
-- Downloaded files should be saved to your local `outputs/` directory
-- The Files API uses the same API key as the Messages API
-- All notebooks include helper functions for file download
-- **Files are overwritten by default** - rerunning cells will replace existing files (you'll see `[overwritten]` in the output)
+- 文件临时存储在Anthropic的服务器上
+- 下载的文件应保存到您的本地`outputs/`目录
+- Files API使用与Messages API相同的API密钥
+- 所有笔记本都包含文件下载辅助函数
+- **默认会覆盖文件** - 重新运行单元格将替换现有文件（您将在输出中看到`[overwritten]`）
 
-See the [Files API documentation](https://docs.claude.com/en/api/files-content) for complete details.
+有关完整详情，请参阅[Files API文档](https://docs.claude.com/en/api/files-content)。
 
-## Built-in Skills Reference
+## 内置技能参考
 
-Claude comes with these pre-built skills:
+Claude附带这些预构建技能：
 
-| Skill      | ID     | Description                                                                 |
-| ---------- | ------ | --------------------------------------------------------------------------- |
-| Excel      | `xlsx` | Create and manipulate Excel workbooks with formulas, charts, and formatting |
-| PowerPoint | `pptx` | Generate professional presentations with slides, charts, and transitions    |
-| PDF        | `pdf`  | Create formatted PDF documents with text, tables, and images                |
-| Word       | `docx` | Generate Word documents with rich formatting and structure                  |
+| 技能         | ID     | 说明                                                    |
+| ------------ | ------ | ------------------------------------------------------- |
+| Excel        | `xlsx` | 创建和操作带有公式、图表和格式的Excel工作簿            |
+| PowerPoint   | `pptx` | 生成带有幻灯片、图表和过渡效果的专业演示文稿            |
+| PDF          | `pdf`  | 创建带有文本、表格和图像的格式化PDF文档                |
+| Word         | `docx` | 生成具有丰富格式和结构的Word文档                       |
 
-## Creating Custom Skills
+## 创建自定义技能
 
-Custom skills follow this structure:
+自定义技能遵循此结构：
 
 ```
 my_skill/
-├── SKILL.md           # Required: Instructions for Claude
-├── scripts/           # Optional: Python/JS code
+├── SKILL.md           # 必需：Claude的指令
+├── scripts/           # 可选：Python/JS代码
 │   └── processor.py
-└── resources/         # Optional: Templates, data
+└── resources/         # 可选：模板、数据
     └── template.xlsx
 ```
 
-Learn more in [Notebook 3](notebooks/03_skills_custom_development.ipynb).
+在[Notebook 3](notebooks/03_skills_custom_development.ipynb)中了解更多信息。
 
-## Common Use Cases
+## 常见用例
 
-### Financial Reporting
+### 财务报告
 
-- Automated quarterly reports
-- Budget variance analysis
-- Investment performance dashboards
+- 自动化季度报告
+- 预算差异分析
+- 投资绩效仪表板
 
-### Data Analysis
+### 数据分析
 
-- Excel-based analytics with complex formulas
-- Pivot table generation
-- Statistical analysis and visualization
+- 基于Excel的复杂公式分析
+- 数据透视表生成
+- 统计分析和可视化
 
-### Document Automation
+### 文档自动化
 
-- Branded presentation generation
-- Report compilation from multiple sources
-- Cross-format document conversion
+- 品牌演示生成
+- 多源报告编译
+- 跨格式文档转换
 
-## Performance Tips
+## 性能优化技巧
 
-1. **Use Progressive Disclosure**: Skills load in stages to minimize token usage
-2. **Batch Operations**: Process multiple files in a single conversation
-3. **Skill Composition**: Combine multiple skills for complex workflows
-4. **Cache Reuse**: Use container IDs to reuse loaded skills
+1. **使用渐进式披露**：技能分阶段加载以最小化令牌使用
+2. **批量操作**：在单次对话中处理多个文件
+3. **技能组合**：结合多个技能实现复杂工作流
+4. **缓存重用**：使用容器ID重用已加载的技能
 
-## Troubleshooting
+## 故障排除
 
-### Common Issues
+### 常见问题
 
-**API Key Not Found**
+**找不到API密钥**
 
 ```
 ValueError: ANTHROPIC_API_KEY not found
 ```
 
-→ Make sure you've copied `.env.example` to `.env` and added your key
+→ 确保您已将`.env.example`复制到`.env`并添加了您的密钥
 
-**Skills Beta Header Missing**
+**缺少Skills Beta标头**
 
 ```
 Error: Skills feature requires beta header
 ```
 
-→ Ensure you're using the correct beta headers as shown in the notebooks
+→ 确保您使用的是笔记本中所示的正确beta标头
 
-**Token Limit Exceeded**
+**超出令牌限制**
 
 ```
 Error: Request exceeds token limit
 ```
 
-→ Break large operations into smaller chunks or use progressive disclosure
+→ 将大型操作分解为较小的块或使用渐进式披露
 
-## Resources
+## 资源
 
-### Documentation
+### 文档
 
-- 📖 [Claude API Documentation](https://docs.anthropic.com/en/api/messages)
-- 🔧 [Skills Documentation](https://docs.claude.com/en/docs/agents-and-tools/agent-skills/overview)
+- 📖 [Claude API文档](https://docs.anthropic.com/en/api/messages)
+- 🔧 [Skills文档](https://docs.claude.com/en/docs/agents-and-tools/agent-skills/overview)
 
-### Support Articles
+### 支持文章
 
-- 📚 [Teach Claude your way of working using Skills](https://support.claude.com/en/articles/12580051-teach-claude-your-way-of-working-using-skills) - User guide for working with Skills
-- 🛠️ [How to create a skill with Claude through conversation](https://support.claude.com/en/articles/12599426-how-to-create-a-skill-with-claude-through-conversation) - Interactive skill creation guide
+- 📚 [使用Skills教Claude您的工作方式](https://support.claude.com/en/articles/12580051-teach-claude-your-way-of-working-using-skills) - 使用Skills的用户指南
+- 🛠️ [如何通过对话与Claude创建技能](https://support.claude.com/en/articles/12599426-how-to-create-a-skill-with-claude-through-conversation) - 交互式技能创建指南
 
-### Community & Support
+### 社区与支持
 
-- 💬 [Claude Support](https://support.claude.com)
-- 🐙 [GitHub Issues](https://github.com/anthropics/claude-cookbooks/issues)
+- 💬 [Claude支持](https://support.claude.com)
+- 🐙 [GitHub问题](https://github.com/anthropics/claude-cookbooks/issues)
 
-## Contributing
+## 贡献
 
-We welcome contributions! Please see [CONTRIBUTING.md](../CONTRIBUTING.md) for guidelines.
+我们欢迎贡献！请查看[CONTRIBUTING.md](../CONTRIBUTING.md)了解指南。
 
-## License
+## 许可证
 
-This cookbook is provided under the MIT License. See [LICENSE](../LICENSE) for details.
+本手册基于MIT许可证提供。详见[LICENSE](../LICENSE)。
 
-## Acknowledgments
+## 致谢
 
-Special thanks to the Anthropic team for developing the Skills feature and providing the SDK.
+特别感谢Anthropic团队开发了Skills功能并提供SDK。
 
 ---
 
-**Questions?** Check the [FAQ](docs/FAQ.md) or open an issue.
+**有问题？** 查看[FAQ](docs/FAQ.md)或提出问题。
 
-**Ready to start?** Open [Notebook 1](notebooks/01_skills_introduction.ipynb) and let's build something amazing! 🎉
+**准备好开始了吗？** 打开[Notebook 1](notebooks/01_skills_introduction.ipynb)，让我们构建一些令人惊叹的内容！🎉

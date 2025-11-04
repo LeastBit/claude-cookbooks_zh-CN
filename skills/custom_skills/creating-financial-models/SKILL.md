@@ -1,173 +1,173 @@
 ---
 name: creating-financial-models
-description: This skill provides an advanced financial modeling suite with DCF analysis, sensitivity testing, Monte Carlo simulations, and scenario planning for investment decisions
+description: 此技能提供了一套先进的金融建模工具，包含DCF分析、敏感性测试、蒙特卡洛模拟和情景规划，用于投资决策
 ---
 
-# Financial Modeling Suite
+# 金融建模工具包
 
-A comprehensive financial modeling toolkit for investment analysis, valuation, and risk assessment using industry-standard methodologies.
+使用行业标准方法进行投资分析、估值和风险评估的综合金融建模工具包。
 
-## Core Capabilities
+## 核心功能
 
-### 1. Discounted Cash Flow (DCF) Analysis
-- Build complete DCF models with multiple growth scenarios
-- Calculate terminal values using perpetuity growth and exit multiple methods
-- Determine weighted average cost of capital (WACC)
-- Generate enterprise and equity valuations
+### 1. 现金流折现（DCF）分析
+- 构建具有多种增长情景的完整DCF模型
+- 使用永续增长法和退出倍数法计算终值
+- 确定加权平均资本成本（WACC）
+- 生成企业价值和股权估值
 
-### 2. Sensitivity Analysis
-- Test key assumptions impact on valuation
-- Create data tables for multiple variables
-- Generate tornado charts for sensitivity ranking
-- Identify critical value drivers
+### 2. 敏感性分析
+- 测试关键假设对估值的影响
+- 为多个变量创建数据表
+- 生成敏感性排序的龙卷风图
+- 识别关键价值驱动因素
 
-### 3. Monte Carlo Simulation
-- Run thousands of scenarios with probability distributions
-- Model uncertainty in key inputs
-- Generate confidence intervals for valuations
-- Calculate probability of achieving targets
+### 3. 蒙特卡洛模拟
+- 运行数千个带有概率分布的情景
+- 对关键输入的不确定性建模
+- 生成估值的置信区间
+- 计算实现目标的概率
 
-### 4. Scenario Planning
-- Build best/base/worst case scenarios
-- Model different economic environments
-- Test strategic alternatives
-- Compare outcome probabilities
+### 4. 情景规划
+- 构建最佳/基准/最差情景
+- 模拟不同的经济环境
+- 测试战略选择
+- 比较结果概率
 
-## Input Requirements
+## 输入要求
 
-### For DCF Analysis
-- Historical financial statements (3-5 years)
-- Revenue growth assumptions
-- Operating margin projections
-- Capital expenditure forecasts
-- Working capital requirements
-- Terminal growth rate or exit multiple
-- Discount rate components (risk-free rate, beta, market premium)
+### DCF分析所需
+- 历史财务报表（3-5年）
+- 收入增长假设
+- 营业利润率预测
+- 资本支出预测
+- 营运资本需求
+- 终值增长率或退出倍数
+- 贴现率组成部分（无风险利率、贝塔、市场溢价）
 
-### For Sensitivity Analysis
-- Base case model
-- Variable ranges to test
-- Key metrics to track
+### 敏感性分析所需
+- 基准情况模型
+- 要测试的变量范围
+- 要跟踪的关键指标
 
-### For Monte Carlo Simulation
-- Probability distributions for uncertain variables
-- Correlation assumptions between variables
-- Number of iterations (typically 1,000-10,000)
+### 蒙特卡洛模拟所需
+- 不确定变量的概率分布
+- 变量之间的相关性假设
+- 迭代次数（通常为1,000-10,000）
 
-### For Scenario Planning
-- Scenario definitions and assumptions
-- Probability weights for scenarios
-- Key performance indicators to track
+### 情景规划所需
+- 情景定义和假设
+- 情景的概率权重
+- 要跟踪的关键绩效指标
 
-## Output Formats
+## 输出格式
 
-### DCF Model Output
-- Complete financial projections
-- Free cash flow calculations
-- Terminal value computation
-- Enterprise and equity value summary
-- Valuation multiples implied
-- Excel workbook with full model
+### DCF模型输出
+- 完整的财务预测
+- 自由现金流计算
+- 终值计算
+- 企业价值和股权价值摘要
+- 隐含估值倍数
+- 包含完整模型的Excel工作簿
 
-### Sensitivity Analysis Output
-- Sensitivity tables showing value ranges
-- Tornado chart of key drivers
-- Break-even analysis
-- Charts showing relationships
+### 敏感性分析输出
+- 显示数值范围的敏感性表
+- 关键驱动因素的龙卷风图
+- 盈亏平衡分析
+- 显示关系的图表
 
-### Monte Carlo Output
-- Probability distribution of valuations
-- Confidence intervals (e.g., 90%, 95%)
-- Statistical summary (mean, median, std dev)
-- Risk metrics (VaR, probability of loss)
+### 蒙特卡洛输出
+- 估值的概率分布
+- 置信区间（例如，90%，95%）
+- 统计摘要（平均值、中位数、标准差）
+- 风险指标（VaR、亏损概率）
 
-### Scenario Planning Output
-- Scenario comparison table
-- Probability-weighted expected values
-- Decision tree visualization
-- Risk-return profiles
+### 情景规划输出
+- 情景对比表
+- 概率加权期望值
+- 决策树可视化
+- 风险-收益概况
 
-## Model Types Supported
+## 支持的模型类型
 
-1. **Corporate Valuation**
-   - Mature companies with stable cash flows
-   - Growth companies with J-curve projections
-   - Turnaround situations
+1. **企业估值**
+   - 具有稳定现金流的成熟公司
+   - 具有J型曲线预测的增长型公司
+   - 重组情况
 
-2. **Project Finance**
-   - Infrastructure projects
-   - Real estate developments
-   - Energy projects
+2. **项目融资**
+   - 基础设施项目
+   - 房地产开发
+   - 能源项目
 
-3. **M&A Analysis**
-   - Acquisition valuations
-   - Synergy modeling
-   - Accretion/dilution analysis
+3. **并购分析**
+   - 收购估值
+   - 协同效应建模
+   - 增厚/摊薄分析
 
-4. **LBO Models**
-   - Leveraged buyout analysis
-   - Returns analysis (IRR, MOIC)
-   - Debt capacity assessment
+4. **杠杆收购模型**
+   - 杠杆收购分析
+   - 回报分析（IRR、MOIC）
+   - 债务能力评估
 
-## Best Practices Applied
+## 应用的最佳实践
 
-### Modeling Standards
-- Consistent formatting and structure
-- Clear assumption documentation
-- Separation of inputs, calculations, outputs
-- Error checking and validation
-- Version control and change tracking
+### 建模标准
+- 一致的格式和结构
+- 清晰的假设文档
+- 输入、计算、输出的分离
+- 错误检查和验证
+- 版本控制和变更跟踪
 
-### Valuation Principles
-- Use multiple valuation methods for triangulation
-- Apply appropriate risk adjustments
-- Consider market comparables
-- Validate against trading multiples
-- Document key assumptions clearly
+### 估值原则
+- 使用多种估值方法进行三角测量
+- 应用适当的风险调整
+- 考虑市场可比公司
+- 根据交易倍数验证
+- 清楚地记录关键假设
 
-### Risk Management
-- Identify and quantify key risks
-- Use probability-weighted scenarios
-- Stress test extreme cases
-- Consider correlation effects
-- Provide confidence intervals
+### 风险管理
+- 识别和量化关键风险
+- 使用概率加权情景
+- 极端情况压力测试
+- 考虑相关性效应
+- 提供置信区间
 
-## Example Usage
+## 使用示例
 
-"Build a DCF model for this technology company using the attached financials"
+"使用附带的财务数据为这家科技公司构建DCF模型"
 
-"Run a Monte Carlo simulation on this acquisition model with 5,000 iterations"
+"对这个收购模型进行5,000次迭代的蒙特卡洛模拟"
 
-"Create sensitivity analysis showing impact of growth rate and WACC on valuation"
+"创建显示增长率和WACC对估值影响的敏感性分析"
 
-"Develop three scenarios for this expansion project with probability weights"
+"为这个扩张项目开发三个具有概率权重的情景"
 
-## Scripts Included
+## 包含的脚本
 
-- `dcf_model.py`: Complete DCF valuation engine
-- `sensitivity_analysis.py`: Sensitivity testing framework
+- `dcf_model.py`: 完整的DCF估值引擎
+- `sensitivity_analysis.py`: 敏感性测试框架
 
-## Limitations and Disclaimers
+## 限制和免责声明
 
-- Models are only as good as their assumptions
-- Past performance doesn't guarantee future results
-- Market conditions can change rapidly
-- Regulatory and tax changes may impact results
-- Professional judgment required for interpretation
-- Not a substitute for professional financial advice
+- 模型的好坏取决于其假设
+- 过往表现不代表未来结果
+- 市场状况可能快速变化
+- 法规和税收变化可能影响结果
+- 解释需要专业判断
+- 不能替代专业财务建议
 
-## Quality Checks
+## 质量检查
 
-The model automatically performs:
-1. Balance sheet balancing checks
-2. Cash flow reconciliation
-3. Circular reference resolution
-4. Sensitivity bound checking
-5. Statistical validation of Monte Carlo results
+模型自动执行：
+1. 资产负债表平衡检查
+2. 现金流对账
+3. 循环引用解析
+4. 敏感性边界检查
+5. 蒙特卡洛结果的统计验证
 
-## Updates and Maintenance
+## 更新和维护
 
-- Models use latest financial theory and practices
-- Regular updates for market parameter defaults
-- Incorporation of regulatory changes
-- Continuous improvement based on usage patterns
+- 模型使用最新的金融理论和实践
+- 定期更新市场参数默认值
+- 纳入监管变化
+- 基于使用模式的持续改进

@@ -1,20 +1,20 @@
-# Building Effective Agents Cookbook
+# 构建高效代理指南手册
 
-Reference implementation for [Building Effective Agents](https://anthropic.com/research/building-effective-agents) by Erik Schluntz and Barry Zhang.
+Erik Schluntz 和 Barry Zhang 的[构建高效代理](https://anthropic.com/research/building-effective-agents)参考实现。
 
-This repository contains example minimal implementations of common agent workflows discussed in the blog:
+本仓库包含博客中讨论的常见代理工作流程的最小实现示例：
 
-- Basic Building Blocks
-  - Prompt Chaining
-  - Routing
-  - Multi-LLM Parallelization
-- Advanced Workflows
-  - Orchestrator-Subagents
-  - Evaluator-Optimizer
+- 基本构建模块
+  - 提示链
+  - 路由
+  - 多LLM并行化
+- 高级工作流程
+  - 协调器-子代理
+  - 评估器-优化器
 
-## Getting Started
-See the Jupyter notebooks for detailed examples:
+## 开始使用
+查看Jupyter笔记本以获取详细示例：
 
-- [Basic Workflows](basic_workflows.ipynb)
-- [Evaluator-Optimizer Workflow](evaluator_optimizer.ipynb) 
-- [Orchestrator-Workers Workflow](orchestrator_workers.ipynb)
+- [基本工作流程](basic_workflows.ipynb)
+- [评估器-优化器工作流程](evaluator_optimizer.ipynb)
+- [协调器-工作者工作流程](orchestrator_workers.ipynb)

@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
-Brand Validation Script
-Validates content against brand guidelines including colors, fonts, tone, and messaging.
+品牌验证脚本
+根据品牌指南验证内容，包括颜色、字体、语调和消息。
 """
 
 import re
@@ -12,7 +12,7 @@ from dataclasses import dataclass, asdict
 
 @dataclass
 class BrandGuidelines:
-    """Brand guidelines configuration"""
+    """品牌指南配置"""
 
     brand_name: str
     primary_colors: List[str]
@@ -26,7 +26,7 @@ class BrandGuidelines:
 
 @dataclass
 class ValidationResult:
-    """Result of brand validation"""
+    """品牌验证结果"""
 
     passed: bool
     score: float
@@ -36,24 +36,24 @@ class ValidationResult:
 
 
 class BrandValidator:
-    """Validates content against brand guidelines"""
+    """根据品牌指南验证内容"""
 
     def __init__(self, guidelines: BrandGuidelines):
         self.guidelines = guidelines
 
     def validate_colors(self, content: str) -> Tuple[List[str], List[str]]:
         """
-        Validate color usage in content (hex codes, RGB, color names)
+        验证内容中的颜色使用（十六进制代码、RGB、颜色名称）
         Returns: (violations, warnings)
         """
         violations = []
         warnings = []
 
-        # Find hex colors
+        # 查找十六进制颜色
         hex_pattern = r"#[0-9A-Fa-f]{6}|#[0-9A-Fa-f]{3}"
         found_colors = re.findall(hex_pattern, content)
 
-        # Find RGB colors
+        # 查找RGB颜色
         rgb_pattern = r"rgb\s*\(\s*\d{1,3}\s*,\s*\d{1,3}\s*,\s*\d{1,3}\s*\)"
         found_colors.extend(re.findall(rgb_pattern, content, re.IGNORECASE))
 
@@ -61,19 +61,19 @@ class BrandValidator:
 
         for color in found_colors:
             if color.upper() not in [c.upper() for c in approved_colors]:
-                violations.append(f"Unapproved color used: {color}")
+                violations.append(f"使用了未批准的颜色: {color}")
 
         return violations, warnings
 
     def validate_fonts(self, content: str) -> Tuple[List[str], List[str]]:
         """
-        Validate font usage in content
+        验证内容中的字体使用
         Returns: (violations, warnings)
         """
         violations = []
         warnings = []
 
-        # Common font specification patterns
+        # 常见字体规范模式
         font_patterns = [
             r'font-family\s*:\s*["\']?([^;"\']+)["\']?',
             r"font:\s*[^;]*\s+([A-Za-z][A-Za-z\s]+)(?:,|;|\s+\d)",
@@ -86,62 +86,62 @@ class BrandValidator:
 
         for font in found_fonts:
             font_clean = font.strip().lower()
-            # Check if any approved font is in the found font string
+            # 检查发现的字体字符串中是否包含任何批准的字体
             if not any(approved.lower() in font_clean for approved in self.guidelines.fonts):
-                violations.append(f"Unapproved font used: {font}")
+                violations.append(f"使用了未批准的字体: {font}")
 
         return violations, warnings
 
     def validate_tone(self, content: str) -> Tuple[List[str], List[str]]:
         """
-        Validate tone and messaging
+        验证语调和消息
         Returns: (violations, warnings)
         """
         violations = []
         warnings = []
 
-        # Check for prohibited words
+        # 检查禁用词
         content_lower = content.lower()
         for word in self.guidelines.prohibited_words:
             if word.lower() in content_lower:
-                violations.append(f"Prohibited word/phrase used: '{word}'")
+                violations.append(f"使用了禁用词/短语: '{word}'")
 
-        # Check for tone keywords (should have at least some)
+        # 检查语调关键词（应至少包含一些）
         tone_matches = sum(
             1 for keyword in self.guidelines.tone_keywords if keyword.lower() in content_lower
         )
 
         if tone_matches == 0 and len(content) > 100:
             warnings.append(
-                f"Content may not align with brand tone. "
-                f"Consider using terms like: {', '.join(self.guidelines.tone_keywords[:5])}"
+                f"内容可能不符合品牌语调。 "
+                f"考虑使用这样的术语: {', '.join(self.guidelines.tone_keywords[:5])}"
             )
 
         return violations, warnings
 
     def validate_brand_name(self, content: str) -> Tuple[List[str], List[str]]:
         """
-        Validate brand name usage and capitalization
+        验证品牌名称的使用和大写
         Returns: (violations, warnings)
         """
         violations = []
         warnings = []
 
-        # Find all variations of the brand name
+        # 查找品牌名称的所有变体
         brand_pattern = re.compile(re.escape(self.guidelines.brand_name), re.IGNORECASE)
         matches = brand_pattern.findall(content)
 
         for match in matches:
             if match != self.guidelines.brand_name:
                 violations.append(
-                    f"Incorrect brand name capitalization: '{match}' "
-                    f"should be '{self.guidelines.brand_name}'"
+                    f"品牌名称大写不正确: '{match}' "
+                    f"应为 '{self.guidelines.brand_name}'"
                 )
 
         return violations, warnings
 
     def calculate_score(self, violations: List[str], warnings: List[str]) -> float:
-        """Calculate compliance score (0-100)"""
+        """计算合规分数 (0-100)"""
         violation_penalty = len(violations) * 10
         warning_penalty = len(warnings) * 3
 
@@ -149,36 +149,36 @@ class BrandValidator:
         return round(score, 2)
 
     def generate_suggestions(self, violations: List[str], warnings: List[str]) -> List[str]:
-        """Generate helpful suggestions based on violations and warnings"""
+        """根据违规和警告生成有用的建议"""
         suggestions = []
 
         if any("color" in v.lower() for v in violations):
             suggestions.append(
-                f"Use approved colors: Primary: {', '.join(self.guidelines.primary_colors[:3])}"
+                f"使用批准的颜色: 主要: {', '.join(self.guidelines.primary_colors[:3])}"
             )
 
         if any("font" in v.lower() for v in violations):
-            suggestions.append(f"Use approved fonts: {', '.join(self.guidelines.fonts)}")
+            suggestions.append(f"使用批准的字体: {', '.join(self.guidelines.fonts)}")
 
         if any("tone" in w.lower() for w in warnings):
             suggestions.append(
-                f"Incorporate brand tone keywords: {', '.join(self.guidelines.tone_keywords[:5])}"
+                f"融入品牌语调关键词: {', '.join(self.guidelines.tone_keywords[:5])}"
             )
 
         if any("brand name" in v.lower() for v in violations):
-            suggestions.append(f"Always capitalize brand name as: {self.guidelines.brand_name}")
+            suggestions.append(f"始终将品牌名称大写为: {self.guidelines.brand_name}")
 
         return suggestions
 
     def validate(self, content: str) -> ValidationResult:
         """
-        Perform complete brand validation
+        执行完整的品牌验证
         Returns: ValidationResult
         """
         all_violations = []
         all_warnings = []
 
-        # Run all validation checks
+        # 运行所有验证检查
         color_v, color_w = self.validate_colors(content)
         all_violations.extend(color_v)
         all_warnings.extend(color_w)
@@ -195,7 +195,7 @@ class BrandValidator:
         all_violations.extend(brand_v)
         all_warnings.extend(brand_w)
 
-        # Calculate score and generate suggestions
+        # 计算分数并生成建议
         score = self.calculate_score(all_violations, all_warnings)
         suggestions = self.generate_suggestions(all_violations, all_warnings)
 
@@ -210,113 +210,112 @@ class BrandValidator:
 
 def load_guidelines_from_json(filepath: str) -> BrandGuidelines:
     """
-    Load brand guidelines from JSON file
+    从JSON文件加载品牌指南
 
     Args:
-        filepath: Path to JSON file containing brand guidelines
+        filepath: 包含品牌指南的JSON文件路径
 
     Returns:
-        BrandGuidelines object
+        BrandGuidelines 对象
 
     Raises:
-        FileNotFoundError: If the file doesn't exist
-        json.JSONDecodeError: If the file contains invalid JSON
-        TypeError: If required fields are missing
+        FileNotFoundError: 如果文件不存在
+        json.JSONDecodeError: 如果文件包含无效JSON
+        TypeError: 如果缺少必需字段
     """
     try:
         with open(filepath, "r") as f:
             data = json.load(f)
         return BrandGuidelines(**data)
     except FileNotFoundError:
-        raise FileNotFoundError(f"Brand guidelines file not found: {filepath}")
+        raise FileNotFoundError(f"找不到品牌指南文件: {filepath}")
     except json.JSONDecodeError as e:
-        raise json.JSONDecodeError(f"Invalid JSON in brand guidelines file: {e.msg}", e.doc, e.pos)
+        raise json.JSONDecodeError(f"品牌指南文件中的JSON无效: {e.msg}", e.doc, e.pos)
     except TypeError as e:
-        raise TypeError(f"Missing required fields in brand guidelines: {e}")
+        raise TypeError(f"品牌指南中缺少必需字段: {e}")
 
 
 def get_acme_corporation_guidelines() -> BrandGuidelines:
     """
-    Get default Acme Corporation brand guidelines.
+    获取默认的Acme Corporation品牌指南。
 
-    These guidelines match the standards defined in the SKILL.md reference.
-    Users should customize these for their own organization.
+    这些指南与SKILL.md参考中定义的标准相匹配。
+    用户应为其自己的组织自定义这些。
 
     Returns:
-        BrandGuidelines object with Acme Corporation standards
     """
     return BrandGuidelines(
         brand_name="Acme Corporation",
-        primary_colors=["#0066CC", "#003366", "#FFFFFF"],  # Acme Blue, Acme Navy, White
+        primary_colors=["#0066CC", "#003366", "#FFFFFF"],  # Acme 蓝、Acme 海军蓝、白色
         secondary_colors=[
             "#28A745",
             "#FFC107",
             "#DC3545",
             "#6C757D",
             "#F8F9FA",
-        ],  # Success Green, Warning Amber, Error Red, Neutral Gray, Light Gray
+        ],  # 成功绿、警告琥珀、错误红、中性灰、浅灰
         fonts=["Segoe UI", "system-ui", "-apple-system", "sans-serif"],
         tone_keywords=[
-            "innovation",
-            "excellence",
-            "professional",
-            "solutions",
-            "trusted",
-            "reliable",
+            "创新",
+            "卓越",
+            "专业",
+            "解决方案",
+            "值得信赖",
+            "可靠",
         ],
-        prohibited_words=["cheap", "outdated", "inferior", "unprofessional", "sloppy"],
-        tagline="Innovation Through Excellence",
+        prohibited_words=["廉价", "过时", "劣质", "不专业", "草率"],
+        tagline="卓越创新",
     )
 
 
 def main():
-    """Example usage demonstrating brand validation"""
-    # Load Acme Corporation brand guidelines
-    # Users should customize this for their own organization
+    """演示品牌验证的示例用法"""
+    # 加载Acme Corporation品牌指南
+    # 用户应为其自己的组织自定义这个
     guidelines = get_acme_corporation_guidelines()
 
-    # Example content to validate (intentionally contains violations for demonstration)
+    # 要验证的示例内容（故意包含违规以供演示）
     test_content = """
-    Welcome to acme corporation!
+    欢迎来到acme corporation！
 
-    We are a cheap solution provider with outdated technology.
+    我们是一家提供过时技术的廉价解决方案提供商。
 
-    Our innovation and excellence in professional solutions are trusted by many.
+    我们在专业解决方案方面的创新和卓越值得信赖。
 
-    Contact us at: font-family: 'Comic Sans MS'
-    Color scheme: #FF0000
-    Background: rgb(255, 0, 0)
+    联系我们：font-family: 'Comic Sans MS'
+    配色方案：#FF0000
+    背景：rgb(255, 0, 0)
     """
 
-    # Validate
+    # 验证
     validator = BrandValidator(guidelines)
     result = validator.validate(test_content)
 
-    # Print results
+    # 打印结果
     print("=" * 60)
-    print("BRAND VALIDATION REPORT")
+    print("品牌验证报告")
     print("=" * 60)
-    print(f"\nOverall Status: {'✓ PASSED' if result.passed else '✗ FAILED'}")
-    print(f"Compliance Score: {result.score}/100")
+    print(f"\n总体状态: {'✓ 通过' if result.passed else '✗ 失败'}")
+    print(f"合规分数: {result.score}/100")
 
     if result.violations:
-        print(f"\n❌ VIOLATIONS ({len(result.violations)}):")
+        print(f"\n❌ 违规 ({len(result.violations)}):")
         for i, violation in enumerate(result.violations, 1):
             print(f"  {i}. {violation}")
 
     if result.warnings:
-        print(f"\n⚠️  WARNINGS ({len(result.warnings)}):")
+        print(f"\n⚠️  警告 ({len(result.warnings)}):")
         for i, warning in enumerate(result.warnings, 1):
             print(f"  {i}. {warning}")
 
     if result.suggestions:
-        print("\n💡 SUGGESTIONS:")
+        print("\n💡 建议:")
         for i, suggestion in enumerate(result.suggestions, 1):
             print(f"  {i}. {suggestion}")
 
     print("\n" + "=" * 60)
 
-    # Return JSON for programmatic use
+    # 返回JSON以供程序化使用
     return asdict(result)
 
 

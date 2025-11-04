@@ -1,69 +1,69 @@
 ---
 name: analyzing-financial-statements
-description: This skill calculates key financial ratios and metrics from financial statement data for investment analysis
+description: 该技能从财务报表数据中计算关键财务比率和指标，用于投资分析
 ---
 
-# Financial Ratio Calculator Skill
+# 财务比率计算器技能
 
-This skill provides comprehensive financial ratio analysis for evaluating company performance, profitability, liquidity, and valuation.
+该技能提供全面的财务比率分析，用于评估公司业绩、盈利能力、流动性和估值。
 
-## Capabilities
+## 功能
 
-Calculate and interpret:
-- **Profitability Ratios**: ROE, ROA, Gross Margin, Operating Margin, Net Margin
-- **Liquidity Ratios**: Current Ratio, Quick Ratio, Cash Ratio
-- **Leverage Ratios**: Debt-to-Equity, Interest Coverage, Debt Service Coverage
-- **Efficiency Ratios**: Asset Turnover, Inventory Turnover, Receivables Turnover
-- **Valuation Ratios**: P/E, P/B, P/S, EV/EBITDA, PEG
-- **Per-Share Metrics**: EPS, Book Value per Share, Dividend per Share
+计算和解释：
+- **盈利能力比率**：ROE、ROA、毛利率、营业利润率、净利润率
+- **流动性比率**：流动比率、速动比率、现金比率
+- **杠杆比率**：负债权益比、利息覆盖率、债务服务覆盖率
+- **效率比率**：资产周转率、存货周转率、应收账款周转率
+- **估值比率**：市盈率、市净率、市销率、企业价值倍数、PEG比率
+- **每股指标**：每股收益、每股账面价值、每股股利
 
-## How to Use
+## 使用方法
 
-1. **Input Data**: Provide financial statement data (income statement, balance sheet, cash flow)
-2. **Select Ratios**: Specify which ratios to calculate or use "all" for comprehensive analysis
-3. **Interpretation**: The skill will calculate ratios and provide industry-standard interpretations
+1. **输入数据**：提供财务报表数据（损益表、资产负债表、现金流量表）
+2. **选择比率**：指定要计算的比率或使用"全部"进行综合分析
+3. **解释说明**：该技能将计算比率并提供行业标准的解释
 
-## Input Format
+## 输入格式
 
-Financial data can be provided as:
-- CSV with financial line items
-- JSON with structured financial statements
-- Text description of key financial figures
-- Excel files with financial statements
+财务数据可以以下列形式提供：
+- 带有财务项目的CSV文件
+- 结构化财务报表的JSON格式
+- 关键财务数据的文本描述
+- 包含财务报表的Excel文件
 
-## Output Format
+## 输出格式
 
-Results include:
-- Calculated ratios with values
-- Industry benchmark comparisons (when available)
-- Trend analysis (if multiple periods provided)
-- Interpretation and insights
-- Excel report with formatted results
+结果包括：
+- 计算出的比率及其数值
+- 行业基准比较（如可用）
+- 趋势分析（如提供多个期间）
+- 解释说明和洞察
+- 包含格式化结果的Excel报告
 
-## Example Usage
+## 使用示例
 
-"Calculate key financial ratios for this company based on the attached financial statements"
+"根据附带的财务报表计算该公司的关键财务比率"
 
-"What's the P/E ratio if the stock price is $50 and annual earnings are $2.50 per share?"
+"如果股价为50美元，每股年度收益为2.50美元，市盈率是多少？"
 
-"Analyze the liquidity position using the balance sheet data"
+"使用资产负债表数据分析流动性状况"
 
-## Scripts
+## 脚本文件
 
-- `calculate_ratios.py`: Main calculation engine for all financial ratios
-- `interpret_ratios.py`: Provides interpretation and benchmarking
+- `calculate_ratios.py`：所有财务比率的主要计算引擎
+- `interpret_ratios.py`：提供解释和基准比较
 
-## Best Practices
+## 最佳实践
 
-1. Always validate data completeness before calculations
-2. Handle missing values appropriately (use industry averages or exclude)
-3. Consider industry context when interpreting ratios
-4. Include period comparisons for trend analysis
-5. Flag unusual or concerning ratios
+1. 在计算前始终验证数据的完整性
+2. 适当地处理缺失值（使用行业平均值或排除）
+3. 解释比率时考虑行业背景
+4. 包含期间比较以进行趋势分析
+5. 标记异常或令人担忧的比率
 
-## Limitations
+## 局限性
 
-- Requires accurate financial data
-- Industry benchmarks are general guidelines
-- Some ratios may not apply to all industries
-- Historical data doesn't guarantee future performance
+- 需要准确的财务数据
+- 行业基准是一般性指导
+- 某些比率可能不适用于所有行业
+- 历史数据不能保证未来表现

@@ -5,18 +5,18 @@ from detect_secrets.core.log import log
 
 
 class AnthropicSecretsDetector(BasePlugin):
-    """Scans for common API keys and credentials in notebooks."""
+    """扫描笔记本中常见的API密钥和凭据。"""
 
-    log.info("Running Anthropic Secrets Detector")
+    log.info("正在运行Anthropic密钥检测器")
     secret_type = "API Credentials"  # type: ignore
 
     denylist = [
-        # Anthropic API keys (sk-ant-api03-...)
+        # Anthropic API密钥 (sk-ant-api03-...)
         re.compile(r"sk-ant-api03-[A-Za-z0-9_-]{95,}"),
-        # Other API keys (sk-...)
+        # 其他API密钥 (sk-...)
         re.compile(r"sk-[A-Za-z0-9]{48,}"),
         re.compile(r"pa-[A-Za-z0-9]{48,}"),
-        # Generic API key patterns
+        # 通用API密钥模式
         re.compile(r'api[_-]?key[\'"\s]*[:=][\'"\s]*[A-Za-z0-9_\-]{20,}', re.IGNORECASE),
         re.compile(r'apikey[\'"\s]*[:=][\'"\s]*[A-Za-z0-9_\-]{20,}', re.IGNORECASE),
     ]

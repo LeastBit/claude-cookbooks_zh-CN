@@ -1,15 +1,15 @@
 """
-Financial ratio interpretation module.
-Provides industry benchmarks and contextual analysis.
+财务比率解释模块。
+提供行业基准和背景分析。
 """
 
 from typing import Dict, Any, List, Optional
 
 
 class RatioInterpreter:
-    """Interpret financial ratios with industry context."""
+    """使用行业背景解释财务比率。"""
 
-    # Industry benchmark ranges (simplified for demonstration)
+    # 行业基准范围（为演示简化）
     BENCHMARKS = {
         "technology": {
             "current_ratio": {"excellent": 2.5, "good": 1.8, "acceptable": 1.2, "poor": 1.0},
@@ -49,16 +49,16 @@ class RatioInterpreter:
 
     def __init__(self, industry: str = "general"):
         """
-        Initialize interpreter with industry context.
+        使用行业背景初始化解释器。
 
         Args:
-            industry: Industry sector for benchmarking
+            industry: 用于基准比较的行业部门
         """
         self.industry = industry.lower()
         self.benchmarks = self.BENCHMARKS.get(self.industry, self._get_general_benchmarks())
 
     def _get_general_benchmarks(self) -> Dict[str, Any]:
-        """Get general industry-agnostic benchmarks."""
+        """获取通用的行业无关基准。"""
         return {
             "current_ratio": {"excellent": 2.0, "good": 1.5, "acceptable": 1.0, "poor": 0.8},
             "debt_to_equity": {"excellent": 0.5, "good": 1.0, "acceptable": 1.5, "poor": 2.5},
@@ -69,14 +69,14 @@ class RatioInterpreter:
 
     def interpret_ratio(self, ratio_name: str, value: float) -> Dict[str, Any]:
         """
-        Interpret a single ratio with context.
+        在背景下解释单个比率。
 
         Args:
-            ratio_name: Name of the ratio
-            value: Calculated ratio value
+            ratio_name: 比率的名称
+            value: 计算的比率值
 
         Returns:
-            Dictionary with interpretation details
+            包含解释详情的字典
         """
         interpretation = {
             "value": value,
@@ -90,60 +90,60 @@ class RatioInterpreter:
             benchmark = self.benchmarks[ratio_name]
             interpretation["benchmark_comparison"] = benchmark
 
-            # Determine rating based on benchmarks
+            # 基于基准确定评级
             if ratio_name in ["current_ratio", "roe", "gross_margin"]:
-                # Higher is better
+                # 越高越好
                 if value >= benchmark["excellent"]:
-                    interpretation["rating"] = "Excellent"
+                    interpretation["rating"] = "优秀"
                     interpretation["message"] = (
-                        "Performance significantly exceeds industry standards"
+                        "业绩显著超过行业标准"
                     )
                 elif value >= benchmark["good"]:
-                    interpretation["rating"] = "Good"
+                    interpretation["rating"] = "良好"
                     interpretation["message"] = (
-                        f"Above average performance for {self.industry} industry"
+                        f"在{self.industry}行业中表现优于平均水平"
                     )
                 elif value >= benchmark["acceptable"]:
-                    interpretation["rating"] = "Acceptable"
-                    interpretation["message"] = "Meets industry standards"
+                    interpretation["rating"] = "可接受"
+                    interpretation["message"] = "符合行业标准"
                 else:
-                    interpretation["rating"] = "Poor"
-                    interpretation["message"] = "Below industry standards - attention needed"
+                    interpretation["rating"] = "较差"
+                    interpretation["message"] = "低于行业标准 - 需要关注"
 
             elif ratio_name == "debt_to_equity":
-                # Lower is better
+                # 越低越好
                 if value <= benchmark["excellent"]:
-                    interpretation["rating"] = "Excellent"
-                    interpretation["message"] = "Very conservative capital structure"
+                    interpretation["rating"] = "优秀"
+                    interpretation["message"] = "非常保守的资本结构"
                 elif value <= benchmark["good"]:
-                    interpretation["rating"] = "Good"
-                    interpretation["message"] = "Healthy leverage level"
+                    interpretation["rating"] = "良好"
+                    interpretation["message"] = "健康的杠杆水平"
                 elif value <= benchmark["acceptable"]:
-                    interpretation["rating"] = "Acceptable"
-                    interpretation["message"] = "Moderate leverage"
+                    interpretation["rating"] = "可接受"
+                    interpretation["message"] = "适度杠杆"
                 else:
-                    interpretation["rating"] = "Poor"
-                    interpretation["message"] = "High leverage - potential risk"
+                    interpretation["rating"] = "较差"
+                    interpretation["message"] = "高杠杆 - 潜在风险"
 
             elif ratio_name == "pe_ratio":
-                # Context-dependent
+                # 取决于背景
                 if value > 0:
                     if value < benchmark["undervalued"]:
-                        interpretation["rating"] = "Potentially Undervalued"
+                        interpretation["rating"] = "可能被低估"
                         interpretation["message"] = (
-                            f"Trading below typical {self.industry} multiples"
+                            f"交易低于典型的{self.industry}倍数"
                         )
                     elif value < benchmark["fair"]:
-                        interpretation["rating"] = "Fair Value"
-                        interpretation["message"] = "In line with industry averages"
+                        interpretation["rating"] = "公允价值"
+                        interpretation["message"] = "与行业平均水平一致"
                     elif value < benchmark["growth"]:
-                        interpretation["rating"] = "Growth Premium"
-                        interpretation["message"] = "Market pricing in growth expectations"
+                        interpretation["rating"] = "增长溢价"
+                        interpretation["message"] = "市场定价包含增长预期"
                     else:
-                        interpretation["rating"] = "Expensive"
-                        interpretation["message"] = "High valuation relative to industry"
+                        interpretation["rating"] = "昂贵"
+                        interpretation["message"] = "相对于行业估值较高"
 
-        # Add specific recommendations
+        # 添加具体建议
         interpretation["recommendation"] = self._get_recommendation(
             ratio_name, interpretation["rating"]
         )
@@ -151,109 +151,109 @@ class RatioInterpreter:
         return interpretation
 
     def _get_recommendation(self, ratio_name: str, rating: str) -> str:
-        """Generate actionable recommendations based on ratio and rating."""
+        """基于比率和评级生成可操作的建议。"""
         recommendations = {
             "current_ratio": {
-                "Poor": "Consider improving working capital management, reducing short-term debt, or increasing liquid assets",
-                "Acceptable": "Monitor liquidity closely and consider building additional cash reserves",
-                "Good": "Maintain current liquidity management practices",
-                "Excellent": "Strong liquidity position - consider productive use of excess cash",
+                "较差": "考虑改善营运资本管理，减少短期债务或增加流动资产",
+                "可接受": "密切监控流动性并考虑建立额外现金储备",
+                "良好": "维持当前的流动性管理实践",
+                "优秀": "强劲的流动性状况 - 考虑有效利用多余现金",
             },
             "debt_to_equity": {
-                "Poor": "High leverage increases financial risk - consider debt reduction strategies",
-                "Acceptable": "Monitor debt levels and ensure adequate interest coverage",
-                "Good": "Balanced capital structure - maintain current approach",
-                "Excellent": "Conservative leverage - may consider strategic use of debt for growth",
+                "较差": "高杠杆增加财务风险 - 考虑债务减少策略",
+                "可接受": "监控债务水平并确保足够的利息覆盖率",
+                "良好": "平衡的资本结构 - 维持当前方法",
+                "优秀": "保守杠杆 - 可考虑战略性使用债务促进增长",
             },
             "roe": {
-                "Poor": "Focus on improving operational efficiency and profitability",
-                "Acceptable": "Explore opportunities to enhance returns through operational improvements",
-                "Good": "Solid returns - continue current strategies",
-                "Excellent": "Outstanding performance - ensure sustainability of high returns",
+                "较差": "专注于提高运营效率和盈利能力",
+                "可接受": "探索通过运营改进增强回报的机会",
+                "良好": "稳健回报 - 继续当前策略",
+                "优秀": "杰出表现 - 确保高回报的可持续性",
             },
             "pe_ratio": {
-                "Potentially Undervalued": "May present buying opportunity if fundamentals are solid",
-                "Fair Value": "Reasonably priced relative to industry peers",
-                "Growth Premium": "Ensure growth prospects justify premium valuation",
-                "Expensive": "Consider valuation risk - ensure fundamentals support high multiple",
+                "可能被低估": "如果基本面坚实，可能呈现买入机会",
+                "公允价值": "相对于同行同业定价合理",
+                "增长溢价": "确保增长前景支撑溢价估值",
+                "昂贵": "考虑估值风险 - 确保基本面支撑高倍数",
             },
         }
 
         if ratio_name in recommendations and rating in recommendations[ratio_name]:
             return recommendations[ratio_name][rating]
 
-        return "Continue monitoring this metric"
+        return "继续监控该指标"
 
     def analyze_trend(
         self, ratio_name: str, values: List[float], periods: List[str]
     ) -> Dict[str, Any]:
         """
-        Analyze trend in a ratio over time.
+        分析比率随时间变化的趋势。
 
         Args:
-            ratio_name: Name of the ratio
-            values: List of ratio values
-            periods: List of period labels
+            ratio_name: 比率的名称
+            values: 比率值列表
+            periods: 期间标签列表
 
         Returns:
-            Trend analysis dictionary
+            趋势分析字典
         """
         if len(values) < 2:
             return {
-                "trend": "Insufficient data",
-                "message": "Need at least 2 periods for trend analysis",
+                "trend": "数据不足",
+                "message": "趋势分析至少需要2个期间",
             }
 
-        # Calculate trend
+        # 计算趋势
         first_value = values[0]
         last_value = values[-1]
         change = last_value - first_value
         pct_change = (change / abs(first_value)) * 100 if first_value != 0 else 0
 
-        # Determine trend direction
+        # 确定趋势方向
         if abs(pct_change) < 5:
-            trend = "Stable"
+            trend = "稳定"
         elif pct_change > 0:
-            trend = "Improving" if ratio_name != "debt_to_equity" else "Deteriorating"
+            trend = "改善" if ratio_name != "debt_to_equity" else "恶化"
         else:
-            trend = "Deteriorating" if ratio_name != "debt_to_equity" else "Improving"
+            trend = "恶化" if ratio_name != "debt_to_equity" else "改善"
 
         return {
             "trend": trend,
             "change": change,
             "pct_change": pct_change,
-            "message": f"{ratio_name} has {'increased' if change > 0 else 'decreased'} by {abs(pct_change):.1f}% from {periods[0]} to {periods[-1]}",
+            "message": f"{ratio_name}从{periods[0]}到{periods[-1]}{'增加' if change > 0 else '减少'}了{abs(pct_change):.1f}%",
             "values": list(zip(periods, values)),
         }
 
     def generate_report(self, ratios: Dict[str, Any]) -> str:
         """
-        Generate a comprehensive interpretation report.
+        生成全面的解释报告。
 
         Args:
-            ratios: Dictionary of calculated ratios
+            ratios: 计算比率的字典
 
         Returns:
-            Formatted report string
+            格式化报告字符串
         """
         report_lines = [
-            f"Financial Analysis Report - {self.industry.title()} Industry Context",
+            f"财务分析报告 - {self.industry.title()}行业背景",
             "=" * 70,
             "",
         ]
 
         for category, category_ratios in ratios.items():
-            report_lines.append(f"\n{category.upper()} ANALYSIS")
+            report_lines.append(f"\n{category.upper()}分析")
             report_lines.append("-" * 40)
 
             for ratio_name, value in category_ratios.items():
                 if isinstance(value, (int, float)):
                     interpretation = self.interpret_ratio(ratio_name, value)
                     report_lines.append(f"\n{ratio_name.replace('_', ' ').title()}:")
-                    report_lines.append(f"  Value: {value:.2f}")
-                    report_lines.append(f"  Rating: {interpretation['rating']}")
-                    report_lines.append(f"  Analysis: {interpretation['message']}")
-                    report_lines.append(f"  Action: {interpretation['recommendation']}")
+                    report_lines.append(f"  数值: {value:.2f}")
+                    report_lines.append(f"  评级: {interpretation['rating']}")
+                    report_lines.append(f"  分析: {interpretation['message']}")
+                    report_lines.append(f"  建议: {interpretation['recommendation']}")
 
         return "\n".join(report_lines)
 
@@ -264,15 +264,15 @@ def perform_comprehensive_analysis(
     historical_data: Optional[Dict[str, Any]] = None,
 ) -> Dict[str, Any]:
     """
-    Perform comprehensive ratio analysis with interpretations.
+    执行包含解释的综合比率分析。
 
     Args:
-        ratios: Calculated financial ratios
-        industry: Industry sector for benchmarking
-        historical_data: Optional historical ratio data for trend analysis
+        ratios: 计算的财务比率
+        industry: 用于基准比较的行业部门
+        historical_data: 用于趋势分析的可选历史比率数据
 
     Returns:
-        Complete analysis with interpretations and recommendations
+        包含解释和建议的完整分析
     """
     interpreter = RatioInterpreter(industry)
     analysis = {
@@ -282,7 +282,7 @@ def perform_comprehensive_analysis(
         "recommendations": [],
     }
 
-    # Analyze current ratios
+    # 分析当前比率
     for category, category_ratios in ratios.items():
         analysis["current_analysis"][category] = {}
         for ratio_name, value in category_ratios.items():
@@ -291,7 +291,7 @@ def perform_comprehensive_analysis(
                     ratio_name, value
                 )
 
-    # Perform trend analysis if historical data provided
+    # 如果提供历史数据，执行趋势分析
     if historical_data:
         for ratio_name, historical_values in historical_data.items():
             if "values" in historical_values and "periods" in historical_values:
@@ -299,79 +299,79 @@ def perform_comprehensive_analysis(
                     ratio_name, historical_values["values"], historical_values["periods"]
                 )
 
-    # Generate overall health assessment
+        # 生成整体健康状况评估
     analysis["overall_health"] = _assess_overall_health(analysis["current_analysis"])
 
-    # Generate key recommendations
+    # 生成关键建议
     analysis["recommendations"] = _generate_key_recommendations(analysis)
 
-    # Add formatted report
+    # 添加格式化报告
     analysis["report"] = interpreter.generate_report(ratios)
 
     return analysis
 
 
 def _assess_overall_health(current_analysis: Dict[str, Any]) -> Dict[str, str]:
-    """Assess overall financial health based on ratio analysis."""
+    """基于比率分析评估整体财务健康状况。"""
     ratings = []
     for category, category_analysis in current_analysis.items():
         for ratio_name, ratio_analysis in category_analysis.items():
             if "rating" in ratio_analysis:
                 ratings.append(ratio_analysis["rating"])
 
-    # Simple scoring system
+    # 简单评分系统
     score_map = {
-        "Excellent": 4,
-        "Good": 3,
-        "Acceptable": 2,
-        "Poor": 1,
-        "Fair Value": 3,
-        "Potentially Undervalued": 3,
-        "Growth Premium": 2,
-        "Expensive": 1,
+        "优秀": 4,
+        "良好": 3,
+        "可接受": 2,
+        "较差": 1,
+        "公允价值": 3,
+        "可能被低估": 3,
+        "增长溢价": 2,
+        "昂贵": 1,
     }
 
     scores = [score_map.get(rating, 2) for rating in ratings]
     avg_score = sum(scores) / len(scores) if scores else 0
 
     if avg_score >= 3.5:
-        health = "Excellent"
-        message = "Company shows strong financial health across most metrics"
+        health = "优秀"
+        message = "公司在大多数指标上显示出强劲的财务健康状况"
     elif avg_score >= 2.5:
-        health = "Good"
-        message = "Overall healthy financial position with some areas for improvement"
+        health = "良好"
+        message = "整体财务状况健康，在某些方面还有改进空间"
     elif avg_score >= 1.5:
-        health = "Fair"
-        message = "Mixed financial indicators - attention needed in several areas"
+        health = "一般"
+        message = "财务指标混合 - 在几个方面需要关注"
     else:
-        health = "Poor"
-        message = "Significant financial challenges requiring immediate attention"
+        health = "较差"
+        message = "存在重大财务挑战，需要立即关注"
 
     return {"status": health, "message": message, "score": f"{avg_score:.1f}/4.0"}
 
 
 def _generate_key_recommendations(analysis: Dict[str, Any]) -> List[str]:
-    """Generate prioritized recommendations based on analysis."""
+    """基于分析生成优先建议。"""
     recommendations = []
 
-    # Check for critical issues
+    # 检查关键问题
     for category, category_analysis in analysis["current_analysis"].items():
         for ratio_name, ratio_analysis in category_analysis.items():
-            if ratio_analysis.get("rating") == "Poor":
+            if ratio_analysis.get("rating") == "较差":
                 recommendations.append(
-                    f"Priority: Address {ratio_name.replace('_', ' ')} - {ratio_analysis.get('recommendation', '')}"
+                    f"优先事项：处理{ratio_name.replace('_', ' ')} - {ratio_analysis.get('recommendation', '')}"
                 )
 
-    # Add trend-based recommendations
+    # 添加基于趋势的建议
     for ratio_name, trend in analysis.get("trend_analysis", {}).items():
-        if trend.get("trend") == "Deteriorating":
+        if trend.get("trend") == "恶化":
             recommendations.append(
-                f"Monitor: {ratio_name.replace('_', ' ')} showing negative trend"
+                f"监控：{ratio_name.replace('_', ' ')}呈现负面趋势"
             )
 
-    # Add general recommendations if healthy
+    # 如果健康状况良好，添加一般建议
     if not recommendations:
-        recommendations.append("Continue current financial management practices")
-        recommendations.append("Consider strategic growth opportunities")
+        recommendations.append("继续当前的财务管理实践")
+        recommendations.append("考虑战略性增长机会")
 
-    return recommendations[:5]  # Return top 5 recommendations
+    return recommendations[:5]  # 返回前5条建议

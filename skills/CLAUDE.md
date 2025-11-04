@@ -234,3 +234,10 @@ Optional (for advanced examples):
 ```bash
 ANTHROPIC_BASE_URL=https://api.anthropic.com  # If using proxy
 ```
+- # CRITICAL: File Editing on Windows ### ⚠️ MANDATORY: Always Use Backslashes on Windows for File Paths **When using Edit or MultiEdit tools on Windows, you MUST use backslashes (\) in file paths, NOT forward slashes (/).** #### ❌ WRONG - Will cause errors:
+Edit(file_path: "D:/repos/project/file.tsx", ...)
+MultiEdit(file_path: "D:/repos/project/file.tsx", ...)
+#### ✅ CORRECT - Always works:
+Edit(file_path: "D:\repos\project\file.tsx", ...)
+MultiEdit(file_path: "D:\repos\project\file.tsx", ...)
+ 将文件翻译为中文 所有代码只翻译注释和print中的提示语句且保持代码逻辑不变 .ipynb单元格markdown需要翻译为中文 注意：不翻译pkl，yaml，json，csv，jsonl，db等等所有数据类型文件内容（如遇到txt 请先判断是否为程序所需输入数据还是用户文档）。所有文件本地化为中文，保持了代码逻辑不变，只翻译注释、提示文本和用户可读的文档内容。

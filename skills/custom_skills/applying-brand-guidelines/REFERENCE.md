@@ -1,137 +1,137 @@
-# Brand Guidelines Reference
+# 品牌指南参考
 
-## Quick Reference Card
+## 快速参考卡
 
-### Must-Have Elements
-✅ Company logo on first page/slide
-✅ Correct brand colors (no variations)
-✅ Approved fonts only
-✅ Consistent formatting throughout
-✅ Professional tone of voice
+### 必须包含的元素
+✅ 公司标志在第一页/幻灯片上
+✅ 正确的品牌颜色（无变化）
+✅ 仅使用批准的字体
+✅ 整体格式一致
+✅ 专业的语调
 
-### Never Use
-❌ Competitor logos or references
-❌ Unapproved colors or gradients
-❌ Decorative or script fonts
-❌ Pixelated or stretched logos
-❌ Informal language or slang
+### 禁止使用
+❌ 竞争对手的标志或引用
+❌ 未批准的颜色或渐变
+❌ 装饰性或手写字体
+❌ 像素化或拉伸的标志
+❌ 非正式的语言或俚语
 
-## Color Codes Reference
+## 颜色代码参考
 
-### For Digital (RGB/Hex)
-| Color Name | Hex Code | RGB | Usage |
+### 数字媒体 (RGB/Hex)
+| 颜色名称 | 十六进制代码 | RGB | 用途 |
 |------------|----------|-----|-------|
-| Acme Blue | #0066CC | 0, 102, 204 | Primary headers, CTAs |
-| Acme Navy | #003366 | 0, 51, 102 | Body text, secondary |
-| Success Green | #28A745 | 40, 167, 69 | Positive values |
-| Warning Amber | #FFC107 | 255, 193, 7 | Warnings, attention |
-| Error Red | #DC3545 | 220, 53, 69 | Errors, negative |
-| Neutral Gray | #6C757D | 108, 117, 125 | Muted text |
-| Light Gray | #F8F9FA | 248, 249, 250 | Backgrounds |
+| Acme 蓝 | #0066CC | 0, 102, 204 | 主标题、行动按钮 |
+| Acme 海军蓝 | #003366 | 0, 51, 102 | 正文、次要元素 |
+| 成功绿 | #28A745 | 40, 167, 69 | 正面值 |
+| 警告琥珀 | #FFC107 | 255, 193, 7 | 警告、注意 |
+| 错误红 | #DC3545 | 220, 53, 69 | 错误、负面值 |
+| 中性灰 | #6C757D | 108, 117, 125 | 弱化文本 |
+| 浅灰 | #F8F9FA | 248, 249, 250 | 背景 |
 
-### For Print (CMYK)
-| Color Name | CMYK | Pantone |
+### 印刷 (CMYK)
+| 颜色名称 | CMYK | Pantone |
 |------------|------|---------|
-| Acme Blue | 100, 50, 0, 20 | 2935 C |
-| Acme Navy | 100, 50, 0, 60 | 2965 C |
+| Acme 蓝 | 100, 50, 0, 20 | 2935 C |
+| Acme 海军蓝 | 100, 50, 0, 60 | 2965 C |
 
-## Document Templates
+## 文档模板
 
-### Email Signature
+### 邮件签名
 ```
-[Name]
-[Title]
-Acme Corporation | Innovation Through Excellence
-[Phone] | [Email]
+[姓名]
+[职位]
+Acme Corporation | 卓越创新
+[电话] | [邮箱]
 www.acmecorp.example
 ```
 
-### Slide Footer
+### 幻灯片页脚
 ```
-© 2025 Acme Corporation | Confidential | Page [X]
-```
-
-### Report Header
-```
-[Logo]     [Document Title]     Page [X] of [Y]
+© 2025 Acme Corporation | 机密 | 第 [X] 页
 ```
 
-## Accessibility Standards
-
-### Color Contrast
-- Text on white background: Use Acme Navy (#003366)
-- Text on blue background: Use white (#FFFFFF)
-- Minimum contrast ratio: 4.5:1 for body text
-- Minimum contrast ratio: 3:1 for large text
-
-### Font Sizes
-- Minimum body text: 11pt (print), 14px (digital)
-- Minimum caption text: 9pt (print), 12px (digital)
-
-## File Naming Conventions
-
-### Standard Format
+### 报告页眉
 ```
-YYYY-MM-DD_DocumentType_Version_Status.ext
+[标志]     [文档标题]     第 [X] 页，共 [Y] 页
 ```
 
-### Examples
-- `2025-01-15_QuarterlyReport_v2_FINAL.pptx`
-- `2025-01-15_BudgetAnalysis_v1_DRAFT.xlsx`
-- `2025-01-15_Proposal_v3_APPROVED.pdf`
+## 无障碍标准
 
-## Common Mistakes to Avoid
+### 颜色对比度
+- 白色背景上的文本：使用 Acme 海军蓝 (#003366)
+- 蓝色背景上的文本：使用白色 (#FFFFFF)
+- 最小对比度比：正文为 4.5:1
+- 最小对比度比：大文本为 3:1
 
-1. **Wrong Blue**: Using generic blue instead of Acme Blue #0066CC
-2. **Stretched Logo**: Always maintain aspect ratio
-3. **Too Many Colors**: Stick to the approved palette
-4. **Inconsistent Fonts**: Don't mix font families
-5. **Missing Logo**: Always include on first page
-6. **Wrong Date Format**: Use "Month DD, YYYY"
-7. **Decimal Places**: Be consistent (currency: 2, percentage: 1)
+### 字体大小
+- 最小正文字体：印刷 11pt，数字 14px
+- 最小说明文字体：印刷 9pt，数字 12px
 
-## Department-Specific Guidelines
+## 文件命名规范
 
-### Finance
-- Always right-align numbers in tables
-- Use parentheses for negative values: ($1,234)
-- Include data source citations
+### 标准格式
+```
+YYYY-MM-DD_文档类型_版本_状态.扩展名
+```
 
-### Marketing
-- Can use full secondary color palette
-- May include approved imagery
-- Follow social media specific guidelines when applicable
+### 示例
+- `2025-01-15_季度报告_v2_最终版.pptx`
+- `2025-01-15_预算分析_v1_草稿.xlsx`
+- `2025-01-15_提案_v3_已批准.pdf`
 
-### Legal
-- Use numbered sections (1.0, 1.1, 1.2)
-- Include document control information
-- Apply "Confidential" watermark when needed
+## 需要避免的常见错误
 
-## International Considerations
+1. **错误的蓝色**：使用通用蓝色而非 Acme 蓝 #0066CC
+2. **拉伸的标志**：始终保持纵横比
+3. **颜色过多**：坚持使用批准的调色板
+4. **字体不一致**：不要混用字体族
+5. **缺少标志**：始终在第一页包含
+6. **错误的日期格式**：使用"月 DD, YYYY"
+7. **小数位数**：保持一致（货币：2位，百分比：1位）
 
-### Date Formats by Region
-- **US**: Month DD, YYYY (January 15, 2025)
-- **UK**: DD Month YYYY (15 January 2025)
-- **ISO**: YYYY-MM-DD (2025-01-15)
+## 部门特定指南
 
-### Currency Display
-- **USD**: $1,234.56
-- **EUR**: €1.234,56
-- **GBP**: £1,234.56
+### 财务部
+- 始终在表格中右对齐数字
+- 负值使用括号：($1,234)
+- 包含数据源引用
 
-## Version History
+### 营销部
+- 可以使用完整的辅助颜色调色板
+- 可以包含批准的图像
+- 适用时遵循社交媒体特定指南
 
-| Version | Date | Changes |
+### 法务部
+- 使用编号章节 (1.0, 1.1, 1.2)
+- 包含文档控制信息
+- 需要时应用"机密"水印
+
+## 国际化注意事项
+
+### 各地区日期格式
+- **美国**: 月 DD, YYYY（2025年1月15日）
+- **英国**: DD 月 YYYY（2025年1月15日）
+- **ISO**: YYYY-MM-DD（2025-01-15）
+
+### 货币显示
+- **美元**: $1,234.56
+- **欧元**: €1.234,56
+- **英镑**: £1,234.56
+
+## 版本历史
+
+| 版本 | 日期 | 更改 |
 |---------|------|---------|
-| 2.0 | Jan 2025 | Added digital color codes |
-| 1.5 | Oct 2024 | Updated font guidelines |
-| 1.0 | Jan 2024 | Initial brand guidelines |
+| 2.0 | 2025年1月 | 添加数字颜色代码 |
+| 1.5 | 2024年10月 | 更新字体指南 |
+| 1.0 | 2024年1月 | 初始品牌指南 |
 
-## Contact for Questions
+## 问题咨询联系方式
 
-**Brand Team**
-Email: brand@acmecorp.example
+**品牌团队**
+邮箱: brand@acmecorp.example
 Slack: #brand-guidelines
 
-**For Exceptions**
-Submit request to brand team with business justification
+**例外情况**
+向品牌团队提交业务理由说明的申请

@@ -1,13 +1,13 @@
 #!/usr/bin/env python3
 """
-Comprehensive notebook validation tool with dashboard and reporting.
+全面的笔记本验证工具，带仪表板和报告功能。
 
-Features:
-- Progressive validation with checkpoints
-- Issue categorization and auto-fixing
-- Dashboard generation with trends
-- GitHub issue export
-- Idempotent with state persistence
+功能：
+- 带检查点的渐进式验证
+- 问题分类和自动修复
+- 带趋势的仪表板生成
+- GitHub问题导出
+- 幂等性状态持久化
 """
 
 import json
@@ -19,7 +19,7 @@ import argparse
 
 
 class NotebookValidator:
-    """Validates Jupyter notebooks for common issues."""
+    """验证Jupyter笔记本的常见问题。"""
 
     def __init__(self):
         self.state_file = Path(".notebook_validation_state.json")
@@ -27,13 +27,13 @@ class NotebookValidator:
         self.state = self.load_state()
 
     def load_state(self) -> dict:
-        """Load previous validation state if exists."""
+        """如果存在，加载之前的验证状态。"""
         if self.state_file.exists():
             try:
                 with open(self.state_file) as f:
                     return json.load(f)
             except json.JSONDecodeError:
-                print("Warning: Could not parse state file, starting fresh")
+                print("警告：无法解析状态文件，将重新开始")
 
         return {
             "version": "1.0",
@@ -44,30 +44,30 @@ class NotebookValidator:
         }
 
     def save_state(self):
-        """Save current state to file."""
-        # Update history
+        """保存当前状态到文件。"""
+        # 更新历史记录
         total = len(self.state["notebooks"])
         passing = sum(1 for n in self.state["notebooks"].values() if n.get("status") == "pass")
 
         today = datetime.now().strftime("%Y-%m-%d")
 
-        # Update or add today's entry
+        # 更新或添加今天的条目
         if self.state["history"] and self.state["history"][-1]["date"] == today:
             self.state["history"][-1] = {"date": today, "passing": passing, "total": total}
         else:
             self.state["history"].append({"date": today, "passing": passing, "total": total})
 
-        # Keep only last 30 days of history
+        # 只保留最近30天的历史记录
         self.state["history"] = self.state["history"][-30:]
 
         with open(self.state_file, "w") as f:
             json.dump(self.state, f, indent=2, default=str)
 
     def validate_notebook(self, notebook_path: Path, mode: str = "full") -> dict:
-        """Validate a single notebook."""
+        """验证单个笔记本。"""
         result = {"status": "pass", "issues": [], "last_validated": datetime.now().isoformat()}
 
-        # Quick structure check
+        # 快速结构检查
         try:
             with open(notebook_path) as f:
                 nb = json.load(f)
@@ -78,7 +78,7 @@ class NotebookValidator:
             )
             return result
 
-        # Check for empty cells
+        # 检查空单元格
         for i, cell in enumerate(nb.get("cells", [])):
             if not cell.get("source"):
                 result["issues"].append(
@@ -86,11 +86,11 @@ class NotebookValidator:
                         "type": "empty_cell",
                         "severity": "info",
                         "cell": i,
-                        "details": "Empty cell found",
+                        "details": "发现空单元格",
                     }
                 )
 
-        # Check for error outputs
+        # 检查错误输出
         for i, cell in enumerate(nb.get("cells", [])):
             if cell.get("cell_type") == "code":
                 for output in cell.get("outputs", []):
@@ -103,11 +103,11 @@ class NotebookValidator:
                                 "type": "error_output",
                                 "severity": "warning",
                                 "cell": i,
-                                "details": "Cell contains error output",
+                                "details": "单元格包含错误输出",
                             }
                         )
 
-        # Check for deprecated models
+        # 检查过时的模型
         deprecated_models = {
             "claude-3-5-sonnet-20240620": "claude-sonnet-4-5",
             "claude-3-5-sonnet-20241022": "claude-sonnet-4-5",
@@ -124,7 +124,7 @@ class NotebookValidator:
             if cell.get("cell_type") == "code":
                 source = "".join(cell.get("source", []))
 
-                # Check for deprecated models
+                # 检查过时的模型
                 for old_model, new_model in deprecated_models.items():
                     if old_model in source:
                         result["status"] = (
@@ -139,7 +139,7 @@ class NotebookValidator:
                             }
                         )
 
-                # Check for hardcoded API keys
+                # 检查硬编码的API密钥
                 if "sk-ant-" in source:
                     result["status"] = "error"
                     result["issues"].append(
@@ -147,7 +147,7 @@ class NotebookValidator:
                             "type": "hardcoded_api_key",
                             "severity": "critical",
                             "cell": i,
-                            "details": "Hardcoded Claude API key detected",
+                            "details": "检测到硬编码的Claude API密钥",
                         }
                     )
                 elif (
@@ -161,11 +161,11 @@ class NotebookValidator:
                             "type": "api_key_not_env",
                             "severity": "critical",
                             "cell": i,
-                            "details": "API key not using environment variable",
+                            "details": "API密钥未使用环境变量",
                         }
                     )
 
-        # Execute notebook if in full mode
+        # 如果是全模式，执行笔记本
         if mode == "full" and result["status"] != "error":
             if os.environ.get("ANTHROPIC_API_KEY"):
                 exec_result = self.execute_notebook(notebook_path)
@@ -182,7 +182,7 @@ class NotebookValidator:
         return result
 
     def execute_notebook(self, notebook_path: Path) -> dict:
-        """Execute a notebook and return success status."""
+        """执行笔记本并返回成功状态。"""
         cmd = [
             "jupyter",
             "nbconvert",
@@ -201,32 +201,32 @@ class NotebookValidator:
             if result.returncode == 0:
                 return {"success": True}
             else:
-                # Extract error from stderr
+                # 从stderr中提取错误
                 error_lines = result.stderr.split("\n")
                 error_msg = next(
                     (line for line in error_lines if "Error" in line or "error" in line),
-                    "Execution failed",
+                    "执行失败",
                 )
                 return {"success": False, "error": error_msg[:200]}  # Limit error message length
         except subprocess.TimeoutExpired:
-            return {"success": False, "error": "Execution timeout (>120s)"}
+            return {"success": False, "error": "执行超时 (>120秒)"}
         except FileNotFoundError:
-            return {"success": False, "error": "jupyter command not found"}
+            return {"success": False, "error": "找不到jupyter命令"}
         except Exception as e:
             return {"success": False, "error": str(e)[:200]}
 
     def generate_dashboard(self) -> str:
-        """Generate dashboard view of validation results."""
+        """生成验证结果的仪表板视图。"""
         if not self.state["notebooks"]:
-            return "No notebooks validated yet. Run validation first."
+            return "尚未验证任何笔记本。请先运行验证。"
 
         total = len(self.state["notebooks"])
         passing = sum(1 for n in self.state["notebooks"].values() if n.get("status") == "pass")
 
-        # Calculate percentage
+        # 计算百分比
         percentage = (passing / total * 100) if total > 0 else 0
 
-        # Categorize issues
+        # 分类问题
         issues_by_type = {}
         for path, data in self.state["notebooks"].items():
             for issue in data.get("issues", []):
@@ -235,31 +235,31 @@ class NotebookValidator:
                     issues_by_type[issue_type] = []
                 issues_by_type[issue_type].append((path, issue))
 
-        # Build dashboard
+        # 构建仪表板
         dashboard = f"""
-📊 Notebook Validation Dashboard
+📊 笔记本验证仪表板
 ════════════════════════════════════════════
 
-Overall: {passing}/{total} notebooks passing ({percentage:.1f}%)
+总体情况：{passing}/{total} 个笔记本通过验证 ({percentage:.1f}%)
 """
 
-        # Add progress bar
+        # 添加进度条
         bar_length = 20
         filled = int(bar_length * passing / total) if total > 0 else 0
         bar = "█" * filled + "░" * (bar_length - filled)
-        dashboard += f"Progress: [{bar}]\n"
+        dashboard += f"进度：[{bar}]\n"
 
-        # Add trend if we have history
+        # 如果有历史记录，添加趋势
         if len(self.state["history"]) > 1:
             prev = self.state["history"][-2]
             prev_pct = (prev["passing"] / prev["total"] * 100) if prev["total"] > 0 else 0
             change = percentage - prev_pct
             trend = "📈" if change > 0 else "📉" if change < 0 else "➡️"
-            dashboard += f"Trend: {trend} {change:+.1f}% from last run\n"
+            dashboard += f"趋势：{trend} {change:+.1f}% 相比上次运行\n"
 
         dashboard += "\n" + "─" * 45 + "\n"
 
-        # Group issues by severity
+        # 按严重程度分组问题
         critical_issues = []
         error_issues = []
         warning_issues = []
@@ -276,25 +276,25 @@ Overall: {passing}/{total} notebooks passing ({percentage:.1f}%)
                 else:
                     info_issues.append((path, issue))
 
-        # Display by severity
+        # 按严重程度显示
         if critical_issues:
-            dashboard += f"\n🔴 Critical Issues ({len(critical_issues)})\n"
-            dashboard += "Must fix immediately:\n"
+            dashboard += f"\n🔴 严重问题 ({len(critical_issues)})\n"
+            dashboard += "必须立即修复：\n"
             for path, issue in critical_issues[:5]:
                 dashboard += f"  • {Path(path).name}: {issue['type'].replace('_', ' ')}\n"
             if len(critical_issues) > 5:
-                dashboard += f"  ... and {len(critical_issues) - 5} more\n"
+                dashboard += f"  ...以及另外 {len(critical_issues) - 5} 个\n"
 
         if error_issues:
-            dashboard += f"\n🟠 Errors ({len(error_issues)})\n"
+            dashboard += f"\n🟠 错误 ({len(error_issues)})\n"
             for path, issue in error_issues[:5]:
                 dashboard += f"  • {Path(path).name}: {issue.get('details', issue['type'])[:50]}\n"
             if len(error_issues) > 5:
-                dashboard += f"  ... and {len(error_issues) - 5} more\n"
+                dashboard += f"  ...以及另外 {len(error_issues) - 5} 个\n"
 
         if warning_issues:
-            dashboard += f"\n🟡 Warnings ({len(warning_issues)})\n"
-            # Group warnings by type
+            dashboard += f"\n🟡 警告 ({len(warning_issues)})\n"
+            # 按类型分组警告
             warning_types = {}
             for path, issue in warning_issues:
                 wtype = issue["type"]
@@ -303,31 +303,31 @@ Overall: {passing}/{total} notebooks passing ({percentage:.1f}%)
                 warning_types[wtype] += 1
 
             for wtype, count in warning_types.items():
-                dashboard += f"  • {wtype.replace('_', ' ').title()}: {count} notebooks\n"
+                dashboard += f"  • {wtype.replace('_', ' ').title()}: {count} 个笔记本\n"
 
-        # Add quick actions
+        # 添加快速操作
         dashboard += "\n" + "─" * 45 + "\n"
-        dashboard += "Quick Actions:\n"
+        dashboard += "快速操作：\n"
 
         if any(i[1]["type"] == "deprecated_model" for i in warning_issues):
-            dashboard += "  → Run with --auto-fix to update deprecated models\n"
+            dashboard += "  → 运行 --auto-fix 更新过时模型\n"
         if critical_issues:
-            dashboard += "  → Fix critical security issues first\n"
+            dashboard += "  → 首先修复严重安全问题\n"
         if not os.environ.get("ANTHROPIC_API_KEY"):
-            dashboard += "  → Set ANTHROPIC_API_KEY to enable execution tests\n"
+            dashboard += "  → 设置 ANTHROPIC_API_KEY 启用执行测试\n"
 
         return dashboard
 
     def export_github_issue(self) -> str:
-        """Export results as GitHub issue markdown."""
+        """将结果导出为GitHub问题markdown。"""
         if not self.state["notebooks"]:
-            return "No validation results to export. Run validation first."
+            return "没有可导出的验证结果。请先运行验证。"
 
         total = len(self.state["notebooks"])
         passing = sum(1 for n in self.state["notebooks"].values() if n.get("status") == "pass")
         percentage = (passing / total * 100) if total > 0 else 0
 
-        # Group issues
+        # 分组问题
         critical = []
         errors = []
         warnings = []
@@ -341,44 +341,44 @@ Overall: {passing}/{total} notebooks passing ({percentage:.1f}%)
                 elif issue["severity"] == "warning":
                     warnings.append((path, issue))
 
-        # Build markdown
-        markdown = f"""## 📊 Notebook Validation Report
+        # 构建markdown
+        markdown = f"""## 📊 笔记本验证报告
 
-**Date:** {datetime.now().strftime("%Y-%m-%d %H:%M")}  
-**Status:** {passing}/{total} notebooks passing ({percentage:.1f}%)  
+**日期：** {datetime.now().strftime("%Y-%m-%d %H:%M")}
+**状态：** {passing}/{total} 个笔记本通过验证 ({percentage:.1f}%)
 """
 
         # Add progress bar
         bar_length = 30
         filled = int(bar_length * passing / total) if total > 0 else 0
         bar = "█" * filled + "░" * (bar_length - filled)
-        markdown += f"**Progress:** `[{bar}]`\n\n"
+        markdown += f"**进度：** `[{bar}]`\n\n"
 
         # Add history chart if available
         if len(self.state["history"]) > 1:
-            markdown += "<details>\n<summary>📈 Trend (last 7 runs)</summary>\n\n```\n"
+            markdown += "<details>\n<summary>📈 趋势（最近7次运行）</summary>\n\n```\n"
             for entry in self.state["history"][-7:]:
                 pct = (entry["passing"] / entry["total"] * 100) if entry["total"] > 0 else 0
                 bar_len = int(pct / 5)  # Scale to 20 chars
                 markdown += f"{entry['date']}: {'█' * bar_len:<20} {pct:.1f}% ({entry['passing']}/{entry['total']})\n"
             markdown += "```\n\n</details>\n\n"
 
-        # Critical issues
+        # 严重问题
         if critical:
-            markdown += f"### 🔴 Critical Issues ({len(critical)})\n"
-            markdown += "**Must fix immediately** - Security risks:\n\n"
+            markdown += f"### 🔴 严重问题 ({len(critical)})\n"
+            markdown += "**必须立即修复** - 安全风险：\n\n"
 
             for path, issue in critical:
                 rel_path = Path(path).relative_to(".") if Path(path).is_absolute() else path
                 markdown += f"- [ ] `{rel_path}`\n"
-                markdown += f"  - **Issue:** {issue['type'].replace('_', ' ').title()}\n"
-                markdown += f"  - **Cell:** {issue.get('cell', 'N/A')}\n"
-                markdown += f"  - **Details:** {issue.get('details', 'N/A')}\n\n"
+                markdown += f"  - **问题：** {issue['type'].replace('_', ' ').title()}\n"
+                markdown += f"  - **单元格：** {issue.get('cell', 'N/A')}\n"
+                markdown += f"  - **详情：** {issue.get('details', 'N/A')}\n\n"
 
-        # Errors
+        # 错误
         if errors:
-            markdown += f"### 🟠 Execution Errors ({len(errors)})\n"
-            markdown += "Notebooks that fail to run:\n\n"
+            markdown += f"### 🟠 执行错误 ({len(errors)})\n"
+            markdown += "无法运行的笔记本：\n\n"
 
             error_dict = {}
             for path, issue in errors:
@@ -397,13 +397,13 @@ Overall: {passing}/{total} notebooks passing ({percentage:.1f}%)
                 markdown += "\n"
 
             if len(error_dict) > 10:
-                markdown += f"\n*... and {len(error_dict) - 10} more notebooks with errors*\n\n"
+                markdown += f"\n*...以及另外 {len(error_dict) - 10} 个有错误的笔记本*\n\n"
 
-        # Warnings
+        # 警告
         if warnings:
-            markdown += f"### 🟡 Warnings ({len(warnings)})\n"
+            markdown += f"### 🟡 警告 ({len(warnings)})\n"
 
-            # Group by type
+            # 按类型分组
             warning_types = {}
             for path, issue in warnings:
                 wtype = issue["type"]
@@ -412,7 +412,7 @@ Overall: {passing}/{total} notebooks passing ({percentage:.1f}%)
                 warning_types[wtype].append((path, issue))
 
             for wtype, items in warning_types.items():
-                markdown += f"\n**{wtype.replace('_', ' ').title()} ({len(items)} notebooks):**\n\n"
+                markdown += f"\n**{wtype.replace('_', ' ').title()} ({len(items)} 个笔记本):**\n\n"
 
                 for path, issue in items[:5]:
                     rel_path = Path(path).relative_to(".") if Path(path).is_absolute() else path
@@ -424,44 +424,44 @@ Overall: {passing}/{total} notebooks passing ({percentage:.1f}%)
                     markdown += "\n"
 
                 if len(items) > 5:
-                    markdown += f"  - *... and {len(items) - 5} more*\n"
+                    markdown += f"  - *...以及另外 {len(items) - 5} 个*\n"
                 markdown += "\n"
 
-        # Add fix commands
-        markdown += "### 🔧 Quick Fix Commands\n\n```bash\n"
-        markdown += "# Auto-fix deprecated models\n"
+        # 添加修复命令
+        markdown += "### 🔧 快速修复命令\n\n```bash\n"
+        markdown += "# 自动修复过时模型\n"
         markdown += "python scripts/validate_all_notebooks.py --auto-fix\n\n"
-        markdown += "# Run full validation\n"
+        markdown += "# 运行完整验证\n"
         markdown += "python scripts/validate_all_notebooks.py --full\n\n"
-        markdown += "# Generate updated report\n"
+        markdown += "# 生成更新报告\n"
         markdown += "python scripts/validate_all_notebooks.py --export > report.md\n"
         markdown += "```\n"
 
         return markdown
 
     def run_validation(self, mode="quick", pattern="**/*.ipynb"):
-        """Run validation on all notebooks."""
+        """对所有笔记本运行验证。"""
         notebooks = list(Path(".").glob(pattern))
         notebooks = [n for n in notebooks if ".ipynb_checkpoints" not in str(n)]
 
         if not notebooks:
-            print(f"No notebooks found matching pattern: {pattern}")
+            print(f"未找到匹配模式的笔记本：{pattern}")
             return
 
-        print(f"\n🔍 Validating {len(notebooks)} notebooks in {mode} mode...")
+        print(f"\n🔍 在 {mode} 模式下验证 {len(notebooks)} 个笔记本...")
         print("─" * 50)
 
         failed = []
         warned = []
 
         for i, notebook in enumerate(notebooks, 1):
-            # Check if needs revalidation
+            # 检查是否需要重新验证
             nb_stat = notebook.stat()
             nb_mtime = datetime.fromtimestamp(nb_stat.st_mtime).isoformat()
 
             stored = self.state["notebooks"].get(str(notebook), {})
 
-            # Skip if unchanged and not forcing full validation
+            # 如果未更改且未强制完整验证，则跳过
             if (
                 stored.get("last_modified") == nb_mtime
                 and mode == "quick"
@@ -469,27 +469,27 @@ Overall: {passing}/{total} notebooks passing ({percentage:.1f}%)
             ):
                 status = stored.get("status", "unknown")
                 icon = "✅" if status == "pass" else "⚠️" if status == "warning" else "❌"
-                print(f"[{i:3}/{len(notebooks)}] {icon} {notebook} (cached)")
+                print(f"[{i:3}/{len(notebooks)}] {icon} {notebook} (已缓存)")
                 if status == "error":
                     failed.append(notebook)
                 elif status == "warning":
                     warned.append(notebook)
                 continue
 
-            # Validate
+            # 验证
             print(f"[{i:3}/{len(notebooks)}] ", end="")
             result = self.validate_notebook(notebook, mode)
 
-            # Store result
+            # 存储结果
             self.state["notebooks"][str(notebook)] = {**result, "last_modified": nb_mtime}
 
-            # Display result
+            # 显示结果
             if result["status"] == "pass":
                 print(f"✅ {notebook}")
             elif result["status"] == "warning":
                 print(f"⚠️  {notebook}")
                 warned.append(notebook)
-                for issue in result["issues"][:2]:  # Show first 2 issues
+                for issue in result["issues"][:2]:  # 显示前2个问题
                     details = issue.get("details", "")
                     if isinstance(details, dict):
                         details = str(details.get("current", details))
@@ -503,49 +503,49 @@ Overall: {passing}/{total} notebooks passing ({percentage:.1f}%)
                         details = str(details.get("current", details))
                     print(f"     → {issue['type']}: {str(details)[:60]}")
 
-            # Save state periodically
+            # 定期保存状态
             if i % 10 == 0:
                 self.save_state()
 
         self.save_state()
 
-        # Summary
+        # 摘要
         print("\n" + "═" * 50)
         total = len(notebooks)
         passed = total - len(failed) - len(warned)
-        print(f"✅ Passed: {passed}/{total}")
+        print(f"✅ 通过：{passed}/{total}")
         if warned:
-            print(f"⚠️  Warnings: {len(warned)}/{total}")
+            print(f"⚠️  警告：{len(warned)}/{total}")
         if failed:
-            print(f"❌ Failed: {len(failed)}/{total}")
+            print(f"❌ 失败：{len(failed)}/{total}")
 
         print(self.generate_dashboard())
 
     def run_progressive_validation(self):
-        """Run validation in batches with user control."""
+        """在用户控制下分批运行验证。"""
         notebooks = list(Path(".").glob("**/*.ipynb"))
         notebooks = [n for n in notebooks if ".ipynb_checkpoints" not in str(n)]
 
         if not notebooks:
-            print("No notebooks found")
+            print("未找到笔记本")
             return
 
         batch_size = 5
         total_batches = (len(notebooks) - 1) // batch_size + 1
 
-        print("\n📚 Progressive Validation")
-        print(f"Total: {len(notebooks)} notebooks in {total_batches} batches")
+        print("\n📚 渐进式验证")
+        print(f"总计：{len(notebooks)} 个笔记本分为 {total_batches} 批")
         print("─" * 50)
 
         for batch_num, i in enumerate(range(0, len(notebooks), batch_size), 1):
             batch = notebooks[i : i + batch_size]
-            print(f"\n📦 Batch {batch_num}/{total_batches}")
+            print(f"\n📦 批次 {batch_num}/{total_batches}")
 
             batch_failed = []
             batch_warned = []
 
             for notebook in batch:
-                print(f"  Validating {notebook}...", end=" ")
+                print(f"  正在验证 {notebook}...", end=" ")
                 result = self.validate_notebook(notebook, mode="quick")
                 self.state["notebooks"][str(notebook)] = result
 
@@ -567,31 +567,31 @@ Overall: {passing}/{total} notebooks passing ({percentage:.1f}%)
 
             self.save_state()
 
-            # Batch summary
+            # 批次摘要
             if batch_failed or batch_warned:
                 print(
-                    f"\n  Batch summary: {len(batch_failed)} failed, {len(batch_warned)} warnings"
+                    f"\n  批次摘要：{len(batch_failed)} 个失败，{len(batch_warned)} 个警告"
                 )
 
-            # Ask to continue
+            # 询问是否继续
             if i + batch_size < len(notebooks):
-                print("\nOptions:")
-                print("  [c]ontinue to next batch")
-                print("  [d]ashboard - show current stats")
-                print("  [q]uit and save progress")
+                print("\n选项：")
+                print("  [c] 继续下一批")
+                print("  [d] 仪表板 - 显示当前统计")
+                print("  [q] 退出并保存进度")
 
-                choice = input("\nChoice (c/d/q): ").strip().lower()
+                choice = input("\n选择 (c/d/q): ").strip().lower()
 
                 if choice == "d":
                     print(self.generate_dashboard())
-                    input("\nPress Enter to continue...")
+                    input("\n按回车继续...")
                 elif choice == "q":
-                    print("Progress saved. Run with --resume to continue.")
+                    print("进度已保存。使用 --resume 继续。")
                     break
 
     def auto_fix_issues(self):
-        """Auto-fix safe issues like deprecated models."""
-        print("\n🔧 Auto-fixing safe issues...")
+        """自动修复安全问题，如过时的模型。"""
+        print("\n🔧 正在自动修复安全问题...")
         print("─" * 50)
 
         fixable_notebooks = []
@@ -606,14 +606,14 @@ Overall: {passing}/{total} notebooks passing ({percentage:.1f}%)
                 fixable_notebooks.append(Path(path))
 
         if not fixable_notebooks:
-            print("No auto-fixable issues found!")
+            print("未找到可自动修复的问题！")
             return
 
-        print(f"Found {len(fixable_notebooks)} notebooks with deprecated models\n")
+        print(f"找到 {len(fixable_notebooks)} 个有过时模型的笔记本\n")
 
         fixed_count = 0
         for notebook_path in fixable_notebooks:
-            print(f"Fixing {notebook_path}...", end=" ")
+            print(f"正在修复 {notebook_path}...", end=" ")
             if self.fix_deprecated_models(notebook_path):
                 print("✅")
                 fixed_count += 1
@@ -621,17 +621,17 @@ Overall: {passing}/{total} notebooks passing ({percentage:.1f}%)
                 result = self.validate_notebook(notebook_path, mode="quick")
                 self.state["notebooks"][str(notebook_path)] = result
             else:
-                print("❌ (failed)")
+                print("❌ (失败)")
 
         self.save_state()
 
-        print(f"\n✅ Successfully fixed {fixed_count}/{len(fixable_notebooks)} notebooks")
+        print(f"\n✅ 成功修复了 {fixed_count}/{len(fixable_notebooks)} 个笔记本")
 
         if fixed_count > 0:
-            print("\nRe-run validation to verify all issues are resolved.")
+            print("\n重新运行验证以确认所有问题已解决。")
 
     def fix_deprecated_models(self, notebook_path: Path) -> bool:
-        """Fix deprecated models in a notebook."""
+        """修复笔记本中的过时模型。"""
         try:
             with open(notebook_path) as f:
                 nb = json.load(f)
@@ -673,36 +673,36 @@ Overall: {passing}/{total} notebooks passing ({percentage:.1f}%)
             return modified
 
         except Exception as e:
-            print(f"Error: {e}")
+            print(f"错误：{e}")
             return False
 
     def interactive_menu(self):
-        """Main interactive menu."""
+        """主交互菜单。"""
         while True:
             print("\n" + "═" * 50)
-            print("📓 Notebook Validation Tool")
+            print("📓 笔记本验证工具")
             print("═" * 50)
-            print("1. Quick scan (structure only, cached)")
-            print("2. Full validation (with execution)")
-            print("3. Progressive validation (interactive)")
-            print("4. Show dashboard")
-            print("5. Export GitHub issue")
-            print("6. Auto-fix deprecated models")
-            print("7. Validate specific directory")
-            print("8. Clear cache and re-validate")
-            print("9. Exit")
+            print("1. 快速扫描（仅结构，已缓存）")
+            print("2. 完整验证（包括执行）")
+            print("3. 渐进式验证（交互式）")
+            print("4. 显示仪表板")
+            print("5. 导出GitHub问题")
+            print("6. 自动修复过时模型")
+            print("7. 验证特定目录")
+            print("8. 清除缓存并重新验证")
+            print("9. 退出")
             print("─" * 50)
 
-            choice = input("Select option (1-9): ").strip()
+            choice = input("选择选项 (1-9): ").strip()
 
             if choice == "1":
                 self.run_validation(mode="quick")
             elif choice == "2":
                 if not os.environ.get("ANTHROPIC_API_KEY"):
                     print(
-                        "\n⚠️  Warning: ANTHROPIC_API_KEY not set. Execution tests will be skipped."
+                        "\n⚠️  警告：未设置 ANTHROPIC_API_KEY。将跳过执行测试。"
                     )
-                    cont = input("Continue anyway? (y/n): ")
+                    cont = input("仍然继续？(y/n): ")
                     if cont.lower() != "y":
                         continue
                 self.run_validation(mode="full")
@@ -712,16 +712,16 @@ Overall: {passing}/{total} notebooks passing ({percentage:.1f}%)
                 print(self.generate_dashboard())
             elif choice == "5":
                 print("\n" + self.export_github_issue())
-                save = input("\nSave to file? (y/n): ")
+                save = input("\n保存到文件？(y/n): ")
                 if save.lower() == "y":
                     filename = f"validation_report_{datetime.now().strftime('%Y%m%d_%H%M')}.md"
                     with open(filename, "w") as f:
                         f.write(self.export_github_issue())
-                    print(f"✅ Saved to {filename}")
+                    print(f"✅ 已保存到 {filename}")
             elif choice == "6":
                 self.auto_fix_issues()
             elif choice == "7":
-                directory = input("Enter directory path (e.g., skills/): ").strip()
+                directory = input("输入目录路径（例如：skills/): ").strip()
                 pattern = (
                     f"{directory}**/*.ipynb"
                     if directory.endswith("/")
@@ -736,52 +736,52 @@ Overall: {passing}/{total} notebooks passing ({percentage:.1f}%)
                     "history": self.state.get("history", []),
                     "ignored": {},
                 }
-                print("Cache cleared!")
+                print("缓存已清除！")
                 self.run_validation(mode="quick")
             elif choice == "9":
-                print("👋 Goodbye!")
+                print("👋 再见！")
                 break
             else:
-                print("Invalid option. Please try again.")
+                print("无效选项。请再试一次。")
 
 
 def main():
-    """Main entry point."""
+    """主入口点。"""
     parser = argparse.ArgumentParser(
-        description="Validate Jupyter notebooks for common issues",
+        description="验证Jupyter笔记本的常见问题",
         formatter_class=argparse.RawDescriptionHelpFormatter,
         epilog="""
-Examples:
-  %(prog)s                    # Interactive mode
-  %(prog)s --quick           # Quick validation (cached)
-  %(prog)s --full            # Full validation with execution
-  %(prog)s --auto-fix        # Fix deprecated models
-  %(prog)s --export          # Export GitHub issue markdown
-  %(prog)s --dashboard       # Show validation dashboard
+示例：
+  %(prog)s                    # 交互模式
+  %(prog)s --quick           # 快速验证（缓存）
+  %(prog)s --full            # 完整验证（包括执行）
+  %(prog)s --auto-fix        # 修复过时模型
+  %(prog)s --export          # 导出GitHub问题markdown
+  %(prog)s --dashboard       # 显示验证仪表板
         """,
     )
 
     parser.add_argument(
-        "--quick", action="store_true", help="Run quick validation (structure only)"
+        "--quick", action="store_true", help="运行快速验证（仅结构）"
     )
-    parser.add_argument("--full", action="store_true", help="Run full validation (with execution)")
-    parser.add_argument("--dashboard", action="store_true", help="Show validation dashboard")
+    parser.add_argument("--full", action="store_true", help="运行完整验证（包括执行）")
+    parser.add_argument("--dashboard", action="store_true", help="显示验证仪表板")
     parser.add_argument(
-        "--export", action="store_true", help="Export results as GitHub issue markdown"
+        "--export", action="store_true", help="将结果导出为GitHub问题markdown"
     )
-    parser.add_argument("--auto-fix", action="store_true", help="Auto-fix deprecated models")
-    parser.add_argument("--dir", metavar="PATH", help="Validate specific directory")
+    parser.add_argument("--auto-fix", action="store_true", help="自动修复过时模型")
+    parser.add_argument("--dir", metavar="PATH", help="验证特定目录")
 
     args = parser.parse_args()
 
     validator = NotebookValidator()
 
-    # Handle command-line arguments
+    # 处理命令行参数
     if args.quick:
         validator.run_validation(mode="quick")
     elif args.full:
         if not os.environ.get("ANTHROPIC_API_KEY"):
-            print("⚠️  Warning: ANTHROPIC_API_KEY not set. Execution tests will be skipped.")
+            print("⚠️  警告：未设置 ANTHROPIC_API_KEY。将跳过执行测试。")
         validator.run_validation(mode="full")
     elif args.dashboard:
         print(validator.generate_dashboard())
@@ -795,7 +795,7 @@ Examples:
         )
         validator.run_validation(mode="quick", pattern=pattern)
     else:
-        # Interactive mode
+        # 交互模式
         validator.interactive_menu()
 
 

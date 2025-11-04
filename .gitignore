@@ -1,12 +1,12 @@
-# Byte-compiled / optimized / DLL files
+# 字节码编译 / 优化 / DLL 文件
 __pycache__/
 *.py[cod]
 *$py.class
 
-# C extensions
+# C 扩展
 *.so
 
-# Distribution / packaging
+# 分发 / 打包
 .Python
 build/
 develop-eggs/
@@ -28,16 +28,16 @@ share/python-wheels/
 MANIFEST
 
 # PyInstaller
-#  Usually these files are written by a python script from a template
-#  before PyInstaller builds the exe, so as to inject date/other infos into it.
+#  通常这些文件由 Python 脚本从模板写入
+#  在 PyInstaller 构建 exe 之前，以便向其中注入日期/其他信息。
 *.manifest
 *.spec
 
-# Installer logs
+# 安装程序日志
 pip-log.txt
 pip-delete-this-directory.txt
 
-# Unit test / coverage reports
+# 单元测试 / 覆盖率报告
 htmlcov/
 .tox/
 .nox/
@@ -51,24 +51,24 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 
-# Translations
+# 翻译
 *.mo
 *.pot
 
-# Django stuff:
+# Django 东西:
 *.log
 local_settings.py
 db.sqlite3
 db.sqlite3-journal
 
-# Flask stuff:
+# Flask 东西:
 instance/
 .webassets-cache
 
-# Scrapy stuff:
+# Scrapy 东西:
 .scrapy
 
-# Sphinx documentation
+# Sphinx 文档
 docs/_build/
 
 # PyBuilder
@@ -85,23 +85,22 @@ ipython_config.py
 .python-version
 
 # pipenv
-#   According to pypa/pipenv#598, it is recommended to include Pipfile.lock in version control.
-#   However, in case of collaboration, if having platform-specific dependencies or dependencies
-#   having no cross-platform support, pipenv may install dependencies that don't work, or not
-#   install all needed dependencies.
+#   根据 pypa/pipenv#598，建议将 Pipfile.lock 包含在版本控制中。
+#   但是，在协作情况下，如果具有特定平台的依赖或没有跨平台支持的依赖，
+#   pipenv 可能安装无法工作的依赖，或不安装所有需要的依赖。
 #Pipfile.lock
 
-# PEP 582; used by e.g. github.com/David-OConnor/pyflow
+# PEP 582；由例如 github.com/David-OConnor/pyflow 使用
 __pypackages__/
 
-# Celery stuff
+# Celery 东西
 celerybeat-schedule
 celerybeat.pid
 
-# SageMath parsed files
+# SageMath 解析文件
 *.sage.py
 
-# Environments
+# 环境
 .env
 .venv
 env/
@@ -114,14 +113,14 @@ pyvenv.cfg
 share/
 bin/
 
-# Spyder project settings
+# Spyder 项目设置
 .spyderproject
 .spyproject
 
-# Rope project settings
+# Rope 项目设置
 .ropeproject
 
-# mkdocs documentation
+# mkdocs 文档
 /site
 
 # mypy
@@ -129,28 +128,28 @@ bin/
 .dmypy.json
 dmypy.json
 
-# Pyre type checker
+# Pyre 类型检查器
 .pyre/
 
-# Data
+# 数据
 *transactions*.jsonl
 /examples/data/transactions*
 *.DS_Store
 tmp_*
 examples/fine-tuned_qa/local_cache/*
 
-# CI/CD and testing
+# CI/CD 和测试
 .model_cache.json
 test_outputs/
 .ruff_cache/
 lychee-report.md
 .lycheecache
 
-# Notebook validation
+# Notebook 验证
 .notebook_validation_state.json
-.notebook_validation_checkpoint.json  
+.notebook_validation_checkpoint.json
 validation_report_*.md
-# Memory tool demo artifacts
+# 记忆工具演示产物
 tool_use/demo_memory/
 tool_use/memory_storage/
 tool_use/.env

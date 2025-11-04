@@ -1,0 +1,13 @@
+  1. batch_processing.ipynb - 批量处理
+  2. building_moderation_filter.ipynb - 构建内容审核过滤器
+  3. -generate_test_cases.ipynb - 生成合成测试数据
+  4. how_to_enable_json_mode.ipynb - 启用 JSON 模式
+  5. how_to_make_sql_queries.ipynb - 制作 SQL 查询
+  6. metaprompt.ipynb - 元提示词
+  7. prompt_caching.ipynb - 提示词缓存
+  8. read_web_pages_with_haiku.ipynb - 使用 Haiku 总结网页
+  9. sampling_past_max_tokens.ipynb - 超出最大标记限制的采样
+  10. speculative_prompt_caching.ipynb - 投机性提示词缓存
+  11. using_citations.ipynb - 使用引文
+  12. building_evals.ipynb - 构建评估
+  13. pdf_upload_summarization.ipynb - PDF 上传总结

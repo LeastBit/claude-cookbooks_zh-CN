@@ -28,12 +28,12 @@ dev = [
 ]
 
 [tool.hatch.build.targets.wheel]
-packages = ["anthropic_cookbook"]  # Dummy package for build system
+packages = ["anthropic_cookbook"]  # 构建系统的虚拟包
 
 [tool.ruff]
 line-length = 100
 target-version = "py311"
-extend-include = ["*.ipynb"]  # Ruff v0.6.0+ includes notebooks by default, but explicit is better
+extend-include = ["*.ipynb"]  # Ruff v0.6.0+ 默认包含 notebook，但显式指定更好
 
 [tool.ruff.format]
 quote-style = "double"
@@ -42,15 +42,15 @@ line-ending = "auto"
 
 [tool.ruff.lint]
 ignore = [
-    "N806",   # variable in function should be lowercase (allow for API responses)
+    "N806",   # 函数中的变量应该是小写（允许用于 API 响应）
 ]
 
 [tool.ruff.lint.per-file-ignores]
-# Notebooks have different conventions than regular Python files
+# Notebook 与常规 Python 文件有不同的约定
 "*.ipynb" = [
-    "E402",   # imports mid-file
-    "F811",   # redefinitions (common in notebooks)
-    "N803",   # argument name should be lowercase
-    "N806",   # variable in function should be lowercase
+    "E402",   # 文件中间导入
+    "F811",   # 重新定义（在 notebook 中常见）
+    "N803",   # 参数名应该是小写
+    "N806",   # 函数中的变量应该是小写
 ]
 

@@ -1,15 +1,15 @@
 """
-Brand application module for corporate document styling.
-Applies consistent branding to Excel, PowerPoint, and PDF documents.
+企业文档品牌应用模块。
+为Excel、PowerPoint和PDF文档应用一致的品牌。
 """
 
 from typing import Dict, Any, List
 
 
 class BrandFormatter:
-    """Apply corporate brand guidelines to documents."""
+    """将企业品牌指南应用于文档。"""
 
-    # Brand color definitions
+    # 品牌颜色定义
     COLORS = {
         "primary": {
             "acme_blue": {"hex": "#0066CC", "rgb": (0, 102, 204)},
@@ -25,7 +25,7 @@ class BrandFormatter:
         },
     }
 
-    # Font definitions
+    # 字体定义
     FONTS = {
         "primary": "Segoe UI",
         "fallback": ["system-ui", "-apple-system", "sans-serif"],
@@ -33,34 +33,34 @@ class BrandFormatter:
         "weights": {"regular": 400, "semibold": 600, "bold": 700},
     }
 
-    # Company information
+    # 公司信息
     COMPANY = {
         "name": "Acme Corporation",
-        "tagline": "Innovation Through Excellence",
-        "copyright": "© 2025 Acme Corporation. All rights reserved.",
+        "tagline": "卓越创新",
+        "copyright": "© 2025 Acme Corporation. 保留所有权利。",
         "website": "www.acmecorp.example",
         "logo_path": "assets/acme_logo.png",
     }
 
     def __init__(self):
-        """Initialize brand formatter with standard settings."""
+        """使用标准设置初始化品牌格式化器。"""
         self.colors = self.COLORS
         self.fonts = self.FONTS
         self.company = self.COMPANY
 
     def format_excel(self, workbook_config: Dict[str, Any]) -> Dict[str, Any]:
         """
-        Apply brand formatting to Excel workbook configuration.
+        将品牌格式应用于Excel工作簿配置。
 
         Args:
-            workbook_config: Excel workbook configuration dictionary
+            workbook_config: Excel工作簿配置字典
 
         Returns:
-            Branded workbook configuration
+            品牌化的工作簿配置
         """
         branded_config = workbook_config.copy()
 
-        # Apply header formatting
+        # 应用表头格式化
         branded_config["header_style"] = {
             "font": {
                 "name": self.fonts["primary"],
@@ -73,7 +73,7 @@ class BrandFormatter:
             "border": {"style": "thin", "color": self.colors["secondary"]["neutral_gray"]["hex"]},
         }
 
-        # Apply data cell formatting
+        # 应用数据单元格格式化
         branded_config["cell_style"] = {
             "font": {
                 "name": self.fonts["primary"],
@@ -83,13 +83,13 @@ class BrandFormatter:
             "alignment": {"horizontal": "left", "vertical": "center"},
         }
 
-        # Apply alternating row colors
+        # 应用交替行颜色
         branded_config["alternating_rows"] = {
             "enabled": True,
             "color": self.colors["secondary"]["light_gray"]["hex"],
         }
 
-        # Chart color scheme
+        # 图表配色方案
         branded_config["chart_colors"] = [
             self.colors["primary"]["acme_blue"]["hex"],
             self.colors["secondary"]["success_green"]["hex"],
@@ -101,17 +101,17 @@ class BrandFormatter:
 
     def format_powerpoint(self, presentation_config: Dict[str, Any]) -> Dict[str, Any]:
         """
-        Apply brand formatting to PowerPoint presentation configuration.
+        将品牌格式应用于PowerPoint演示文稿配置。
 
         Args:
-            presentation_config: PowerPoint configuration dictionary
+            presentation_config: PowerPoint配置字典
 
         Returns:
-            Branded presentation configuration
+            品牌化的演示文稿配置
         """
         branded_config = presentation_config.copy()
 
-        # Slide master settings
+        # 幻灯片母版设置
         branded_config["master"] = {
             "background_color": self.colors["primary"]["white"]["hex"],
             "title_area": {
@@ -134,7 +134,7 @@ class BrandFormatter:
             },
         }
 
-        # Title slide template
+        # 标题幻灯片模板
         branded_config["title_slide"] = {
             "background": self.colors["primary"]["acme_blue"]["hex"],
             "title_color": self.colors["primary"]["white"]["hex"],
@@ -143,7 +143,7 @@ class BrandFormatter:
             "logo_position": {"x": 0.5, "y": 0.5, "width": 2},
         }
 
-        # Content slide template
+        # 内容幻灯片模板
         branded_config["content_slide"] = {
             "title_bar": {
                 "background": self.colors["primary"]["acme_blue"]["hex"],
@@ -153,7 +153,7 @@ class BrandFormatter:
             "bullet_style": {"level1": "•", "level2": "○", "level3": "▪", "indent": 0.25},
         }
 
-        # Chart defaults
+        # 图表默认设置
         branded_config["charts"] = {
             "color_scheme": [
                 self.colors["primary"]["acme_blue"]["hex"],
@@ -169,24 +169,24 @@ class BrandFormatter:
 
     def format_pdf(self, document_config: Dict[str, Any]) -> Dict[str, Any]:
         """
-        Apply brand formatting to PDF document configuration.
+        将品牌格式应用于PDF文档配置。
 
         Args:
-            document_config: PDF document configuration dictionary
+            document_config: PDF文档配置字典
 
         Returns:
-            Branded document configuration
+            品牌化的文档配置
         """
         branded_config = document_config.copy()
 
-        # Page layout
+        # 页面布局
         branded_config["page"] = {
             "margins": {"top": 1, "bottom": 1, "left": 1, "right": 1},
             "size": "letter",
             "orientation": "portrait",
         }
 
-        # Header configuration
+        # 页眉配置
         branded_config["header"] = {
             "height": 0.75,
             "content": {
@@ -202,7 +202,7 @@ class BrandFormatter:
             },
         }
 
-        # Footer configuration
+        # 页脚配置
         branded_config["footer"] = {
             "height": 0.5,
             "content": {
@@ -213,12 +213,12 @@ class BrandFormatter:
                     "size": self.fonts["sizes"]["caption"],
                     "color": self.colors["secondary"]["neutral_gray"]["hex"],
                 },
-                "center": {"type": "date", "format": "%B %d, %Y"},
-                "right": {"type": "text", "content": "Confidential"},
+                "center": {"type": "date", "format": "%Y年%m月%d日"},
+                "right": {"type": "text", "content": "机密"},
             },
         }
 
-        # Text styles
+        # 文本样式
         branded_config["styles"] = {
             "heading1": {
                 "font": self.fonts["primary"],
@@ -256,7 +256,7 @@ class BrandFormatter:
             },
         }
 
-        # Table formatting
+        # 表格格式化
         branded_config["table_style"] = {
             "header": {
                 "background": self.colors["primary"]["acme_blue"]["hex"],
@@ -273,13 +273,13 @@ class BrandFormatter:
 
     def validate_colors(self, colors_used: List[str]) -> Dict[str, Any]:
         """
-        Validate that colors match brand guidelines.
+        验证颜色是否符合品牌指南。
 
         Args:
-            colors_used: List of color codes used in document
+            colors_used: 文档中使用的颜色代码列表
 
         Returns:
-            Validation results with corrections if needed
+            验证结果，如有需要则包含修正建议
         """
         results = {"valid": True, "corrections": [], "warnings": []}
 
@@ -292,32 +292,32 @@ class BrandFormatter:
             color_upper = color.upper()
             if color_upper not in approved_colors:
                 results["valid"] = False
-                # Find closest brand color
+                # 查找最接近的品牌颜色
                 closest = self._find_closest_brand_color(color)
                 results["corrections"].append(
                     {
                         "original": color,
                         "suggested": closest,
-                        "message": f"Non-brand color {color} should be replaced with {closest}",
+                        "message": f"非品牌颜色 {color} 应替换为 {closest}",
                     }
                 )
 
         return results
 
     def _find_closest_brand_color(self, color: str) -> str:
-        """Find the closest brand color to a given color."""
-        # Simplified - in reality would calculate color distance
+        """查找与给定颜色最接近的品牌颜色。"""
+        # 简化实现 - 实际中应计算颜色距离
         return self.colors["primary"]["acme_blue"]["hex"]
 
     def apply_watermark(self, document_type: str) -> Dict[str, Any]:
         """
-        Generate watermark configuration for documents.
+        为文档生成水印配置。
 
         Args:
-            document_type: Type of document (draft, confidential, etc.)
+            document_type: 文档类型（草稿、机密等）
 
         Returns:
-            Watermark configuration
+            水印配置
         """
         watermarks = {
             "draft": {
@@ -347,13 +347,13 @@ class BrandFormatter:
 
     def get_chart_palette(self, num_series: int = 4) -> List[str]:
         """
-        Get color palette for charts.
+        获取图表配色。
 
         Args:
-            num_series: Number of data series
+            num_series: 数据系列数量
 
         Returns:
-            List of hex color codes
+            十六进制颜色代码列表
         """
         palette = [
             self.colors["primary"]["acme_blue"]["hex"],
@@ -368,14 +368,14 @@ class BrandFormatter:
 
     def format_number(self, value: float, format_type: str = "general") -> str:
         """
-        Format numbers according to brand standards.
+        根据品牌标准格式化数字。
 
         Args:
-            value: Numeric value to format
-            format_type: Type of formatting (currency, percentage, general)
+            value: 要格式化的数值
+            format_type: 格式化类型（货币、百分比、通用）
 
         Returns:
-            Formatted string
+            格式化后的字符串
         """
         if format_type == "currency":
             return f"${value:,.2f}"
@@ -394,14 +394,14 @@ class BrandFormatter:
 
 def apply_brand_to_document(document_type: str, config: Dict[str, Any]) -> Dict[str, Any]:
     """
-    Main function to apply branding to any document type.
+    将品牌应用于任何文档类型的主函数。
 
     Args:
-        document_type: Type of document ('excel', 'powerpoint', 'pdf')
-        config: Document configuration
+        document_type: 文档类型（'excel', 'powerpoint', 'pdf'）
+        config: 文档配置
 
     Returns:
-        Branded configuration
+        品牌化配置
     """
     formatter = BrandFormatter()
 
@@ -412,21 +412,21 @@ def apply_brand_to_document(document_type: str, config: Dict[str, Any]) -> Dict[
     elif document_type.lower() == "pdf":
         return formatter.format_pdf(config)
     else:
-        raise ValueError(f"Unsupported document type: {document_type}")
+        raise ValueError(f"不支持的文档类型: {document_type}")
 
 
-# Example usage
+# 示例用法
 if __name__ == "__main__":
-    # Example Excel configuration
-    excel_config = {"title": "Quarterly Report", "sheets": ["Summary", "Details"]}
+    # Excel 配置示例
+    excel_config = {"title": "季度报告", "sheets": ["摘要", "详情"]}
 
     branded_excel = apply_brand_to_document("excel", excel_config)
-    print("Branded Excel Configuration:")
+    print("品牌化 Excel 配置:")
     print(branded_excel)
 
-    # Example PowerPoint configuration
-    ppt_config = {"title": "Business Review", "num_slides": 10}
+    # PowerPoint 配置示例
+    ppt_config = {"title": "业务评审", "num_slides": 10}
 
     branded_ppt = apply_brand_to_document("powerpoint", ppt_config)
-    print("\nBranded PowerPoint Configuration:")
+    print("\n品牌化 PowerPoint 配置:")
     print(branded_ppt)

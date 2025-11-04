@@ -7,15 +7,15 @@ client = Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
 
 def llm_call(prompt: str, system_prompt: str = "", model="claude-sonnet-4-5") -> str:
     """
-    Calls the model with the given prompt and returns the response.
+    使用给定的提示调用模型并返回响应。
 
-    Args:
-        prompt (str): The user prompt to send to the model.
-        system_prompt (str, optional): The system prompt to send to the model. Defaults to "".
-        model (str, optional): The model to use for the call. Defaults to "claude-sonnet-4-5".
+    参数:
+        prompt (str): 发送给模型的用户提示。
+        system_prompt (str, 可选): 发送给模型的系统提示。默认为""。
+        model (str, 可选): 用于调用的模型。默认为"claude-sonnet-4-5"。
 
-    Returns:
-        str: The response from the language model.
+    返回:
+        str: 来自语言模型的响应。
     """
     client = Anthropic(api_key=os.environ["ANTHROPIC_API_KEY"])
     messages = [{"role": "user", "content": prompt}]
@@ -31,14 +31,14 @@ def llm_call(prompt: str, system_prompt: str = "", model="claude-sonnet-4-5") ->
 
 def extract_xml(text: str, tag: str) -> str:
     """
-    Extracts the content of the specified XML tag from the given text. Used for parsing structured responses
+    从给定文本中提取指定XML标签的内容。用于解析结构化响应
 
-    Args:
-        text (str): The text containing the XML.
-        tag (str): The XML tag to extract content from.
+    参数:
+        text (str): 包含XML的文本。
+        tag (str): 要提取内容的XML标签。
 
-    Returns:
-        str: The content of the specified XML tag, or an empty string if the tag is not found.
+    返回:
+        str: 指定XML标签的内容，如果未找到标签则返回空字符串。
     """
     match = re.search(f"<{tag}>(.*?)</{tag}>", text, re.DOTALL)
     return match.group(1) if match else ""

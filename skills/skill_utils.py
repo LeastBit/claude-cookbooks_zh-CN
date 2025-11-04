@@ -1,12 +1,12 @@
 """
-Utility functions for managing custom skills with Claude's Skills API.
+使用Claude Skills API管理自定义技能的实用函数。
 
-This module provides helper functions for:
-- Creating and uploading custom skills
-- Listing and retrieving skill information
-- Managing skill versions
-- Testing skills with Claude
-- Deleting skills
+此模块提供辅助函数用于：
+- 创建和上传自定义技能
+- 列出和检索技能信息
+- 管理技能版本
+- 使用Claude测试技能
+- 删除技能
 """
 
 from pathlib import Path
@@ -17,27 +17,27 @@ from anthropic.lib import files_from_dir
 
 def create_skill(client: Anthropic, skill_path: str, display_title: str) -> Dict[str, Any]:
     """
-    Create a new custom skill from a directory.
+    从目录创建新的自定义技能。
 
-    The directory must contain:
-    - SKILL.md file with YAML frontmatter (name, description)
-    - Optional: scripts, resources, REFERENCE.md
+    目录必须包含：
+    - 带有YAML前导块的SKILL.md文件（名称、描述）
+    - 可选：scripts、resources、REFERENCE.md
 
     Args:
-        client: Anthropic client instance with Skills beta
-        skill_path: Path to skill directory containing SKILL.md
-        display_title: Human-readable name for the skill
+        client: 具有Skills beta的Anthropic客户端实例
+        skill_path: 包含SKILL.md的技能目录路径
+        display_title: 人类可读的技能名称
 
     Returns:
-        Dictionary with skill creation results:
+        技能创建结果的字典：
         {
             'success': bool,
-            'skill_id': str (if successful),
+            'skill_id': str (如果成功),
             'display_title': str,
             'latest_version': str,
             'created_at': str,
             'source': str ('custom'),
-            'error': str (if failed)
+            'error': str (如果失败)
         }
 
     Example:
@@ -47,7 +47,7 @@ def create_skill(client: Anthropic, skill_path: str, display_title: str) -> Dict
         ...     print(f"Created skill: {result['skill_id']}")
     """
     try:
-        # Validate skill directory
+        # 验证技能目录
         skill_dir = Path(skill_path)
         if not skill_dir.exists():
             return {"success": False, "error": f"Skill directory does not exist: {skill_path}"}
@@ -56,7 +56,7 @@ def create_skill(client: Anthropic, skill_path: str, display_title: str) -> Dict
         if not skill_md.exists():
             return {"success": False, "error": f"SKILL.md not found in {skill_path}"}
 
-        # Create skill using files_from_dir
+        # 使用files_from_dir创建技能
         skill = client.beta.skills.create(
             display_title=display_title, files=files_from_dir(skill_path)
         )
@@ -76,13 +76,13 @@ def create_skill(client: Anthropic, skill_path: str, display_title: str) -> Dict
 
 def list_custom_skills(client: Anthropic) -> List[Dict[str, Any]]:
     """
-    List all custom skills in the workspace.
+    列出工作区中的所有自定义技能。
 
     Args:
-        client: Anthropic client instance with Skills beta
+        client: 具有Skills beta的Anthropic客户端实例
 
     Returns:
-        List of skill dictionaries with metadata
+        带有元数据的技能字典列表
 
     Example:
         >>> skills = list_custom_skills(client)
@@ -115,18 +115,18 @@ def get_skill_version(
     client: Anthropic, skill_id: str, version: str = "latest"
 ) -> Optional[Dict[str, Any]]:
     """
-    Get detailed information about a specific skill version.
+    获取特定技能版本的详细信息。
 
     Args:
-        client: Anthropic client instance
-        skill_id: ID of the skill
-        version: Version to retrieve (default: "latest")
+        client: Anthropic客户端实例
+        skill_id: 技能ID
+        version: 要检索的版本（默认："latest"）
 
     Returns:
-        Dictionary with version details or None if not found
+        包含版本详情的字典，如果未找到则返回None
     """
     try:
-        # Get latest version if not specified
+        # 如果未指定，获取最新版本
         if version == "latest":
             skill = client.beta.skills.retrieve(skill_id)
             version = skill.latest_version
@@ -149,15 +149,15 @@ def get_skill_version(
 
 def create_skill_version(client: Anthropic, skill_id: str, skill_path: str) -> Dict[str, Any]:
     """
-    Create a new version of an existing skill.
+    创建现有技能的新版本。
 
     Args:
-        client: Anthropic client instance
-        skill_id: ID of the existing skill
-        skill_path: Path to updated skill directory
+        client: Anthropic客户端实例
+        skill_id: 现有技能的ID
+        skill_path: 更新的技能目录路径
 
     Returns:
-        Dictionary with version creation results
+        版本创建结果的字典
     """
     try:
         version = client.beta.skills.versions.create(
@@ -177,28 +177,28 @@ def create_skill_version(client: Anthropic, skill_id: str, skill_path: str) -> D
 
 def delete_skill(client: Anthropic, skill_id: str, delete_versions: bool = True) -> bool:
     """
-    Delete a custom skill and optionally all its versions.
+    删除自定义技能并可选地删除其所有版本。
 
-    Note: All versions must be deleted before the skill can be deleted.
+    注意：必须先删除所有版本，然后才能删除技能。
 
     Args:
-        client: Anthropic client instance
-        skill_id: ID of skill to delete
-        delete_versions: Whether to delete all versions first
+        client: Anthropic客户端实例
+        skill_id: 要删除的技能ID
+        delete_versions: 是否首先删除所有版本
 
     Returns:
-        True if successful, False otherwise
+        如果成功则返回True，否则返回False
     """
     try:
         if delete_versions:
-            # First delete all versions
+            # 首先删除所有版本
             versions = client.beta.skills.versions.list(skill_id=skill_id)
 
             for version in versions.data:
                 client.beta.skills.versions.delete(skill_id=skill_id, version=version.version)
                 print(f"  Deleted version: {version.version}")
 
-        # Then delete the skill itself
+        # 然后删除技能本身
         client.beta.skills.delete(skill_id)
         print(f"✓ Deleted skill: {skill_id}")
         return True
@@ -216,17 +216,17 @@ def test_skill(
     include_anthropic_skills: Optional[List[str]] = None,
 ) -> Any:
     """
-    Test a custom skill with a prompt.
+    使用提示测试自定义技能。
 
     Args:
-        client: Anthropic client instance
-        skill_id: ID of skill to test
-        test_prompt: Prompt to test the skill
-        model: Model to use for testing
-        include_anthropic_skills: Optional list of Anthropic skill IDs to include
+        client: Anthropic客户端实例
+        skill_id: 要测试的技能ID
+        test_prompt: 测试技能的提示
+        model: 用于测试的模型
+        include_anthropic_skills: 要包含的Anthropic技能ID的可选列表
 
     Returns:
-        Response from Claude
+        Claude的响应
 
     Example:
         >>> response = test_skill(
@@ -236,10 +236,10 @@ def test_skill(
         ...     include_anthropic_skills=["xlsx"]
         ... )
     """
-    # Build skills list
+    # 构建技能列表
     skills = [{"type": "custom", "skill_id": skill_id, "version": "latest"}]
 
-    # Add Anthropic skills if requested
+    # 如果请求，添加Anthropic技能
     if include_anthropic_skills:
         for anthropic_skill in include_anthropic_skills:
             skills.append({"type": "anthropic", "skill_id": anthropic_skill, "version": "latest"})
@@ -258,14 +258,14 @@ def test_skill(
 
 def list_skill_versions(client: Anthropic, skill_id: str) -> List[Dict[str, Any]]:
     """
-    List all versions of a skill.
+    列出技能的所有版本。
 
     Args:
-        client: Anthropic client instance
-        skill_id: ID of the skill
+        client: Anthropic客户端实例
+        skill_id: 技能ID
 
     Returns:
-        List of version dictionaries
+        版本字典列表
     """
     try:
         versions_response = client.beta.skills.versions.list(skill_id=skill_id)
@@ -289,50 +289,50 @@ def list_skill_versions(client: Anthropic, skill_id: str) -> List[Dict[str, Any]
 
 def validate_skill_directory(skill_path: str) -> Dict[str, Any]:
     """
-    Validate a skill directory structure before upload.
+    上传前验证技能目录结构。
 
-    Checks for:
-    - SKILL.md exists
-    - YAML frontmatter is valid
-    - Directory name matches skill name
-    - Total size is under 8MB
+    检查：
+    - SKILL.md存在
+    - YAML前导块有效
+    - 目录名与技能名匹配
+    - 总大小小于8MB
 
     Args:
-        skill_path: Path to skill directory
+        skill_path: 技能目录路径
 
     Returns:
-        Dictionary with validation results
+        验证结果的字典
     """
     result = {"valid": True, "errors": [], "warnings": [], "info": {}}
 
     skill_dir = Path(skill_path)
 
-    # Check directory exists
+    # 检查目录是否存在
     if not skill_dir.exists():
         result["valid"] = False
         result["errors"].append(f"Directory does not exist: {skill_path}")
         return result
 
-    # Check for SKILL.md
+    # 检查SKILL.md
     skill_md = skill_dir / "SKILL.md"
     if not skill_md.exists():
         result["valid"] = False
         result["errors"].append("SKILL.md file is required")
     else:
-        # Read and validate SKILL.md
+        # 读取并验证SKILL.md
         content = skill_md.read_text()
 
-        # Check for YAML frontmatter
+        # 检查YAML前导块
         if not content.startswith("---"):
             result["valid"] = False
             result["errors"].append("SKILL.md must start with YAML frontmatter (---)")
         else:
-            # Extract frontmatter
+            # 提取前导块
             try:
                 end_idx = content.index("---", 3)
                 frontmatter = content[3:end_idx].strip()
 
-                # Check for required fields
+                # 检查必需字段
                 if "name:" not in frontmatter:
                     result["valid"] = False
                     result["errors"].append("YAML frontmatter must include 'name' field")
@@ -341,7 +341,7 @@ def validate_skill_directory(skill_path: str) -> Dict[str, Any]:
                     result["valid"] = False
                     result["errors"].append("YAML frontmatter must include 'description' field")
 
-                # Check frontmatter size
+                # 检查前导块大小
                 if len(frontmatter) > 1024:
                     result["valid"] = False
                     result["errors"].append(
@@ -352,7 +352,7 @@ def validate_skill_directory(skill_path: str) -> Dict[str, Any]:
                 result["valid"] = False
                 result["errors"].append("Invalid YAML frontmatter format")
 
-    # Check total size
+    # 检查总大小
     total_size = sum(f.stat().st_size for f in skill_dir.rglob("*") if f.is_file())
     result["info"]["total_size_mb"] = total_size / (1024 * 1024)
 
@@ -362,12 +362,12 @@ def validate_skill_directory(skill_path: str) -> Dict[str, Any]:
             f"Total size exceeds 8MB (found: {total_size / (1024 * 1024):.2f} MB)"
         )
 
-    # Count files
+    # 统计文件
     files = list(skill_dir.rglob("*"))
     result["info"]["file_count"] = len([f for f in files if f.is_file()])
     result["info"]["directory_count"] = len([f for f in files if f.is_dir()])
 
-    # Check for common files
+    # 检查常见文件
     if (skill_dir / "REFERENCE.md").exists():
         result["info"]["has_reference"] = True
 
@@ -382,10 +382,10 @@ def validate_skill_directory(skill_path: str) -> Dict[str, Any]:
 
 def print_skill_summary(skill_info: Dict[str, Any]) -> None:
     """
-    Print a formatted summary of a skill.
+    打印技能的格式化摘要。
 
     Args:
-        skill_info: Dictionary with skill information
+        skill_info: 包含技能信息的字典
     """
     print(f"📦 Skill: {skill_info.get('display_title', 'Unknown')}")
     print(f"   ID: {skill_info.get('skill_id', 'N/A')}")

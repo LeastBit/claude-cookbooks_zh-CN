@@ -1,10 +1,10 @@
 """
-Utility functions for working with Claude Skills and Files API.
+使用Claude Skills和Files API的实用函数。
 
-This module provides helper functions for:
-- Extracting file IDs from Claude API responses
-- Downloading files via the Files API
-- Saving files to disk
+此模块提供辅助函数用于：
+- 从Claude API响应中提取文件ID
+- 通过Files API下载文件
+- 将文件保存到磁盘
 """
 
 import json
@@ -16,16 +16,16 @@ from anthropic import Anthropic
 
 def extract_file_ids(response) -> List[str]:
     """
-    Extract all file IDs from a Claude API response.
+    从Claude API响应中提取所有文件ID。
 
-    Skills create files during code execution and return file_id attributes
-    in the tool results. This function parses the response to find all file IDs.
+    Skills在代码执行期间创建文件，并在工具结果中返回file_id属性。
+    此函数解析响应以查找所有文件ID。
 
     Args:
-        response: The response object from client.beta.messages.create()
+        response: 来自client.beta.messages.create()的响应对象
 
     Returns:
-        List of file IDs found in the response
+        响应中找到的文件ID列表
 
     Example:
         >>> response = client.beta.messages.create(...)
@@ -35,11 +35,11 @@ def extract_file_ids(response) -> List[str]:
     file_ids = []
 
     for block in response.content:
-        # Check for bash_code_execution_tool_result (beta API format)
+        # 检查bash_code_execution_tool_result（beta API格式）
         if block.type == "bash_code_execution_tool_result":
             try:
                 if hasattr(block, "content") and hasattr(block.content, "content"):
-                    # Iterate through content array
+                    # 遍历内容数组
                     for item in block.content.content:
                         if hasattr(item, "file_id"):
                             file_ids.append(item.file_id)
@@ -47,15 +47,15 @@ def extract_file_ids(response) -> List[str]:
                 print(f"Warning: Error parsing bash_code_execution_tool_result: {e}")
                 continue
 
-        # Check for legacy tool_result blocks (for backward compatibility)
+        # 检查传统tool_result块（向后兼容）
         elif block.type == "tool_result":
             try:
                 if hasattr(block, "output"):
                     output_str = str(block.output)
 
-                    # Look for file_id patterns in the output
+                    # 在输出中查找file_id模式
                     if "file_id" in output_str.lower():
-                        # Try to parse as JSON first
+                        # 首先尝试解析为JSON
                         try:
                             output_json = json.loads(output_str)
                             if isinstance(output_json, dict) and "file_id" in output_json:
@@ -65,7 +65,7 @@ def extract_file_ids(response) -> List[str]:
                                     if isinstance(item, dict) and "file_id" in item:
                                         file_ids.append(item["file_id"])
                         except json.JSONDecodeError:
-                            # If not JSON, use regex to find file_id patterns
+                            # 如果不是JSON，使用正则表达式查找file_id模式
                             import re
 
                             pattern = r"file_id['\"]?\s*[:=]\s*['\"]?([a-zA-Z0-9_-]+)"
@@ -75,7 +75,7 @@ def extract_file_ids(response) -> List[str]:
                 print(f"Warning: Error parsing tool_result block: {e}")
                 continue
 
-    # Remove duplicates while preserving order
+    # 去重同时保持顺序
     seen = set()
     unique_file_ids = []
     for fid in file_ids:
@@ -90,16 +90,16 @@ def download_file(
     client: Anthropic, file_id: str, output_path: str, overwrite: bool = True
 ) -> Dict[str, Any]:
     """
-    Download a file from Claude's Files API and save it locally.
+    从Claude的Files API下载文件并本地保存。
 
     Args:
-        client: Anthropic client instance
-        file_id: The file ID returned by Skills
-        output_path: Local path where the file should be saved
-        overwrite: Whether to overwrite existing files (default: True)
+        client: Anthropic客户端实例
+        file_id: Skills返回的文件ID
+        output_path: 文件应保存的本地路径
+        overwrite: 是否覆盖现有文件（默认：True）
 
     Returns:
-        Dictionary with download metadata:
+        带有下载元数据的字典：
         {
             'file_id': str,
             'output_path': str,
@@ -125,28 +125,28 @@ def download_file(
     }
 
     try:
-        # Check if file exists
+        # 检查文件是否存在
         file_exists = os.path.exists(output_path)
         if file_exists and not overwrite:
             result["error"] = f"File already exists: {output_path} (set overwrite=True to replace)"
             return result
 
-        # Create output directory if it doesn't exist
+        # 创建输出目录（如果不存在）
         output_dir = os.path.dirname(output_path)
         if output_dir:
             Path(output_dir).mkdir(parents=True, exist_ok=True)
 
-        # Download file content from Files API (beta namespace)
+        # 从Files API下载文件内容（beta命名空间）
         file_content = client.beta.files.download(file_id=file_id)
 
-        # Save to disk
+        # 保存到磁盘
         with open(output_path, "wb") as f:
             f.write(file_content.read())
 
-        # Get file size
+        # 获取文件大小
         result["size"] = os.path.getsize(output_path)
         result["success"] = True
-        result["overwritten"] = file_exists  # Track if we overwrote an existing file
+        result["overwritten"] = file_exists  # 跟踪我们是否覆盖了现有文件
 
     except Exception as e:
         result["error"] = str(e)
@@ -162,20 +162,20 @@ def download_all_files(
     overwrite: bool = True,
 ) -> List[Dict[str, Any]]:
     """
-    Extract and download all files from a Claude API response.
+    从Claude API响应中提取并下载所有文件。
 
-    This is a convenience function that combines extract_file_ids()
-    and download_file() to download all files in a single call.
+    这是一个便利函数，结合了extract_file_ids()
+    和download_file()以单次调用下载所有文件。
 
     Args:
-        client: Anthropic client instance
-        response: The response object from client.messages.create()
-        output_dir: Directory where files should be saved
-        prefix: Optional prefix for filenames (e.g., "financial_report_")
-        overwrite: Whether to overwrite existing files (default: True)
+        client: Anthropic客户端实例
+        response: 来自client.messages.create()的响应对象
+        output_dir: 应保存文件的目录
+        prefix: 文件名的可选前缀（例如"financial_report_"）
+        overwrite: 是否覆盖现有文件（默认：True）
 
     Returns:
-        List of download results (one per file)
+        下载结果列表（每个文件一个）
 
     Example:
         >>> response = client.messages.create(...)
@@ -190,22 +190,22 @@ def download_all_files(
     results = []
 
     for i, file_id in enumerate(file_ids, 1):
-        # Try to get file metadata for proper filename
+        # 尝试获取文件元数据以获取正确的文件名
         try:
             file_info = client.beta.files.retrieve_metadata(file_id=file_id)
             filename = file_info.filename
         except Exception:
-            # If we can't get metadata, use a generic filename
+            # 如果无法获取元数据，使用通用文件名
             filename = f"file_{i}.bin"
 
-        # Add prefix if provided
+        # 如果提供了前缀，添加前缀
         if prefix:
             filename = f"{prefix}{filename}"
 
-        # Construct full output path
+        # 构造完整输出路径
         output_path = os.path.join(output_dir, filename)
 
-        # Download the file
+        # 下载文件
         result = download_file(client, file_id, output_path, overwrite=overwrite)
         results.append(result)
 
@@ -214,14 +214,14 @@ def download_all_files(
 
 def get_file_info(client: Anthropic, file_id: str) -> Optional[Dict[str, Any]]:
     """
-    Retrieve metadata about a file from the Files API.
+    从Files API检索文件的元数据。
 
     Args:
-        client: Anthropic client instance
-        file_id: The file ID to query
+        client: Anthropic客户端实例
+        file_id: 要查询的文件ID
 
     Returns:
-        Dictionary with file metadata, or None if not found
+        包含文件元数据的字典，如果未找到则返回None
 
     Example:
         >>> info = get_file_info(client, "file_abc123")
@@ -248,10 +248,10 @@ def get_file_info(client: Anthropic, file_id: str) -> Optional[Dict[str, Any]]:
 
 def print_download_summary(results: List[Dict[str, Any]]) -> None:
     """
-    Print a formatted summary of file download results.
+    打印格式化的文件下载结果摘要。
 
     Args:
-        results: List of download results from download_all_files()
+        results: 来自download_all_files()的下载结果列表
 
     Example:
         >>> results = download_all_files(client, response)
