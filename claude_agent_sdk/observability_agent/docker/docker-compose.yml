@@ -4,13 +4,13 @@ services:
       context: ../..
       dockerfile: observability_agent/docker/Dockerfile
     ports:
-      - "8001:8000"  # Different port to avoid conflict with research agent
+      - "8001:8000"  # 使用不同端口以避免与研究代理冲突
     env_file:
       - ../../.env
     environment:
       - DOCKER_HOST=unix:///var/run/docker.sock
     volumes:
-      # Mount Docker socket for MCP server containers
+      # 为MCP服务器容器挂载Docker套接字
       - /var/run/docker.sock:/var/run/docker.sock
     dns:
       - 8.8.8.8

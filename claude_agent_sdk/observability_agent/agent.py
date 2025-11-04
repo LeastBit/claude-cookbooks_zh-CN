@@ -1,6 +1,6 @@
 """
-Observability Agent - GitHub monitoring with MCP servers
-Built on top of the research agent pattern
+可观测性代理 - 使用MCP服务器监控GitHub
+基于研究代理模式构建
 """
 
 import asyncio
@@ -16,29 +16,29 @@ load_dotenv()
 
 
 def get_activity_text(msg) -> str | None:
-    """Extract activity text from a message"""
+    """从消息中提取活动文本"""
     try:
         if "Assistant" in msg.__class__.__name__:
             if hasattr(msg, "content") and msg.content:
                 first_content = msg.content[0] if isinstance(msg.content, list) else msg.content
                 if hasattr(first_content, "name"):
-                    return f"🤖 Using: {first_content.name}()"
-            return "🤖 Thinking..."
+                    return f"🤖 正在使用: {first_content.name}()"
+            return "🤖 思考中..."
         elif "User" in msg.__class__.__name__:
-            return "✓ Tool completed"
+            return "✓ 工具已完成"
     except (AttributeError, IndexError):
         pass
     return None
 
 
 def print_activity(msg) -> None:
-    """Print activity to console"""
+    """向控制台打印活动信息"""
     activity = get_activity_text(msg)
     if activity:
         print(activity)
 
 
-# Pre-configured GitHub MCP server
+# 预配置的GitHub MCP服务器
 GITHUB_MCP_SERVER = {
     "github": {
         "command": "docker",
@@ -63,19 +63,19 @@ async def send_query(
     use_github: bool = True,
 ) -> str | None:
     """
-    Send a query to the observability agent with MCP server support.
+    向可观测性代理发送查询请求，支持MCP服务器。
 
     Args:
-        prompt: The query to send
-        activity_handler: Callback for activity updates
-        continue_conversation: Continue the previous conversation if True
-        mcp_servers: Custom MCP servers configuration
-        use_github: Include GitHub MCP server (default: True)
+        prompt: 要发送的查询
+        activity_handler: 活动更新回调函数
+        continue_conversation: 如果为True则继续之前的对话
+        mcp_servers: 自定义MCP服务器配置
+        use_github: 包含GitHub MCP服务器（默认：True）
 
     Returns:
-        The final result text or None if no result
+        最终结果文本或None（如果没有结果）
     """
-    # Build MCP servers config
+    # 构建MCP服务器配置
     servers = {}
     if use_github and os.environ.get("GITHUB_TOKEN"):
         servers.update(GITHUB_MCP_SERVER)
@@ -86,7 +86,7 @@ async def send_query(
         model="claude-sonnet-4-5",
         allowed_tools=["mcp__github", "WebSearch", "Read"],
         continue_conversation=continue_conversation,
-        system_prompt="You are an observability agent specialized in monitoring GitHub repositories and CI/CD workflows",
+        system_prompt="你是一个专门监控GitHub仓库和CI/CD工作流的可观测性代理",
         mcp_servers=servers if servers else None,
         permission_mode="acceptEdits",
     )
@@ -105,7 +105,7 @@ async def send_query(
                 if hasattr(msg, "result"):
                     result = msg.result
     except Exception as e:
-        print(f"❌ Query error: {e}")
+        print(f"❌ 查询错误: {e}")
         raise
 
     return result

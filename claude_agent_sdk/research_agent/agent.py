@@ -1,5 +1,5 @@
 """
-Research Agent - Using Claude SDK with built-in session management
+研究代理 - 使用内置会话管理的 Claude SDK
 """
 
 import asyncio
@@ -14,24 +14,24 @@ load_dotenv()
 
 
 def get_activity_text(msg) -> str | None:
-    """Extract activity text from a message"""
+    """从消息中提取活动文本"""
     try:
         if "Assistant" in msg.__class__.__name__:
-            # Check if content exists and has items
+            # 检查内容是否存在且有项目
             if hasattr(msg, "content") and msg.content:
                 first_content = msg.content[0] if isinstance(msg.content, list) else msg.content
                 if hasattr(first_content, "name"):
-                    return f"🤖 Using: {first_content.name}()"
-            return "🤖 Thinking..."
+                    return f"🤖 正在使用: {first_content.name}()"
+            return "🤖 思考中..."
         elif "User" in msg.__class__.__name__:
-            return "✓ Tool completed"
+            return "✓ 工具已完成"
     except (AttributeError, IndexError):
         pass
     return None
 
 
 def print_activity(msg) -> None:
-    """Print activity to console"""
+    """将活动打印到控制台"""
     activity = get_activity_text(msg)
     if activity:
         print(activity)
@@ -43,28 +43,28 @@ async def send_query(
     continue_conversation: bool = False,
 ) -> str | None:
     """
-    Send a query using the Claude SDK with minimal overhead.
+    使用 Claude SDK 发送查询，最小化开销。
 
-    Args:
-        prompt: The query to send
-        activity_handler: Callback for activity updates
-        continue_conversation: Continue the previous conversation if True
+    参数:
+        prompt: 要发送的查询
+        activity_handler: 活动更新的回调函数
+        continue_conversation: 如果为 True 则继续之前的对话
 
-    Note:
-        For the activity_handler - we support both sync and async handlers
-        to make the module work in different contexts:
-            - Sync handlers (like print_activity) for simple console output
-            - Async handlers for web apps that need WebSocket/network I/O
-        In production, you'd typically use just one type based on your needs
+    注意:
+        对于 activity_handler - 我们支持同步和异步处理器
+        使模块能够在不同上下文中工作:
+            - 同步处理器（如 print_activity）用于简单的控制台输出
+            - 异步处理器用于需要 WebSocket/网络 I/O 的 Web 应用程序
+        在生产环境中，您通常会根据需要只使用一种类型
 
-    Returns:
-        The final result text or None if no result
+    返回:
+        最终结果文本，如果没有结果则返回 None
     """
     options = ClaudeAgentOptions(
         model="claude-sonnet-4-5",
         allowed_tools=["WebSearch", "Read"],
         continue_conversation=continue_conversation,
-        system_prompt="You are a research agent specialized in AI",
+        system_prompt="您是专门从事人工智能研究的研究代理",
     )
 
     result = None
@@ -81,7 +81,7 @@ async def send_query(
                 if hasattr(msg, "result"):
                     result = msg.result
     except Exception as e:
-        print(f"❌ Query error: {e}")
+        print(f"❌ 查询错误: {e}")
         raise
 
     return result

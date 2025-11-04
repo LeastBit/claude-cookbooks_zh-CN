@@ -2,7 +2,7 @@ FROM python:3.11
 
 WORKDIR /app
 
-# Install system dependencies including Docker CLI
+# 安装系统依赖，包括Docker CLI
 RUN apt-get update && apt-get install -y \
     curl \
     git \
@@ -20,7 +20,7 @@ RUN apt-get update && apt-get install -y \
 
 RUN npm install -g @anthropic-ai/claude-code
 
-COPY observability_agent ./observability_agent
+COPY observability_agent ./observability_agent  # 复制可观测性代理目录
 
 RUN pip install --no-cache-dir \
     claude-agent-sdk \
@@ -31,6 +31,6 @@ RUN pip install --no-cache-dir \
 
 RUN claude --version
 
-EXPOSE 8000
+EXPOSE 8000  # 暴露端口
 
 CMD ["python", "-m", "observability_agent.web.app"]
