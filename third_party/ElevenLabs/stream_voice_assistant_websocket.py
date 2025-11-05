@@ -1,33 +1,32 @@
-"""Low Latency Voice Assistant with WebSocket Streaming
+"""具有WebSocket流式传输的低延迟语音助手
 
-A production-ready conversational voice assistant that demonstrates real-time
-speech-to-text, Claude integration, and text-to-speech with minimal latency.
+生产就绪的对话语音助手，展示实时语音转文本、Claude集成和低延迟文本转语音。
 
-Usage:
-    1. Set up environment variables:
-       - Copy .env.example to .env
-       - Add your API keys to .env:
-         * Get ElevenLabs API key: https://elevenlabs.io/app/developers/api-keys
-         * Get Anthropic API key: https://console.anthropic.com/settings/keys
+用法：
+    1. 设置环境变量：
+       - 将 .env.example 复制到 .env
+       - 将您的API密钥添加到 .env：
+         * 获取ElevenLabs API密钥：https://elevenlabs.io/app/developers/api-keys
+         * 获取Anthropic API密钥：https://console.anthropic.com/settings/keys
 
-    2. Install dependencies:
+    2. 安装依赖：
        pip install -r requirements.txt
 
-    3. Run the script:
+    3. 运行脚本：
        python stream_voice_assistant_websocket.py
 
-    4. Interaction flow:
-       - Press Enter to start recording
-       - Speak into your microphone
-       - Press Enter to stop recording
-       - Claude will respond with synthesized speech
-       - Repeat or press Ctrl+C to exit
+    4. 交互流程：
+       - 按Enter键开始录音
+       - 对着麦克风说话
+       - 按Enter键停止录音
+       - Claude将以合成语音回应
+       - 重复或按Ctrl+C退出
 
-Key optimizations:
-- Text chunks sent to TTS immediately as they arrive from Claude
-- No sentence buffering required - audio generation begins instantly
-- MP3 audio format compatible with free tier accounts
-- Continuous audio streaming with pre-buffering prevents crackling
+关键优化：
+- 从Claude收到的文本块立即发送到TTS
+- 无需句子缓冲 - 音频生成立即开始
+- MP3音频格式与免费套餐兼容
+- 带预缓冲的连续音频流防止爆音
 """
 
 import base64
@@ -46,17 +45,17 @@ from dotenv import load_dotenv
 from pydub import AudioSegment
 from scipy.io import wavfile
 
-# Load environment variables from .env file
+# 从 .env 文件加载环境变量
 load_dotenv()
 
 ELEVENLABS_API_KEY = os.getenv("ELEVENLABS_API_KEY")
 ANTHROPIC_API_KEY = os.getenv("ANTHROPIC_API_KEY")
 
-assert ELEVENLABS_API_KEY is not None, "ERROR: ELEVENLABS_API_KEY not found. Please copy .env.example to .env and add your API keys."
-assert ANTHROPIC_API_KEY is not None, "ERROR: ANTHROPIC_API_KEY not found. Please copy .env.example to .env and add your API keys."
+assert ELEVENLABS_API_KEY is not None, "错误：未找到ELEVENLABS_API_KEY。请将 .env.example 复制到 .env 并添加您的API密钥。"
+assert ANTHROPIC_API_KEY is not None, "错误：未找到ANTHROPIC_API_KEY。请将 .env.example 复制到 .env 并添加您的API密钥。"
 
-SAMPLE_RATE = 44100  # Audio sample rate for recording
-CHANNELS = 1  # Mono audio
+SAMPLE_RATE = 44100  # 录音音频采样率
+CHANNELS = 1  # 单声道音频
 
 elevenlabs_client = elevenlabs.ElevenLabs(
     api_key=ELEVENLABS_API_KEY,
@@ -67,29 +66,29 @@ anthropic_client = anthropic.Anthropic(
     api_key=ANTHROPIC_API_KEY
 )
 
-# Fetch available voices and select the first one
+# 获取可用语音并选择第一个
 voices = elevenlabs_client.voices.search().voices
 selected_voice = voices[0]
 VOICE_ID = selected_voice.voice_id
-print(f"Using voice: {selected_voice.name} (ID: {VOICE_ID})")
+print(f"使用语音: {selected_voice.name} (ID: {VOICE_ID})")
 
-# TTS configuration
-TTS_MODEL_ID = "eleven_turbo_v2_5"  # Fast, low-latency model
-TTS_OUTPUT_FORMAT = "mp3_44100_128"  # MP3 format (free tier compatible)
+# TTS配置
+TTS_MODEL_ID = "eleven_turbo_v2_5"  # 快速、低延迟模型
+TTS_OUTPUT_FORMAT = "mp3_44100_128"  # MP3格式（免费套餐兼容）
 
 
 class AudioQueue:
-    """Manages continuous audio playback with minimal latency.
+    """管理连续音频播放，最小化延迟。
 
-    Uses sounddevice OutputStream with callback-based streaming:
-    - Maintains a byte buffer for incoming audio chunks
-    - Stream callback reads from buffer in real-time
-    - Pre-buffering prevents crackling from buffer underruns
+    使用sounddevice OutputStream与基于回调的流式传输：
+    - 维护一个字节缓冲区用于传入音频块
+    - 流式回调实时从缓冲区读取
+    - 预缓冲防止缓冲区下溢导致的爆音
     """
-    # Audio buffer configuration constants
-    PRE_BUFFER_SIZE = 8192  # Minimum buffer size before playback starts (prevents initial crackling)
-    BUFFER_CLEANUP_THRESHOLD = 100000  # Bytes before buffer cleanup to prevent memory growth
-    REMAINING_BYTES_THRESHOLD = 1000  # Bytes to consider playback effectively done
+    # 音频缓冲区配置常量
+    PRE_BUFFER_SIZE = 8192  # 播放开始前的最小缓冲区大小（防止初始爆音）
+    BUFFER_CLEANUP_THRESHOLD = 100000  # 缓冲区清理前的字节数，防止内存增长
+    REMAINING_BYTES_THRESHOLD = 1000  # 考虑播放有效完成的字节数
 
     def __init__(self):
         self.buffer = bytearray()
@@ -104,16 +103,16 @@ class AudioQueue:
         self.read_position = 0
 
     def add(self, audio_data):
-        """Add MP3 audio chunk to the playback buffer.
+        """将MP3音频块添加到播放缓冲区。
 
         Args:
-            audio_data: Raw MP3 audio bytes
+            audio_data: 原始MP3音频字节
         """
         try:
-            # Decode MP3 to PCM
+            # 将MP3解码为PCM
             audio_segment = AudioSegment.from_mp3(io.BytesIO(audio_data))
 
-            # Convert to numpy array
+            # 转换为numpy数组
             samples = np.array(audio_segment.get_array_of_samples(), dtype=np.int16)
             samples = samples.astype(np.float32) / 32768.0
 
@@ -121,7 +120,7 @@ class AudioQueue:
                 self.sample_rate = audio_segment.frame_rate
                 self.channels = audio_segment.channels
 
-            # Reshape based on number of channels
+            # 根据通道数重新整形
             if self.channels > 1:
                 samples = samples.reshape((-1, self.channels))
             else:
@@ -130,23 +129,23 @@ class AudioQueue:
             with self.buffer_lock:
                 self.buffer.extend(samples.tobytes())
 
-            # Start playback after pre-buffering
+            # 预缓冲后开始播放
             if not self.playing and len(self.buffer) >= self.PRE_BUFFER_SIZE:
                 self.start_playback()
         except:
-            # Silently skip invalid MP3 chunks that fail to decode
-            # This is common when streaming MP3 data in real-time, as chunks may contain
-            # incomplete frames. Skipping these prevents console errors but may cause
-            # brief audio pops. To eliminate popping, upgrade to a paid ElevenLabs tier
-            # and use pcm_44100 format instead of MP3.
+            # 静默跳过无法解码的无效MP3块
+            # 这在实时流式传输MP3数据时很常见，因为块可能包含
+            # 不完整的帧。跳过这些可以防止控制台错误，但可能导致
+            # 短暂的音频爆音。要消除爆音，升级到付费ElevenLabs套餐
+            # 并使用pcm_44100格式而不是MP3。
             pass
 
     def start_playback(self):
-        """Start the audio output stream."""
+        """启动音频输出流。"""
         self.playing = True
 
         def callback(outdata, frames, _time_info, _status):
-            """Called by sounddevice to fill output buffer."""
+            """由sounddevice调用以填充输出缓冲区。"""
             if not self.first_audio_played:
                 self.first_audio_time = time.time()
                 self.first_audio_played = True
@@ -190,7 +189,7 @@ class AudioQueue:
 
 
     def wait_until_done(self):
-        """Block until all buffered audio finishes playing."""
+        """阻塞直到所有缓冲音频播放完成。"""
         while True:
             with self.buffer_lock:
                 remaining = len(self.buffer) - self.read_position
@@ -207,20 +206,20 @@ class AudioQueue:
 
 
 def record_audio():
-    """Record audio from microphone with Enter to start and stop.
+    """从麦克风录音，使用Enter键开始和停止。
 
     Returns:
-        io.BytesIO: WAV format audio buffer
+        io.BytesIO: WAV格式音频缓冲区
     """
-    input("Press Enter to start recording...")
-    print("Recording... Press Enter to stop.")
+    input("按Enter键开始录音...")
+    print("录音中... 按Enter键停止。")
     recording = []
 
     def callback(indata, _frames, _time_info, _status):
-        """Callback that appends audio chunks to recording list."""
+        """回调函数，将音频块追加到录音列表中。"""
         recording.append(indata.copy())
 
-    # Create audio input stream
+    # 创建音频输入流
     stream = sd.InputStream(
         samplerate=SAMPLE_RATE,
         channels=CHANNELS,
@@ -229,14 +228,14 @@ def record_audio():
     )
 
     stream.start()
-    input()  # Wait for Enter key press
+    input()  # 等待Enter键按下
     stream.stop()
     stream.close()
 
-    # Concatenate all audio chunks into a single array
+    # 将所有音频块连接为单个数组
     audio_data = np.concatenate(recording, axis=0)
 
-    # Convert float32 audio to int16 WAV format
+    # 将float32音频转换为int16 WAV格式
     audio_buffer = io.BytesIO()
     audio_int16 = (audio_data * 32767).astype(np.int16)
     wavfile.write(audio_buffer, SAMPLE_RATE, audio_int16)
@@ -246,41 +245,41 @@ def record_audio():
 
 
 def transcribe_audio(audio_buffer):
-    """Transcribe audio using ElevenLabs speech-to-text.
+    """使用ElevenLabs语音转文本转录音频。
 
     Args:
-        audio_buffer: Audio data in WAV format
+        audio_buffer: WAV格式的音频数据
 
     Returns:
-        str: Transcribed text
+        str: 转录文本
     """
-    print("\nTranscribing...")
+    print("\n转录中...")
 
-    # Use ElevenLabs Scribe model for speech-to-text
+    # 使用ElevenLabs Scribe模型进行语音转文本
     transcription = elevenlabs_client.speech_to_text.convert(
         file=audio_buffer,
         model_id="scribe_v1"
     )
 
-    print(f"Transcription: {transcription.text}")
+    print(f"转录: {transcription.text}")
 
     return transcription.text
 
 
 def stream_claude_and_synthesize_ws(messages, audio_queue):
-    """Stream Claude response directly to ElevenLabs WebSocket.
+    """直接将Claude响应流式传输到ElevenLabs WebSocket。
 
-    Text chunks are sent to TTS immediately without buffering,
-    achieving minimal latency from first token to first audio.
+    文本块立即发送到TTS，无需缓冲，
+    实现从第一个token到第一个音频的最小延迟。
 
     Args:
-        messages: Conversation history (list of message dicts)
-        audio_queue: AudioQueue instance
+        messages: 对话历史记录（消息字典列表）
+        audio_queue: AudioQueue实例
 
     Returns:
-        str: Full assistant response text
+        str: 完整的助手响应文本
     """
-    print("\nStreaming Claude response...\n")
+    print("\n流式传输Claude响应...\n")
 
     ws_url = f"wss://api.elevenlabs.io/v1/text-to-speech/{VOICE_ID}/stream-input?model_id={TTS_MODEL_ID}&output_format={TTS_OUTPUT_FORMAT}"
 
@@ -288,7 +287,7 @@ def stream_claude_and_synthesize_ws(messages, audio_queue):
     ws_finished = False
 
     def on_message(ws, message):
-        """Handle incoming WebSocket messages."""
+        """处理传入的WebSocket消息。"""
         nonlocal ws_finished
         data = json.loads(message)
 
@@ -296,17 +295,17 @@ def stream_claude_and_synthesize_ws(messages, audio_queue):
             audio_bytes = base64.b64decode(data["audio"])
             audio_queue.add(audio_bytes)
 
-        # Check if generation is complete
+        # 检查生成是否完成
         if data.get("isFinal"):
             ws_finished = True
 
     def on_error(ws, error):
-        print(f"\nWebSocket error: {error}")
+        print(f"\nWebSocket错误: {error}")
 
     def on_close(ws, close_status_code, close_msg):
-        """Handle WebSocket connection closure."""
+        """处理WebSocket连接关闭。"""
         if close_status_code or close_msg:
-            print(f"\nWebSocket closed with status {close_status_code}: {close_msg}")
+            print(f"\nWebSocket关闭，状态码: {close_status_code}: {close_msg}")
 
     def on_open(ws):
         nonlocal ws_connected
@@ -339,13 +338,13 @@ def stream_claude_and_synthesize_ws(messages, audio_queue):
 
     response_text = ""
 
-    # Stream Claude response and send each chunk to WebSocket
+    # 流式传输Claude响应并将每个块发送到WebSocket
     with anthropic_client.messages.stream(
         model="claude-haiku-4-5",
         max_tokens=1000,
         temperature=0,
-        system="""You are a helpful voice assistant. Your responses will be converted to speech using ElevenLabs.
-Do not write in markdown, as it cannot be read aloud properly.""",
+        system="""您是一个有用的语音助手。您的响应将使用ElevenLabs转换为语音。
+不要使用markdown格式，因为这样无法正常朗读。""",
         messages=messages
     ) as stream:
         for text in stream.text_stream:
@@ -358,7 +357,7 @@ Do not write in markdown, as it cannot be read aloud properly.""",
 
     ws.send(json.dumps({"text": ""}))
 
-    # Wait for WebSocket to signal completion
+    # 等待WebSocket发出完成信号
     while not ws_finished:
         time.sleep(0.1)
 
@@ -370,9 +369,9 @@ Do not write in markdown, as it cannot be read aloud properly.""",
 
 
 def main():
-    """Main execution loop."""
-    print("=== Low Latency Voice Assistant (WebSocket) ===\n")
-    print("Press Ctrl+C to exit\n")
+    """主执行循环。"""
+    print("=== 低延迟语音助手 (WebSocket) ===\n")
+    print("按Ctrl+C退出\n")
 
     conversation_history = []
 
@@ -392,9 +391,9 @@ def main():
 
             if audio_queue.first_audio_time:
                 time_to_first_audio = audio_queue.first_audio_time - enter_pressed_time
-                print(f"Time to first audio: {time_to_first_audio:.2f}s\n")
+                print(f"首音频时间: {time_to_first_audio:.2f}s\n")
     except KeyboardInterrupt:
-        print("\n\nExiting...")
+        print("\n\n退出中...")
 
 
 if __name__ == "__main__":

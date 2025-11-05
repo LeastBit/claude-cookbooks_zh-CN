@@ -1,6 +1,6 @@
 """
-Async API client with similar concurrency issues.
-This demonstrates Claude applying thread-safety patterns to async code.
+带有类似并发问题的异步 API 客户端。
+这展示了 Claude 将线程安全模式应用于异步代码。
 """
 
 import asyncio
@@ -10,15 +10,15 @@ import aiohttp
 
 
 class AsyncAPIClient:
-    """Async API client for fetching data from multiple endpoints."""
+    """用于从多个端点获取数据的异步 API 客户端。"""
 
     def __init__(self, base_url: str):
         self.base_url = base_url
-        self.responses = []  # BUG: Shared state accessed from multiple coroutines!
-        self.error_count = 0  # BUG: Race condition on counter increment!
+        self.responses = []  # 错误: 从多个协程访问共享状态!
+        self.error_count = 0  # 错误: 计数器递增的竞态条件!
 
     async def fetch_endpoint(self, session: aiohttp.ClientSession, endpoint: str) -> Dict[str, Any]:
-        """Fetch a single endpoint."""
+        """获取单个端点。"""
         url = f"{self.base_url}/{endpoint}"
         try:
             async with session.get(url, timeout=aiohttp.ClientTimeout(total=5)) as response:
@@ -36,12 +36,12 @@ class AsyncAPIClient:
 
     async def fetch_all(self, endpoints: List[str]) -> List[Dict[str, Any]]:
         """
-        Fetch multiple endpoints concurrently.
+        并发获取多个端点。
 
-        BUG: Similar to the threading issue, multiple coroutines
-        modify self.responses and self.error_count without coordination!
-        While Python's GIL prevents some race conditions in threads,
-        async code can still have interleaving issues.
+        错误: 与线程问题类似，多个协程在没有协调的情况下
+        修改 self.responses 和 self.error_count!
+        虽然 Python 的 GIL 防止了一些线程中的竞态条件，
+        异步代码仍然可能有交错问题。
         """
         async with aiohttp.ClientSession() as session:
             tasks = [self.fetch_endpoint(session, endpoint) for endpoint in endpoints]
@@ -49,16 +49,16 @@ class AsyncAPIClient:
             for coro in asyncio.as_completed(tasks):
                 result = await coro
 
-                # RACE CONDITION: Multiple coroutines modify shared state
+                # 竞态条件: 多个协程修改共享状态
                 if "error" in result:
-                    self.error_count += 1  # Not atomic!
+                    self.error_count += 1  # 非原子操作!
                 else:
-                    self.responses.append(result)  # Not thread-safe in async context!
+                    self.responses.append(result)  # 在异步上下文中非线程安全!
 
         return self.responses
 
     def get_summary(self) -> Dict[str, Any]:
-        """Get summary statistics."""
+        """获取汇总统计。"""
         return {
             "total_responses": len(self.responses),
             "errors": self.error_count,
@@ -71,7 +71,7 @@ class AsyncAPIClient:
 
 
 async def main():
-    """Test the async API client."""
+    """测试异步 API 客户端。"""
     client = AsyncAPIClient("https://jsonplaceholder.typicode.com")
 
     endpoints = [
@@ -80,15 +80,15 @@ async def main():
         "posts/3",
         "users/1",
         "users/2",
-        "invalid/endpoint",  # Will error
-    ] * 20  # 120 requests total
+        "invalid/endpoint",  # 会出错
+    ] * 20  # 总共 120 个请求
 
     results = await client.fetch_all(endpoints)
 
-    print("Expected: ~100 successful responses")
-    print(f"Got: {len(results)} responses")
-    print(f"Summary: {client.get_summary()}")
-    print("\nNote: Counts may be incorrect due to race conditions!")
+    print("预期: ~100 个成功响应")
+    print(f"得到: {len(results)} 个响应")
+    print(f"摘要: {client.get_summary()}")
+    print("\n注意: 由于竞态条件，计数可能不正确!")
 
 
 if __name__ == "__main__":

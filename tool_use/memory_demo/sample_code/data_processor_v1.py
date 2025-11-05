@@ -1,6 +1,6 @@
 """
-Data processor with multiple concurrency and thread-safety issues.
-Used for Session 3 to demonstrate context editing with multiple bugs.
+带有多个并发和线程安全问题的数据处理器。
+用于会话 3，以演示带有多个错误的上下文编辑。
 """
 
 import json
@@ -11,22 +11,22 @@ from typing import List, Dict, Any
 
 
 class DataProcessor:
-    """Process data files concurrently with various thread-safety issues."""
+    """并发处理数据文件，存在各种线程安全问题。"""
 
     def __init__(self, max_workers: int = 5):
         self.max_workers = max_workers
-        self.processed_count = 0  # BUG: Race condition on counter
-        self.results = []  # BUG: Shared list without locking
-        self.errors = {}  # BUG: Shared dict without locking
-        self.lock = threading.Lock()  # Available but not used!
+        self.processed_count = 0  # 错误: 计数器的竞态条件
+        self.results = []  # 错误: 无锁的共享列表
+        self.errors = {}  # 错误: 无锁的共享字典
+        self.lock = threading.Lock()  # 可用但未使用!
 
     def process_file(self, file_path: str) -> Dict[str, Any]:
-        """Process a single file."""
+        """处理单个文件。"""
         try:
             with open(file_path, "r") as f:
                 data = json.load(f)
 
-            # Simulate some processing
+            # 模拟一些处理
             processed = {
                 "file": file_path,
                 "record_count": len(data) if isinstance(data, list) else 1,
@@ -40,13 +40,13 @@ class DataProcessor:
 
     def process_batch(self, file_paths: List[str]) -> List[Dict[str, Any]]:
         """
-        Process multiple files concurrently.
+        并发处理多个文件。
 
-        MULTIPLE BUGS:
-        1. self.processed_count is incremented without locking
-        2. self.results is appended to from multiple threads
-        3. self.errors is modified from multiple threads
-        4. We have a lock but don't use it!
+        多个错误:
+        1. self.processed_count 在无锁的情况下递增
+        2. self.results 从多个线程追加
+        3. self.errors 从多个线程修改
+        4. 我们有锁但不使用它!
         """
         with ThreadPoolExecutor(max_workers=self.max_workers) as executor:
             futures = [executor.submit(self.process_file, fp) for fp in file_paths]
@@ -54,30 +54,30 @@ class DataProcessor:
             for future in futures:
                 result = future.result()
 
-                # RACE CONDITION: Increment counter without lock
-                self.processed_count += 1  # BUG!
+                # 竞态条件: 无锁递增计数器
+                self.processed_count += 1  # 错误!
 
                 if "error" in result:
-                    # RACE CONDITION: Modify dict without lock
-                    self.errors[result["file"]] = result["error"]  # BUG!
+                    # 竞态条件: 无锁修改字典
+                    self.errors[result["file"]] = result["error"]  # 错误!
                 else:
-                    # RACE CONDITION: Append to list without lock
-                    self.results.append(result)  # BUG!
+                    # 竞态条件: 无锁追加到列表
+                    self.results.append(result)  # 错误!
 
         return self.results
 
     def get_statistics(self) -> Dict[str, Any]:
         """
-        Get processing statistics.
+        获取处理统计。
 
-        BUG: Accessing shared state without ensuring thread-safety.
-        If called while processing, could get inconsistent values.
+        错误: 访问共享状态而未确保线程安全。
+        如果在处理过程中调用，可能得到不一致的值。
         """
         total_files = self.processed_count
         successful = len(self.results)
         failed = len(self.errors)
 
-        # BUG: These counts might not add up correctly due to race conditions
+        # 错误: 由于竞态条件，这些计数可能不正确
         return {
             "total_processed": total_files,
             "successful": successful,
@@ -87,42 +87,42 @@ class DataProcessor:
 
     def reset(self):
         """
-        Reset processor state.
+        重置处理器状态。
 
-        BUG: No locking - if called during processing, causes corruption.
+        错误: 无锁 - 如果在处理过程中调用，会导致损坏。
         """
-        self.processed_count = 0  # RACE CONDITION
-        self.results = []  # RACE CONDITION
-        self.errors = {}  # RACE CONDITION
+        self.processed_count = 0  # 竞态条件
+        self.results = []  # 竞态条件
+        self.errors = {}  # 竞态条件
 
 
 class SharedCache:
     """
-    A shared cache with thread-safety issues.
+    一个带有线程安全问题的共享缓存。
 
-    BUG: Classic read-modify-write race condition pattern.
+    错误: 经典的读-修改-写竞态条件模式。
     """
 
     def __init__(self):
-        self.cache = {}  # BUG: Shared dict without locking
-        self.hit_count = 0  # BUG: Race condition
-        self.miss_count = 0  # BUG: Race condition
+        self.cache = {}  # 错误: 无锁的共享字典
+        self.hit_count = 0  # 错误: 竞态条件
+        self.miss_count = 0  # 错误: 竞态条件
 
     def get(self, key: str) -> Any:
-        """Get from cache - RACE CONDITION on hit/miss counts."""
+        """从缓存获取 - 命中/未命中计数的竞态条件。"""
         if key in self.cache:
-            self.hit_count += 1  # BUG: Not atomic!
+            self.hit_count += 1  # 错误: 非原子操作!
             return self.cache[key]
         else:
-            self.miss_count += 1  # BUG: Not atomic!
+            self.miss_count += 1  # 错误: 非原子操作!
             return None
 
     def set(self, key: str, value: Any):
-        """Set in cache - RACE CONDITION on dict modification."""
-        self.cache[key] = value  # BUG: Dict access not synchronized!
+        """在缓存中设置 - 字典修改的竞态条件。"""
+        self.cache[key] = value  # 错误: 字典访问未同步!
 
     def get_stats(self) -> Dict[str, Any]:
-        """Get cache statistics - may be inconsistent."""
+        """获取缓存统计 - 可能不一致。"""
         total = self.hit_count + self.miss_count
         return {
             "hits": self.hit_count,
@@ -132,14 +132,14 @@ class SharedCache:
 
 
 if __name__ == "__main__":
-    # Create some test files (not included)
+    # 创建一些测试文件（未包含）
     processor = DataProcessor(max_workers=10)
 
-    # Simulate processing many files
+    # 模拟处理许多文件
     file_paths = [f"data/file_{i}.json" for i in range(100)]
 
-    print("Processing files concurrently...")
+    print("正在并发处理文件...")
     results = processor.process_batch(file_paths)
 
-    print(f"\nStatistics: {processor.get_statistics()}")
-    print("\nNote: Counts may be inconsistent due to race conditions!")
+    print(f"\n统计: {processor.get_statistics()}")
+    print("\n注意: 由于竞态条件，计数可能不一致!")

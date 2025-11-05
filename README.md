@@ -31,15 +31,6 @@ Claude Cookbooks 是由 Anthropic 官方提供的实用代码集合和教程，�
 - **实用场景**: 涵盖客服、计算器、SQL 查询等真实业务场景
 - **持续更新**: 紧跟 Anthropic 最新功能和模型
 
-```shell
-目前进度剩余
-third_party
-tool_evaluation
-tool_use
-未翻译
-预计本周完成
-```
-
 欢迎PR，纠正错误和提交相关学习笔记和经验笔记：提交笔记命名格式studynote/studynote_github用户名.md
 
 # 原仓库readme:

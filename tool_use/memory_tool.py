@@ -1,8 +1,7 @@
 """
-Production-ready memory tool handler for Claude's memory_20250818 tool.
+适用于Claude的memory_20250818工具的生产就绪记忆工具处理器。
 
-This implementation provides secure, client-side execution of memory operations
-with path validation, error handling, and comprehensive security measures.
+此实现提供安全的客户端记忆操作执行，包括路径验证、错误处理和全面的安全措施。
 """
 
 import shutil
@@ -12,23 +11,22 @@ from typing import Any
 
 class MemoryToolHandler:
     """
-    Handles execution of Claude's memory tool commands.
+    处理Claude的记忆工具命令执行。
 
-    The memory tool enables Claude to read, write, and manage files in a memory
-    system through a standardized tool interface. This handler provides client-side
-    implementation with security controls.
+    记忆工具使Claude能够通过标准化工具接口在记忆系统中读取、写入和管理文件。
+    此处理器提供带有安全控制的客户端实现。
 
-    Attributes:
-        base_path: Root directory for memory storage
-        memory_root: The /memories directory within base_path
+    属性:
+        base_path: 记忆存储的根目录
+        memory_root: base_path内的/memories目录
     """
 
     def __init__(self, base_path: str = "./memory_storage"):
         """
-        Initialize the memory tool handler.
+        初始化记忆工具处理器。
 
-        Args:
-            base_path: Root directory for all memory operations
+        参数:
+            base_path: 所有记忆操作的根目录
         """
         self.base_path = Path(base_path).resolve()
         self.memory_root = self.base_path / "memories"
@@ -36,16 +34,16 @@ class MemoryToolHandler:
 
     def _validate_path(self, path: str) -> Path:
         """
-        Validate and resolve memory paths to prevent directory traversal attacks.
+        验证并解析记忆路径以防止目录遍历攻击。
 
-        Args:
-            path: The path to validate (must start with /memories)
+        参数:
+            path: 要验证的路径（必须以/memories开头）
 
-        Returns:
-            Resolved absolute Path object within memory_root
+        返回:
+            memory_root内的解析绝对路径对象
 
-        Raises:
-            ValueError: If path is invalid or attempts to escape memory directory
+        异常:
+            ValueError: 如果路径无效或尝试逃逸记忆目录
         """
         if not path.startswith("/memories"):
             raise ValueError(
@@ -53,16 +51,16 @@ class MemoryToolHandler:
                 "All memory operations must be confined to the /memories directory."
             )
 
-        # Remove /memories prefix and any leading slashes
+        # 移除/memories前缀和任何前导斜杠
         relative_path = path[len("/memories") :].lstrip("/")
 
-        # Resolve to absolute path within memory_root
+        # 解析为memory_root内的绝对路径
         if relative_path:
             full_path = (self.memory_root / relative_path).resolve()
         else:
             full_path = self.memory_root.resolve()
 
-        # Verify the resolved path is still within memory_root
+        # 验证解析的路径仍在memory_root内
         try:
             full_path.relative_to(self.memory_root.resolve())
         except ValueError as e:
@@ -75,21 +73,21 @@ class MemoryToolHandler:
 
     def execute(self, **params: Any) -> dict[str, str]:
         """
-        Execute a memory tool command.
+        执行记忆工具命令。
 
-        Args:
-            **params: Command parameters from Claude's tool use
+        参数:
+            **params: 来自Claude工具使用的命令参数
 
-        Returns:
-            Dict with either 'success' or 'error' key
+        返回:
+            包含'success'或'error'键的字典
 
-        Supported commands:
-            - view: Show directory contents or file contents
-            - create: Create or overwrite a file
-            - str_replace: Replace text in a file
-            - insert: Insert text at a specific line
-            - delete: Delete a file or directory
-            - rename: Rename or move a file/directory
+        支持的命令:
+            - view: 显示目录内容或文件内容
+            - create: 创建或覆盖文件
+            - str_replace: 替换文件中的文本
+            - insert: 在特定行插入文本
+            - delete: 删除文件或目录
+            - rename: 重命名或移动文件/目录
         """
         command = params.get("command")
 
@@ -117,7 +115,7 @@ class MemoryToolHandler:
             return {"error": f"Unexpected error executing {command}: {e}"}
 
     def _view(self, params: dict[str, Any]) -> dict[str, str]:
-        """View directory contents or file contents."""
+        """查看目录内容或文件内容。"""
         path = params.get("path")
         view_range = params.get("view_range")
 
@@ -126,7 +124,7 @@ class MemoryToolHandler:
 
         full_path = self._validate_path(path)
 
-        # Handle directory listing
+        # 处理目录列表
         if full_path.is_dir():
             try:
                 items = []
@@ -144,22 +142,22 @@ class MemoryToolHandler:
             except Exception as e:
                 return {"error": f"Cannot read directory {path}: {e}"}
 
-        # Handle file reading
+        # 处理文件读取
         elif full_path.is_file():
             try:
                 content = full_path.read_text(encoding="utf-8")
                 lines = content.splitlines()
 
-                # Apply view range if specified
+                # 如果指定了查看范围，则应用它
                 if view_range:
-                    start_line = max(1, view_range[0]) - 1  # Convert to 0-indexed
+                    start_line = max(1, view_range[0]) - 1  # 转换为0索引
                     end_line = len(lines) if view_range[1] == -1 else view_range[1]
                     lines = lines[start_line:end_line]
                     start_num = start_line + 1
                 else:
                     start_num = 1
 
-                # Format with line numbers
+                # 格式化为带行号
                 numbered_lines = [f"{i + start_num:4d}: {line}" for i, line in enumerate(lines)]
                 return {"success": "\n".join(numbered_lines)}
 
@@ -172,7 +170,7 @@ class MemoryToolHandler:
             return {"error": f"Path not found: {path}"}
 
     def _create(self, params: dict[str, Any]) -> dict[str, str]:
-        """Create or overwrite a file."""
+        """创建或覆盖文件。"""
         path = params.get("path")
         file_text = params.get("file_text", "")
 
@@ -181,7 +179,7 @@ class MemoryToolHandler:
 
         full_path = self._validate_path(path)
 
-        # Don't allow creating directories directly
+        # 不允许直接创建目录
         if not path.endswith((".txt", ".md", ".json", ".py", ".yaml", ".yml")):
             return {
                 "error": f"Cannot create {path}: Only text files are supported. "
@@ -189,10 +187,10 @@ class MemoryToolHandler:
             }
 
         try:
-            # Create parent directories if needed
+            # 如果需要，创建父目录
             full_path.parent.mkdir(parents=True, exist_ok=True)
 
-            # Write the file
+            # 写入文件
             full_path.write_text(file_text, encoding="utf-8")
             return {"success": f"File created successfully at {path}"}
 
@@ -200,7 +198,7 @@ class MemoryToolHandler:
             return {"error": f"Cannot create file {path}: {e}"}
 
     def _str_replace(self, params: dict[str, Any]) -> dict[str, str]:
-        """Replace text in a file."""
+        """替换文件中的文本。"""
         path = params.get("path")
         old_str = params.get("old_str")
         new_str = params.get("new_str", "")
@@ -216,7 +214,7 @@ class MemoryToolHandler:
         try:
             content = full_path.read_text(encoding="utf-8")
 
-            # Check if old_str exists
+            # 检查old_str是否存在
             count = content.count(old_str)
             if count == 0:
                 return {
@@ -228,7 +226,7 @@ class MemoryToolHandler:
                     "The string must be unique. Use more specific context."
                 }
 
-            # Perform replacement
+            # 执行替换
             new_content = content.replace(old_str, new_str, 1)
             full_path.write_text(new_content, encoding="utf-8")
 
@@ -238,7 +236,7 @@ class MemoryToolHandler:
             return {"error": f"Cannot edit file {path}: {e}"}
 
     def _insert(self, params: dict[str, Any]) -> dict[str, str]:
-        """Insert text at a specific line."""
+        """在特定行插入文本。"""
         path = params.get("path")
         insert_line = params.get("insert_line")
         insert_text = params.get("insert_text", "")
@@ -254,17 +252,17 @@ class MemoryToolHandler:
         try:
             lines = full_path.read_text(encoding="utf-8").splitlines()
 
-            # Validate insert_line
+            # 验证插入行
             if insert_line < 0 or insert_line > len(lines):
                 return {
                     "error": f"Invalid insert_line {insert_line}. "
                     f"Must be between 0 and {len(lines)}"
                 }
 
-            # Insert the text
+            # 插入文本
             lines.insert(insert_line, insert_text.rstrip("\n"))
 
-            # Write back
+            # 写回
             full_path.write_text("\n".join(lines) + "\n", encoding="utf-8")
 
             return {"success": f"Text inserted at line {insert_line} in {path}"}
@@ -273,20 +271,20 @@ class MemoryToolHandler:
             return {"error": f"Cannot insert into {path}: {e}"}
 
     def _delete(self, params: dict[str, Any]) -> dict[str, str]:
-        """Delete a file or directory."""
+        """删除文件或目录。"""
         path = params.get("path")
 
         if not path:
             return {"error": "Missing required parameter: path"}
 
-        # Prevent deletion of root memories directory
+        # 防止删除根记忆目录
         if path == "/memories":
             return {"error": "Cannot delete the /memories directory itself"}
 
         full_path = self._validate_path(path)
 
-        # Verify the path is within /memories to prevent accidental deletion outside the memory directory
-        # This provides an additional safety check beyond _validate_path
+        # 验证路径在/memories内，以防止在记忆目录外意外删除
+        # 这提供了超出_validate_path的额外安全检查
         try:
             full_path.relative_to(self.memory_root.resolve())
         except ValueError:
@@ -310,7 +308,7 @@ class MemoryToolHandler:
             return {"error": f"Cannot delete {path}: {e}"}
 
     def _rename(self, params: dict[str, Any]) -> dict[str, str]:
-        """Rename or move a file/directory."""
+        """重命名或移动文件/目录。"""
         old_path = params.get("old_path")
         new_path = params.get("new_path")
 
@@ -330,10 +328,10 @@ class MemoryToolHandler:
             }
 
         try:
-            # Create parent directories if needed
+            # 如果需要，创建父目录
             new_full_path.parent.mkdir(parents=True, exist_ok=True)
 
-            # Perform rename/move
+            # 执行重命名/移动
             old_full_path.rename(new_full_path)
 
             return {"success": f"Renamed {old_path} to {new_path}"}
@@ -343,15 +341,15 @@ class MemoryToolHandler:
 
     def clear_all_memory(self) -> dict[str, str]:
         """
-        Clear all memory files (useful for testing or starting fresh).
+        清除所有记忆文件（对测试或重新开始有用）。
 
-        ⚠️ WARNING: This method is for demonstration and testing purposes only.
-        In production, you should carefully consider whether you need to delete
-        all memory files, as this will permanently remove all learned patterns
-        and stored knowledge. Consider using selective deletion instead.
+        ⚠️ 警告：此方法仅用于演示和测试目的。
+        在生产环境中，您应该仔细考虑是否需要删除
+        所有记忆文件，因为这将永久删除所有学到的模式
+        和存储的知识。考虑改用选择性删除。
 
-        Returns:
-            Dict with success message
+        返回:
+            带有成功消息的字典
         """
         try:
             if self.memory_root.exists():

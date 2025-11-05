@@ -1,7 +1,7 @@
 """
-Unit tests for the memory tool handler.
+内存工具处理程序的单元测试。
 
-Tests security validation, command execution, and error handling.
+测试安全验证、命令执行和错误处理。
 """
 
 import shutil
@@ -13,53 +13,53 @@ from memory_tool import MemoryToolHandler
 
 
 class TestMemoryToolHandler(unittest.TestCase):
-    """Test suite for MemoryToolHandler."""
+    """MemoryToolHandler 测试套件。"""
 
     def setUp(self):
-        """Create temporary directory for each test."""
+        """为每个测试创建临时目录。"""
         self.test_dir = tempfile.mkdtemp()
         self.handler = MemoryToolHandler(base_path=self.test_dir)
 
     def tearDown(self):
-        """Clean up temporary directory after each test."""
+        """在每个测试后清理临时目录。"""
         shutil.rmtree(self.test_dir)
 
-    # Security Tests
+    # 安全测试
 
     def test_path_validation_requires_memories_prefix(self):
-        """Test that paths must start with /memories."""
+        """测试路径必须以 /memories 开头。"""
         result = self.handler.execute(command="view", path="/etc/passwd")
         self.assertIn("error", result)
         self.assertIn("must start with /memories", result["error"])
 
     def test_path_validation_prevents_traversal_dotdot(self):
-        """Test that .. traversal is blocked."""
+        """测试阻止 .. 路径遍历。"""
         result = self.handler.execute(command="view", path="/memories/../../../etc/passwd")
         self.assertIn("error", result)
         self.assertIn("escape", result["error"].lower())
 
     def test_path_validation_prevents_traversal_encoded(self):
-        """Test that URL-encoded traversal is blocked."""
+        """测试阻止 URL 编码的路径遍历。"""
         result = self.handler.execute(command="view", path="/memories/%2e%2e/%2e%2e/etc/passwd")
-        # The path will be processed and should fail validation
+        # 路径将被处理并应通过验证失败
         self.assertIn("error", result)
 
     def test_path_validation_allows_valid_paths(self):
-        """Test that valid memory paths are accepted."""
+        """测试接受有效的内存路径。"""
         result = self.handler.execute(command="create", path="/memories/test.txt", file_text="test")
         self.assertIn("success", result)
 
-    # View Command Tests
+    # 查看命令测试
 
     def test_view_empty_directory(self):
-        """Test viewing an empty /memories directory."""
+        """测试查看空的 /memories 目录。"""
         result = self.handler.execute(command="view", path="/memories")
         self.assertIn("success", result)
         self.assertIn("empty", result["success"].lower())
 
     def test_view_directory_with_files(self):
-        """Test viewing a directory with files."""
-        # Create some test files
+        """测试查看包含文件的目录。"""
+        # 创建一些测试文件
         self.handler.execute(command="create", path="/memories/file1.txt", file_text="content1")
         self.handler.execute(command="create", path="/memories/file2.txt", file_text="content2")
 
@@ -69,7 +69,7 @@ class TestMemoryToolHandler(unittest.TestCase):
         self.assertIn("file2.txt", result["success"])
 
     def test_view_file_with_line_numbers(self):
-        """Test viewing a file with line numbers."""
+        """测试查看带行号的文件。"""
         content = "line 1\nline 2\nline 3"
         self.handler.execute(command="create", path="/memories/test.txt", file_text=content)
 
@@ -80,7 +80,7 @@ class TestMemoryToolHandler(unittest.TestCase):
         self.assertIn("   3: line 3", result["success"])
 
     def test_view_file_with_range(self):
-        """Test viewing specific line range."""
+        """测试查看特定行范围。"""
         content = "line 1\nline 2\nline 3\nline 4"
         self.handler.execute(command="create", path="/memories/test.txt", file_text=content)
 
@@ -92,27 +92,27 @@ class TestMemoryToolHandler(unittest.TestCase):
         self.assertNotIn("line 4", result["success"])
 
     def test_view_nonexistent_path(self):
-        """Test viewing a nonexistent path."""
+        """测试查看不存在的路径。"""
         result = self.handler.execute(command="view", path="/memories/notfound.txt")
         self.assertIn("error", result)
         self.assertIn("not found", result["error"].lower())
 
-    # Create Command Tests
+    # 创建命令测试
 
     def test_create_file(self):
-        """Test creating a file."""
+        """测试创建文件。"""
         result = self.handler.execute(
             command="create", path="/memories/test.txt", file_text="Hello, World!"
         )
         self.assertIn("success", result)
 
-        # Verify file exists
+        # 验证文件存在
         file_path = Path(self.test_dir) / "memories" / "test.txt"
         self.assertTrue(file_path.exists())
         self.assertEqual(file_path.read_text(), "Hello, World!")
 
     def test_create_file_in_subdirectory(self):
-        """Test creating a file in a subdirectory (auto-creates dirs)."""
+        """测试在子目录中创建文件（自动创建目录）。"""
         result = self.handler.execute(
             command="create",
             path="/memories/subdir/test.txt",
@@ -124,13 +124,13 @@ class TestMemoryToolHandler(unittest.TestCase):
         self.assertTrue(file_path.exists())
 
     def test_create_requires_file_extension(self):
-        """Test that create only allows text file extensions."""
+        """测试创建只允许文本文件扩展名。"""
         result = self.handler.execute(command="create", path="/memories/noext", file_text="content")
         self.assertIn("error", result)
         self.assertIn("text files are supported", result["error"])
 
     def test_create_overwrites_existing_file(self):
-        """Test that create overwrites existing files."""
+        """测试创建会覆盖现有文件。"""
         self.handler.execute(command="create", path="/memories/test.txt", file_text="original")
         result = self.handler.execute(
             command="create", path="/memories/test.txt", file_text="updated"
@@ -140,10 +140,10 @@ class TestMemoryToolHandler(unittest.TestCase):
         file_path = Path(self.test_dir) / "memories" / "test.txt"
         self.assertEqual(file_path.read_text(), "updated")
 
-    # String Replace Command Tests
+    # 字符串替换命令测试
 
     def test_str_replace_success(self):
-        """Test successful string replacement."""
+        """测试成功的字符串替换。"""
         self.handler.execute(
             command="create",
             path="/memories/test.txt",
@@ -162,7 +162,7 @@ class TestMemoryToolHandler(unittest.TestCase):
         self.assertEqual(file_path.read_text(), "Hello Universe")
 
     def test_str_replace_string_not_found(self):
-        """Test replacement when string doesn't exist."""
+        """测试字符串不存在时的替换。"""
         self.handler.execute(command="create", path="/memories/test.txt", file_text="Hello World")
 
         result = self.handler.execute(
@@ -175,7 +175,7 @@ class TestMemoryToolHandler(unittest.TestCase):
         self.assertIn("not found", result["error"].lower())
 
     def test_str_replace_multiple_occurrences(self):
-        """Test that replacement fails with multiple occurrences."""
+        """测试多个匹配时替换失败。"""
         self.handler.execute(
             command="create",
             path="/memories/test.txt",
@@ -192,7 +192,7 @@ class TestMemoryToolHandler(unittest.TestCase):
         self.assertIn("appears 2 times", result["error"])
 
     def test_str_replace_file_not_found(self):
-        """Test replacement on nonexistent file."""
+        """测试在不存在的文件上替换。"""
         result = self.handler.execute(
             command="str_replace",
             path="/memories/notfound.txt",
@@ -202,10 +202,10 @@ class TestMemoryToolHandler(unittest.TestCase):
         self.assertIn("error", result)
         self.assertIn("not found", result["error"].lower())
 
-    # Insert Command Tests
+    # 插入命令测试
 
     def test_insert_at_beginning(self):
-        """Test inserting at line 0 (beginning)."""
+        """测试在第 0 行（开头）插入。"""
         self.handler.execute(
             command="create", path="/memories/test.txt", file_text="line 1\nline 2"
         )
@@ -222,7 +222,7 @@ class TestMemoryToolHandler(unittest.TestCase):
         self.assertEqual(file_path.read_text(), "new line\nline 1\nline 2\n")
 
     def test_insert_in_middle(self):
-        """Test inserting in the middle."""
+        """测试在中间插入。"""
         self.handler.execute(
             command="create", path="/memories/test.txt", file_text="line 1\nline 2"
         )
@@ -239,7 +239,7 @@ class TestMemoryToolHandler(unittest.TestCase):
         self.assertEqual(file_path.read_text(), "line 1\ninserted\nline 2\n")
 
     def test_insert_at_end(self):
-        """Test inserting at the end."""
+        """测试在末尾插入。"""
         self.handler.execute(
             command="create", path="/memories/test.txt", file_text="line 1\nline 2"
         )
@@ -253,7 +253,7 @@ class TestMemoryToolHandler(unittest.TestCase):
         self.assertIn("success", result)
 
     def test_insert_invalid_line(self):
-        """Test insert with invalid line number."""
+        """测试使用无效行号插入。"""
         self.handler.execute(command="create", path="/memories/test.txt", file_text="line 1")
 
         result = self.handler.execute(
@@ -265,10 +265,10 @@ class TestMemoryToolHandler(unittest.TestCase):
         self.assertIn("error", result)
         self.assertIn("invalid", result["error"].lower())
 
-    # Delete Command Tests
+    # 删除命令测试
 
     def test_delete_file(self):
-        """Test deleting a file."""
+        """测试删除文件。"""
         self.handler.execute(command="create", path="/memories/test.txt", file_text="content")
 
         result = self.handler.execute(command="delete", path="/memories/test.txt")
@@ -278,7 +278,7 @@ class TestMemoryToolHandler(unittest.TestCase):
         self.assertFalse(file_path.exists())
 
     def test_delete_directory(self):
-        """Test deleting a directory."""
+        """测试删除目录。"""
         self.handler.execute(
             command="create", path="/memories/subdir/test.txt", file_text="content"
         )
@@ -290,21 +290,21 @@ class TestMemoryToolHandler(unittest.TestCase):
         self.assertFalse(dir_path.exists())
 
     def test_delete_cannot_delete_root(self):
-        """Test that root /memories directory cannot be deleted."""
+        """测试根 /memories 目录不能被删除。"""
         result = self.handler.execute(command="delete", path="/memories")
         self.assertIn("error", result)
         self.assertIn("cannot delete", result["error"].lower())
 
     def test_delete_nonexistent_path(self):
-        """Test deleting a nonexistent path."""
+        """测试删除不存在的路径。"""
         result = self.handler.execute(command="delete", path="/memories/notfound.txt")
         self.assertIn("error", result)
         self.assertIn("not found", result["error"].lower())
 
-    # Rename Command Tests
+    # 重命名命令测试
 
     def test_rename_file(self):
-        """Test renaming a file."""
+        """测试重命名文件。"""
         self.handler.execute(command="create", path="/memories/old.txt", file_text="content")
 
         result = self.handler.execute(
@@ -318,7 +318,7 @@ class TestMemoryToolHandler(unittest.TestCase):
         self.assertTrue(new_path.exists())
 
     def test_rename_to_subdirectory(self):
-        """Test moving a file to a subdirectory."""
+        """测试将文件移动到子目录。"""
         self.handler.execute(command="create", path="/memories/file.txt", file_text="content")
 
         result = self.handler.execute(
@@ -332,7 +332,7 @@ class TestMemoryToolHandler(unittest.TestCase):
         self.assertTrue(new_path.exists())
 
     def test_rename_source_not_found(self):
-        """Test rename when source doesn't exist."""
+        """测试源文件不存在时重命名。"""
         result = self.handler.execute(
             command="rename",
             old_path="/memories/notfound.txt",
@@ -342,7 +342,7 @@ class TestMemoryToolHandler(unittest.TestCase):
         self.assertIn("not found", result["error"].lower())
 
     def test_rename_destination_exists(self):
-        """Test rename when destination already exists."""
+        """测试目标已存在时重命名。"""
         self.handler.execute(command="create", path="/memories/file1.txt", file_text="content1")
         self.handler.execute(command="create", path="/memories/file2.txt", file_text="content2")
 
@@ -354,31 +354,31 @@ class TestMemoryToolHandler(unittest.TestCase):
         self.assertIn("error", result)
         self.assertIn("already exists", result["error"].lower())
 
-    # Error Handling Tests
+    # 错误处理测试
 
     def test_unknown_command(self):
-        """Test handling of unknown command."""
+        """测试处理未知命令。"""
         result = self.handler.execute(command="invalid", path="/memories")
         self.assertIn("error", result)
         self.assertIn("unknown command", result["error"].lower())
 
     def test_missing_required_parameters(self):
-        """Test error handling for missing parameters."""
+        """测试缺少参数时的错误处理。"""
         result = self.handler.execute(command="view")
         self.assertIn("error", result)
 
-    # Utility Tests
+    # 工具测试
 
     def test_clear_all_memory(self):
-        """Test clearing all memory."""
-        # Create some files
+        """测试清除所有内存。"""
+        # 创建一些文件
         self.handler.execute(command="create", path="/memories/file1.txt", file_text="content1")
         self.handler.execute(command="create", path="/memories/file2.txt", file_text="content2")
 
         result = self.handler.clear_all_memory()
         self.assertIn("success", result)
 
-        # Verify directory exists but is empty
+        # 验证目录存在但为空
         memory_root = Path(self.test_dir) / "memories"
         self.assertTrue(memory_root.exists())
         self.assertEqual(len(list(memory_root.iterdir())), 0)

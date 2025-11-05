@@ -1,8 +1,8 @@
 """
-Helper functions for memory cookbook demos.
+记忆演示手册的帮助函数。
 
-This module provides reusable functions for running conversation loops
-with Claude, handling tool execution, and managing context.
+此模块提供可重用的函数，用于运行与 Claude 的对话循环、
+处理工具执行和管理上下文。
 """
 
 from typing import Any
@@ -13,19 +13,19 @@ from memory_tool import MemoryToolHandler
 
 def execute_tool(tool_use: Any, memory_handler: MemoryToolHandler) -> str:
     """
-    Execute a tool use and return the result.
+    执行工具使用并返回结果。
 
     Args:
-        tool_use: The tool use object from Claude's response
-        memory_handler: The memory tool handler instance
+        tool_use: 来自 Claude 响应的工具使用对象
+        memory_handler: 记忆工具处理器实例
 
     Returns:
-        str: The result of the tool execution
+        str: 工具执行的结果
     """
     if tool_use.name == "memory":
         result = memory_handler.execute(**tool_use.input)
-        return result.get("success") or result.get("error", "Unknown error")
-    return f"Unknown tool: {tool_use.name}"
+        return result.get("success") or result.get("error", "未知错误")
+    return f"未知工具: {tool_use.name}"
 
 
 def run_conversation_turn(
@@ -39,20 +39,20 @@ def run_conversation_turn(
     verbose: bool = False,
 ) -> tuple[Any, list[dict[str, Any]], list[dict[str, Any]]]:
     """
-    Run a single conversation turn, handling tool uses.
+    运行单次对话轮次，处理工具使用。
 
     Args:
-        client: Anthropic client instance
-        model: Model to use
-        messages: Current conversation messages
-        memory_handler: Memory tool handler instance
-        system: System prompt
-        context_management: Optional context management config
-        max_tokens: Max tokens for response
-        verbose: Whether to print tool operations
+        client: Anthropic 客户端实例
+        model: 要使用的模型
+        messages: 当前对话消息
+        memory_handler: 记忆工具处理器实例
+        system: 系统提示
+        context_management: 可选的上下文管理配置
+        max_tokens: 响应的最大令牌数
+        verbose: 是否打印工具操作
 
     Returns:
-        Tuple of (response, assistant_content, tool_results)
+        (响应, 助手内容, 工具结果) 的元组
     """
     memory_tool: dict[str, Any] = {"type": "memory_20250818", "name": "memory"}
 
@@ -82,13 +82,13 @@ def run_conversation_turn(
             if verbose:
                 cmd = content.input.get("command")
                 path = content.input.get("path", "")
-                print(f"  🔧 Memory tool: {cmd} {path}")
+                print(f"  🔧 记忆工具: {cmd} {path}")
 
             result = execute_tool(content, memory_handler)
 
             if verbose:
                 result_preview = result[:80] + "..." if len(result) > 80 else result
-                print(f"  ✓ Result: {result_preview}")
+                print(f"  ✓ 结果: {result_preview}")
 
             assistant_content.append(
                 {"type": "tool_use", "id": content.id, "name": content.name, "input": content.input}
@@ -112,28 +112,28 @@ def run_conversation_loop(
     verbose: bool = False,
 ) -> Any:
     """
-    Run a complete conversation loop until Claude stops using tools.
+    运行完整的对话循环，直到 Claude 停止使用工具。
 
     Args:
-        client: Anthropic client instance
-        model: Model to use
-        messages: Current conversation messages (will be modified in-place)
-        memory_handler: Memory tool handler instance
-        system: System prompt
-        context_management: Optional context management config
-        max_tokens: Max tokens for response
-        max_turns: Maximum number of turns to prevent infinite loops
-        verbose: Whether to print progress
+        client: Anthropic 客户端实例
+        model: 要使用的模型
+        messages: 当前对话消息（将进行就地修改）
+        memory_handler: 记忆工具处理器实例
+        system: 系统提示
+        context_management: 可选的上下文管理配置
+        max_tokens: 响应的最大令牌数
+        max_turns: 最大轮次数，以防止无限循环
+        verbose: 是否打印进度
 
     Returns:
-        The final API response
+        最终的 API 响应
     """
     turn = 1
     response = None
 
     while turn <= max_turns:
         if verbose:
-            print(f"\n🔄 Turn {turn}:")
+            print(f"\n🔄 轮次 {turn}:")
 
         response, assistant_content, tool_results = run_conversation_turn(
             client=client,
@@ -152,7 +152,7 @@ def run_conversation_loop(
             messages.append({"role": "user", "content": tool_results})
             turn += 1
         else:
-            # No more tool uses, conversation complete
+            # 没有更多工具使用，对话完成
             break
 
     return response
@@ -160,13 +160,13 @@ def run_conversation_loop(
 
 def print_context_management_info(response: Any) -> tuple[bool, int]:
     """
-    Print context management information from response.
+    打印响应中的上下文管理信息。
 
     Args:
-        response: API response to analyze
+        response: 要分析的 API 响应
 
     Returns:
-        Tuple of (context_cleared, saved_tokens)
+        (上下文是否清除, 保存的令牌数) 的元组
     """
     context_cleared = False
     saved_tokens = 0
@@ -177,21 +177,21 @@ def print_context_management_info(response: Any) -> tuple[bool, int]:
             context_cleared = True
             cleared_uses = getattr(edits[0], "cleared_tool_uses", 0)
             saved_tokens = getattr(edits[0], "cleared_input_tokens", 0)
-            print("  ✂️  Context editing triggered!")
-            print(f"      • Cleared {cleared_uses} tool uses")
-            print(f"      • Saved {saved_tokens:,} tokens")
-            print(f"      • After clearing: {response.usage.input_tokens:,} tokens")
+            print("  ✂️  触发了上下文编辑!")
+            print(f"      • 清除了 {cleared_uses} 次工具使用")
+            print(f"      • 节省了 {saved_tokens:,} 个令牌")
+            print(f"      • 清除后: {response.usage.input_tokens:,} 个令牌")
         else:
-            # Check if we can see why it didn't trigger
+            # 检查我们是否能看到它未触发的原因
             skipped_edits = getattr(response.context_management, "skipped_edits", [])
             if skipped_edits:
-                print("  ℹ️  Context clearing skipped:")
+                print("  ℹ️  跳过了上下文清除:")
                 for skip in skipped_edits:
                     reason = getattr(skip, "reason", "unknown")
-                    print(f"      • Reason: {reason}")
+                    print(f"      • 原因: {reason}")
             else:
-                print("  ℹ️  Context below threshold - no clearing triggered")
+                print("  ℹ️  上下文低于阈值 - 未触发清除")
     else:
-        print("  ℹ️  No context management applied")
+        print("  ℹ️  未应用上下文管理")
 
     return context_cleared, saved_tokens
